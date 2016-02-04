@@ -7,8 +7,22 @@
 
     <groupId>by.pvt.khudnitsky</groupId>
     <artifactId>payments</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
     <packaging>pom</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <hibernate.version>4.3.8.Final</hibernate.version>
+        <jstl.version>1.2</jstl.version>
+        <mysql.version>5.1.38</mysql.version>
+        <log4j.version>1.2.17</log4j.version>
+        <slf4j.version>1.5.6</slf4j.version>
+        <servlet.api.version>3.1.0</servlet.api.version>
+        <pool.version>2.1.1</pool.version>
+        <junit.version>4.12</junit.version>
+        <maven.compiler.plugin.version>3.3</maven.compiler.plugin.version>
+        <tomcat.maven.plugin.version>1.1</tomcat.maven.plugin.version>
+    </properties>
 
     <dependencyManagement>
         <dependencies>
@@ -16,43 +30,65 @@
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>jstl</artifactId>
-                <version>1.2</version>
+                <version>${jstl.version}</version>
             </dependency>
 
             <!-- MySQL -->
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
-                <version>5.1.38</version>
+                <version>${mysql.version}</version>
             </dependency>
 
-            <!-- Logger -->
+            <!-- Loggers -->
             <dependency>
                 <groupId>log4j</groupId>
                 <artifactId>log4j</artifactId>
-                <version>1.2.17</version>
+                <version>${log4j.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.sun.jdmk</groupId>
+                        <artifactId>jmxtools</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.jmx</groupId>
+                        <artifactId>jmxri</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${slf4j.version}</version>
             </dependency>
 
             <!-- Servlet-API -->
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
-                <version>3.1.0</version>
+                <version>${servlet.api.version}</version>
             </dependency>
 
             <!-- Pool -->
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-dbcp2</artifactId>
-                <version>2.1.1</version>
+                <version>${pool.version}</version>
             </dependency>
 
             <!-- JUnit -->
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.12</version>
+                <version>${junit.version}</version>
                 <scope>test</scope>
+            </dependency>
+
+            <!-- Hibernate -->
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-entitymanager</artifactId>
+                <version>${hibernate.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -63,16 +99,12 @@
         <module>web</module>
     </modules>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <build>
         <finalName>PaymentSystem</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
+                <version>${maven.compiler.plugin.version}</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -81,7 +113,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>tomcat-maven-plugin</artifactId>
-                <version>1.1</version>
+                <version>${tomcat.maven.plugin.version}</version>
                 <configuration>
                     <url>http://localhost:8080/manager/text</url>
                     <username>admin</username>
