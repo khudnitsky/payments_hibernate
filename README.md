@@ -1,2 +1,2 @@
 # payments_hibernate
-2 module project
+Payments system (2'nd module project)
