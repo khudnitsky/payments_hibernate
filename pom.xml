@@ -100,7 +100,7 @@
     </modules>
 
     <build>
-        <finalName>PaymentSystem</finalName>
+        <finalName>payments</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>

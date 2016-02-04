@@ -7,25 +7,25 @@
 
     <groupId>by.pvt.khudnitsky.payments</groupId>
     <artifactId>services</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
     <packaging>jar</packaging>
 
     <parent>
         <groupId>by.pvt.khudnitsky</groupId>
         <artifactId>payments</artifactId>
-        <version>1.1</version>
+        <version>1.2</version>
     </parent>
 
     <dependencies>
         <dependency>
             <groupId>by.pvt.khudnitsky.payments</groupId>
             <artifactId>entities</artifactId>
-            <version>1.1</version>
+            <version>1.2</version>
         </dependency>
         <dependency>
             <groupId>by.pvt.khudnitsky.payments</groupId>
             <artifactId>dao</artifactId>
-            <version>1.1</version>
+            <version>1.2</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
