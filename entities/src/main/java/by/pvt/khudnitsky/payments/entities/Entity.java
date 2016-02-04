@@ -13,32 +13,22 @@ import java.io.Serializable;
  */
 public abstract class Entity implements Serializable{
     private static final long serialVersionUID = 1L;
-    protected int id;
+    protected Long id;
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + id;
-        return result;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Entity)) return false;
+
+        Entity entity = (Entity) o;
+
+        return id != null ? id.equals(entity.id) : entity.id == null;
+
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (!(obj instanceof Entity)) {
-            return false;
-        }
-        Entity other = (Entity) obj;
-        if (id != other.id) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 
     @Override
@@ -54,21 +44,21 @@ public abstract class Entity implements Serializable{
     /**
      * Creates new entity </b>
      */
-    public Entity(int id) {
+    public Entity(Long id) {
         this.id = id;
     }
 
     /**
      * @return the id
      */
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
     /**
      * @param id the id to set
      */
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }
