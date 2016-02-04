@@ -46,7 +46,7 @@ public class UserDaoImpl extends AbstractDao<User> {
             statement = connection.prepareStatement(SqlRequest.ADD_USER);
             statement.setString(1, user.getFirstName());
             statement.setString(2, user.getLastName());
-            statement.setInt(3, user.getAccountId());
+            statement.setLong(3, user.getAccountId());
             statement.setString(4, user.getLogin());
             statement.setString(5, user.getPassword());
             statement.executeUpdate();
@@ -88,12 +88,12 @@ public class UserDaoImpl extends AbstractDao<User> {
     }
 
     @Override
-    public User getById(int id) throws DaoException {
+    public User getById(Long id) throws DaoException {
         User user = null;
         try {
             connection = PoolManager.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.GET_USER_BY_ID);
-            statement.setInt(1, id);
+            statement.setLong(1, id);
             result = statement.executeQuery();
             while (result.next()) {
                 user = buildUser(result);
@@ -182,14 +182,14 @@ public class UserDaoImpl extends AbstractDao<User> {
     }
 
     @Override
-    public int getMaxId() throws DaoException {
-        int lastId = -1;
+    public Long getMaxId() throws DaoException {
+        Long lastId = -1L;
         try {
             connection = PoolManager.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.GET_LAST_USER_ID);
             result = statement.executeQuery();
             while (result.next()) {
-                lastId = result.getInt(1);
+                lastId = result.getLong(1);
             }
         }
         catch (SQLException e){
@@ -205,11 +205,11 @@ public class UserDaoImpl extends AbstractDao<User> {
     }
 
     @Override
-    public void delete(int id) throws DaoException {
+    public void delete(Long id) throws DaoException {
         try {
             connection = PoolManager.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.DELETE_USER_BY_ID);
-            statement.setInt(1, id);
+            statement.setLong(1, id);
             statement.executeUpdate();
         }
         catch (SQLException e){
@@ -223,13 +223,13 @@ public class UserDaoImpl extends AbstractDao<User> {
     }
 
     private User buildUser(ResultSet result) throws SQLException{
-        int id = result.getInt(ColumnName.USER_ID);
+        Long id = result.getLong(ColumnName.USER_ID);
         String firstName = result.getString(ColumnName.USER_FIRST_NAME);
         String lastName = result.getString(ColumnName.USER_LAST_NAME);
-        int accountId = result.getInt(ColumnName.ACCOUNT_ID);
+        Long accountId = result.getLong(ColumnName.ACCOUNT_ID);
         String login = result.getString(ColumnName.USER_LOGIN);
         String password = result.getString(ColumnName.USER_PASSWORD);
-        int accessLevel = result.getInt(ColumnName.USER_ACCESS_LEVEL);
+        Integer accessLevel = result.getInt(ColumnName.USER_ACCESS_LEVEL);
         User user = EntityBuilder.buildUser(id, firstName, lastName, accountId, login, password, accessLevel);
         return user;
     }

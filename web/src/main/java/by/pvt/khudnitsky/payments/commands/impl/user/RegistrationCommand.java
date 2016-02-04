@@ -31,7 +31,7 @@ public class RegistrationCommand extends AbstractCommand {
 
     @Override
     public String execute(HttpServletRequest request) {
-        String page = null;
+        String page;
         try{
             user = RequestParameterParser.getUser(request);
             accountIdString = request.getParameter(Parameters.ACCOUNT_ID);

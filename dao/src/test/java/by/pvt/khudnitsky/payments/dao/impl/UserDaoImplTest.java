@@ -19,7 +19,7 @@ public class UserDaoImplTest {
     @Ignore
     @Test
     public void testAdd() throws Exception {
-        User expected = EntityBuilder.buildUser(100, "TEST", "TEST", 100, "TEST", "TEST", 0);
+        User expected = EntityBuilder.buildUser(100L, "TEST", "TEST", 100L, "TEST", "TEST", 0);
         UserDaoImpl.getInstance().add(expected);
         User actual = UserDaoImpl.getInstance().getById(expected.getId());
         Assert.assertEquals(expected, actual);
@@ -29,7 +29,7 @@ public class UserDaoImplTest {
     @Ignore
     @Test
     public void testDelete() throws Exception {
-        User user = EntityBuilder.buildUser(100, "TEST", "TEST", 100, "TEST", "TEST", 0);
+        User user = EntityBuilder.buildUser(100L, "TEST", "TEST", 100L, "TEST", "TEST", 0);
         UserDaoImpl.getInstance().add(user);
         UserDaoImpl.getInstance().delete(user.getId());
         User actual = UserDaoImpl.getInstance().getById(user.getId());

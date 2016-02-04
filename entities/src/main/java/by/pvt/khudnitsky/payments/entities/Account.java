@@ -12,49 +12,34 @@ package by.pvt.khudnitsky.payments.entities;
 public class Account extends Entity{
     private static final long serialVersionUID = 1L;
     private String currency;
-    private double amount;
-    private int status;
+    private Double amount;
+    private Integer status;
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        long temp;
-        temp = Double.doubleToLongBits(amount);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
-        result = prime * result + ((currency == null) ? 0 : currency.hashCode());
-        result = prime * result + status;
-        return result;
+    public Account() {
+        super();
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (!(obj instanceof Account)) {
-            return false;
-        }
-        Account other = (Account) obj;
-        if (Double.doubleToLongBits(amount) != Double.doubleToLongBits(other.amount)) {
-            return false;
-        }
-        if (currency == null) {
-            if (other.currency != null) {
-                return false;
-            }
-        }
-        else
-        if (!currency.equals(other.currency)) {
-            return false;
-        }
-        if (status != other.status) {
-            return false;
-        }
-        return true;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Account)) return false;
+        if (!super.equals(o)) return false;
+
+        Account account = (Account) o;
+
+        if (currency != null ? !currency.equals(account.currency) : account.currency != null) return false;
+        if (amount != null ? !amount.equals(account.amount) : account.amount != null) return false;
+        return status != null ? status.equals(account.status) : account.status == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (currency != null ? currency.hashCode() : 0);
+        result = 31 * result + (amount != null ? amount.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        return result;
     }
 
     @Override
@@ -79,28 +64,28 @@ public class Account extends Entity{
     /**
      * @return the amount
      */
-    public double getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
     /**
      * @param amount the amount to set
      */
-    public void setAmount(double amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
     /**
      * @return the status
      */
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
     /**
      * @param status the status to set
      */
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 }

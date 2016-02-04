@@ -22,9 +22,9 @@ public class AccountServiceImplTest {
 
     @Before
     public void setUp(){
-        account = EntityBuilder.buildAccount(100, "TEST", 100, 0);
-        user = EntityBuilder.buildUser(100, "TEST", "TEST", account.getId(), "TEST", "TEST", 0);
-        operation = EntityBuilder.buildOperation(100, user.getId(), user.getAccountId(), 100, "TEST", "01.01.01");
+        account = EntityBuilder.buildAccount(100L, "TEST", 100D, 0);
+        user = EntityBuilder.buildUser(100L, "TEST", "TEST", account.getId(), "TEST", "TEST", 0);
+        operation = EntityBuilder.buildOperation(100L, user.getId(), user.getAccountId(), 100D, "TEST", "01.01.01");
     }
 
     @After
@@ -51,7 +51,7 @@ public class AccountServiceImplTest {
 
     @Test
     public void testGetById() throws Exception {
-        account = EntityBuilder.buildAccount(1, "ADMIN", 0, 0);
+        account = EntityBuilder.buildAccount(1L, "ADMIN", 0D, 0);
         Account actual = AccountServiceImpl.getInstance().getById(account.getId());
         Assert.assertEquals(account, actual);
     }
@@ -62,8 +62,8 @@ public class AccountServiceImplTest {
         UserDaoImpl.getInstance().add(user);
         user.setId(UserDaoImpl.getInstance().getMaxId());
         AccountServiceImpl.getInstance().addFunds(user, operation.getDescription(), operation.getAmount());
-        double expected = account.getAmount() + operation.getAmount();
-        double actual = AccountDaoImpl.getInstance().getById(account.getId()).getAmount();
+        Double expected = account.getAmount() + operation.getAmount();
+        Double actual = AccountDaoImpl.getInstance().getById(account.getId()).getAmount();
         AccountDaoImpl.getInstance().delete(account.getId());
         Assert.assertEquals(expected, actual, 0.01);
     }
@@ -74,8 +74,8 @@ public class AccountServiceImplTest {
         UserDaoImpl.getInstance().add(user);
         user.setId(UserDaoImpl.getInstance().getMaxId());
         AccountServiceImpl.getInstance().blockAccount(user, operation.getDescription());
-        long expected = AccountStatus.BLOCKED;
-        long actual = AccountDaoImpl.getInstance().getById(account.getId()).getStatus();
+        Integer expected = AccountStatus.BLOCKED;
+        Integer actual = AccountDaoImpl.getInstance().getById(account.getId()).getStatus();
         AccountDaoImpl.getInstance().delete(account.getId());
         Assert.assertEquals(expected, actual);
     }
@@ -86,8 +86,8 @@ public class AccountServiceImplTest {
         UserDaoImpl.getInstance().add(user);
         user.setId(UserDaoImpl.getInstance().getMaxId());
         AccountServiceImpl.getInstance().payment(user, operation.getDescription(), operation.getAmount());
-        double expected = account.getAmount() - operation.getAmount();
-        double actual = AccountDaoImpl.getInstance().getById(account.getId()).getAmount();
+        Double expected = account.getAmount() - operation.getAmount();
+        Double actual = AccountDaoImpl.getInstance().getById(account.getId()).getAmount();
         AccountDaoImpl.getInstance().delete(account.getId());
         Assert.assertEquals(expected, actual, 0.01);
     }

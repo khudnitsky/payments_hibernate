@@ -25,7 +25,7 @@ public class EntityBuilder {
      * @param status - account's status
      * @return entity of <b>Account</b>
      */
-    public static Account buildAccount(int id, String currency, double amount, int status){
+    public static Account buildAccount(Long id, String currency, Double amount, Integer status){
         Account account = new Account();
         account.setId(id);
         account.setCurrency(currency);
@@ -44,7 +44,7 @@ public class EntityBuilder {
      * @param date - operation's date
      * @return entity of <b>Operation</b>
      */
-    public static Operation buildOperation(int id, int userId, int accountId, double amount, String description, String date){
+    public static Operation buildOperation(Long id, Long userId, Long accountId, Double amount, String description, String date){
         Operation operation = new Operation();
         operation.setId(id);
         operation.setUserId(userId);
@@ -66,7 +66,7 @@ public class EntityBuilder {
      * @param accessLevel - user's access level (0 - client, 1 - administrator)
      * @return entity of <b>User</b>
      */
-    public static User buildUser(int id, String firstName, String lastName, int aid, String login, String password, int accessLevel){
+    public static User buildUser(Long id, String firstName, String lastName, Long aid, String login, String password, Integer accessLevel){
         User user = new User();
         user.setId(id);
         user.setFirstName(firstName);

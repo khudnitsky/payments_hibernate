@@ -11,66 +11,42 @@ package by.pvt.khudnitsky.payments.entities;
  */
 public class Operation extends Entity{
     private static final long serialVersionUID = 1L;
-    private int userId;
-    private int accountId;
-    private double amount;
+    private Long userId;
+    private Long accountId;
+    private Double amount;
     private String description;
     private String date;        //TODO Calendar
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + accountId;
-        long temp;
-        temp = Double.doubleToLongBits(amount);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
-        result = prime * result + ((date == null) ? 0 : date.hashCode());
-        result = prime * result + ((description == null) ? 0 : description.hashCode());
-        result = prime * result + userId;
-        return result;
+    public Operation() {
+        super();
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!super.equals(obj)) {
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Operation)) return false;
+        if (!super.equals(o)) return false;
+
+        Operation operation = (Operation) o;
+
+        if (userId != null ? !userId.equals(operation.userId) : operation.userId != null) return false;
+        if (accountId != null ? !accountId.equals(operation.accountId) : operation.accountId != null) return false;
+        if (amount != null ? !amount.equals(operation.amount) : operation.amount != null) return false;
+        if (description != null ? !description.equals(operation.description) : operation.description != null)
             return false;
-        }
-        if (!(obj instanceof Operation)) {
-            return false;
-        }
-        Operation other = (Operation) obj;
-        if (accountId != other.accountId) {
-            return false;
-        }
-        if (Double.doubleToLongBits(amount) != Double.doubleToLongBits(other.amount)) {
-            return false;
-        }
-        if (date == null) {
-            if (other.date != null) {
-                return false;
-            }
-        }
-        else
-        if (!date.equals(other.date)) {
-            return false;
-        }
-        if (description == null) {
-            if (other.description != null) {
-                return false;
-            }
-        }
-        else
-        if (!description.equals(other.description)) {
-            return false;
-        }
-        if (userId != other.userId) {
-            return false;
-        }
-        return true;
+        return date != null ? date.equals(operation.date) : operation.date == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (userId != null ? userId.hashCode() : 0);
+        result = 31 * result + (accountId != null ? accountId.hashCode() : 0);
+        result = 31 * result + (amount != null ? amount.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        return result;
     }
 
     @Override
@@ -81,42 +57,42 @@ public class Operation extends Entity{
     /**
      * @return the userId
      */
-    public int getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
     /**
      * @param userId the userId to set
      */
-    public void setUserId(int userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
     /**
      * @return the accountId
      */
-    public int getAccountId() {
+    public Long getAccountId() {
         return accountId;
     }
 
     /**
      * @param accountId the accountId to set
      */
-    public void setAccountId(int accountId) {
+    public void setAccountId(Long accountId) {
         this.accountId = accountId;
     }
 
     /**
      * @return the amount
      */
-    public double getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
     /**
      * @param amount the amount to set
      */
-    public void setAmount(double amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 

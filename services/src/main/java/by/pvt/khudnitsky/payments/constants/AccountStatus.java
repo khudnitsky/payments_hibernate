@@ -9,8 +9,8 @@ package by.pvt.khudnitsky.payments.constants;
  *
  */
 public class AccountStatus {
-    public static final int BLOCKED = 1;
-    public static final int UNBLOCKED = 0;
+    public static final Integer BLOCKED = 1;
+    public static final Integer UNBLOCKED = 0;
 
     private AccountStatus(){}
 }

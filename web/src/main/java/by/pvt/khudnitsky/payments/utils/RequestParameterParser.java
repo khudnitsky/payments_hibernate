@@ -17,15 +17,15 @@ public class RequestParameterParser {
     private RequestParameterParser() {}
 
     public static User getUser(HttpServletRequest request){
-        int id = 0;
+        Long id = 0L;
         if (request.getParameter(Parameters.USER_ID) != null){
-            id = Integer.valueOf(request.getParameter(Parameters.USER_ID));
+            id = Long.valueOf(request.getParameter(Parameters.USER_ID));
         }
-        int accountId = 0;
+        Long accountId = 0L;
         if (request.getParameter(Parameters.ACCOUNT_ID) != null){
-            accountId = Integer.valueOf(request.getParameter(Parameters.ACCOUNT_ID));
+            accountId = Long.valueOf(request.getParameter(Parameters.ACCOUNT_ID));
         }
-        int accessLevel = 0;
+        Integer accessLevel = 0;
         if (request.getParameter(Parameters.USER_ACCESS_LEVEL) != null){
             accessLevel = Integer.valueOf(request.getParameter(Parameters.USER_ACCESS_LEVEL));
         }
@@ -38,7 +38,7 @@ public class RequestParameterParser {
     }
 
     public static Account getAccount(HttpServletRequest request) throws NumberFormatException {
-        int id = Integer.valueOf(request.getParameter(Parameters.ACCOUNT_ID));
+        Long id = Long.valueOf(request.getParameter(Parameters.ACCOUNT_ID));
 
         String currency = request.getParameter(Parameters.ACCOUNT_CURRENCY);
 

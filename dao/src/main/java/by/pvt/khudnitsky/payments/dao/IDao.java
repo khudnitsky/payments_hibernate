@@ -16,7 +16,7 @@ import java.util.List;
 public interface IDao<T extends Entity> {
     void add(T entity) throws DaoException;
     List<T> getAll() throws DaoException;
-    T getById(int id) throws DaoException;
-    void delete(int id) throws DaoException;
-    int getMaxId() throws DaoException;
+    T getById(Long id) throws DaoException;
+    void delete(Long id) throws DaoException;
+    Long getMaxId() throws DaoException;
 }

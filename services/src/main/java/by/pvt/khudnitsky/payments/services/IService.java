@@ -30,7 +30,7 @@ public interface IService<T extends Entity> {
      * @return object of derived class Entity
      * @throws SQLException
      */
-    T getById(int id) throws SQLException, ServiceException;
+    T getById(Long id) throws SQLException, ServiceException;
 
     /**
      * Calls Dao update() method
@@ -44,5 +44,5 @@ public interface IService<T extends Entity> {
      * @param id - id of entity
      * @throws SQLException
      */
-    void delete(int id) throws SQLException, ServiceException;
+    void delete(Long id) throws SQLException, ServiceException;
 }

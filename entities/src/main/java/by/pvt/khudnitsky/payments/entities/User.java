@@ -15,77 +15,40 @@ public class User extends Entity{
     private String lastName;
     private String login;
     private String password;
-    private int accountId;
-    private int accessLevel;
+    private Long accountId;
+    private Integer accessLevel;
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + accessLevel;
-        result = prime * result + accountId;
-        result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-        result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-        result = prime * result + ((login == null) ? 0 : login.hashCode());
-        result = prime * result + ((password == null) ? 0 : password.hashCode());
-        return result;
+    public User() {
+        super();
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-        if (!(obj instanceof User)) {
-            return false;
-        }
-        User other = (User) obj;
-        if (accessLevel != other.accessLevel) {
-            return false;
-        }
-        if (accountId != other.accountId) {
-            return false;
-        }
-        if (firstName == null) {
-            if (other.firstName != null) {
-                return false;
-            }
-        }
-        else
-        if (!firstName.equals(other.firstName)) {
-            return false;
-        }
-        if (lastName == null) {
-            if (other.lastName != null) {
-                return false;
-            }
-        }
-        else
-        if (!lastName.equals(other.lastName)) {
-            return false;
-        }
-        if (login == null) {
-            if (other.login != null) {
-                return false;
-            }
-        }
-        else
-        if (!login.equals(other.login)) {
-            return false;
-        }
-        if (password == null) {
-            if (other.password != null) {
-                return false;
-            }
-        }
-        else
-        if (!password.equals(other.password)) {
-            return false;
-        }
-        return true;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        if (!super.equals(o)) return false;
+
+        User user = (User) o;
+
+        if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
+        if (login != null ? !login.equals(user.login) : user.login != null) return false;
+        if (password != null ? !password.equals(user.password) : user.password != null) return false;
+        if (accountId != null ? !accountId.equals(user.accountId) : user.accountId != null) return false;
+        return accessLevel != null ? accessLevel.equals(user.accessLevel) : user.accessLevel == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (login != null ? login.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (accountId != null ? accountId.hashCode() : 0);
+        result = 31 * result + (accessLevel != null ? accessLevel.hashCode() : 0);
+        return result;
     }
 
     @Override
@@ -152,28 +115,28 @@ public class User extends Entity{
     /**
      * @return the accountId
      */
-    public int getAccountId() {
+    public Long getAccountId() {
         return accountId;
     }
 
     /**
      * @param accountId the accountId to set
      */
-    public void setAccountId(int accountId) {
+    public void setAccountId(Long accountId) {
         this.accountId = accountId;
     }
 
     /**
      * @return the accessLevel
      */
-    public int getAccessLevel() {
+    public Integer getAccessLevel() {
         return accessLevel;
     }
 
     /**
      * @param accessLevel the accessLevel to set
      */
-    public void setAccessLevel(int accessLevel) {
+    public void setAccessLevel(Integer accessLevel) {
         this.accessLevel = accessLevel;
     }
 }

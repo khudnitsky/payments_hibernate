@@ -72,7 +72,7 @@ public class AccountServiceImpl extends AbstractService<Account> {
      * @throws SQLException
      */
     @Override
-    public Account getById(int id) throws SQLException, ServiceException {
+    public Account getById(Long id) throws SQLException, ServiceException {
         Account account = null;
         try {
             connection = PoolManager.getInstance().getConnection();
@@ -107,7 +107,7 @@ public class AccountServiceImpl extends AbstractService<Account> {
      * @throws SQLException
      */
     @Override
-    public void delete(int id) throws SQLException {
+    public void delete(Long id) throws SQLException {
         throw new UnsupportedOperationException();
     }
 
@@ -129,7 +129,7 @@ public class AccountServiceImpl extends AbstractService<Account> {
     }
 
 
-    public void updateAccountStatus(int id, int status) throws SQLException, ServiceException {
+    public void updateAccountStatus(Long id, Integer status) throws SQLException, ServiceException {
         try {
             connection = PoolManager.getInstance().getConnection();
             connection.setAutoCommit(false);
@@ -144,7 +144,7 @@ public class AccountServiceImpl extends AbstractService<Account> {
         }
     }
 
-    public boolean checkAccountStatus(int id) throws SQLException, ServiceException{
+    public boolean checkAccountStatus(Long id) throws SQLException, ServiceException{
         boolean isBlocked = false;
         try {
             connection = PoolManager.getInstance().getConnection();
@@ -161,13 +161,13 @@ public class AccountServiceImpl extends AbstractService<Account> {
         return isBlocked;
     }
 
-    public void addFunds(User user, String description, double amount) throws SQLException, ServiceException{
+    public void addFunds(User user, String description, Double amount) throws SQLException, ServiceException{
         try {
             connection = PoolManager.getInstance().getConnection();
             connection.setAutoCommit(false);
             Operation operation = buildOperation(user, description, amount);
             OperationDaoImpl.getInstance().add(operation);
-            AccountDaoImpl.getInstance().updateAmount(amount, user.getAccountId());
+            AccountDaoImpl.getInstance().updateAmount(user.getAccountId(), amount);
             connection.commit();
             PaymentSystemLogger.getInstance().logError(getClass(), "Transaction succeeded");
         }
@@ -182,7 +182,7 @@ public class AccountServiceImpl extends AbstractService<Account> {
         try {
             connection = PoolManager.getInstance().getConnection();
             connection.setAutoCommit(false);
-            Operation operation = buildOperation(user, description, 0);
+            Operation operation = buildOperation(user, description, 0D);
             OperationDaoImpl.getInstance().add(operation);
             AccountDaoImpl.getInstance().updateAccountStatus(user.getAccountId(), AccountStatus.BLOCKED);
             connection.commit();
@@ -195,13 +195,13 @@ public class AccountServiceImpl extends AbstractService<Account> {
         }
     }
 
-    public void payment(User user, String description, double amount) throws SQLException, ServiceException {
+    public void payment(User user, String description, Double amount) throws SQLException, ServiceException {
         try {
             connection = PoolManager.getInstance().getConnection();
             connection.setAutoCommit(false);
             Operation operation = buildOperation(user, description, amount);
             OperationDaoImpl.getInstance().add(operation);
-            AccountDaoImpl.getInstance().updateAmount((-1) * amount, user.getAccountId());
+            AccountDaoImpl.getInstance().updateAmount(user.getAccountId(), (-1) * amount);
             connection.commit();
             PaymentSystemLogger.getInstance().logError(getClass(), "Transaction succeeded");
         }
@@ -212,7 +212,8 @@ public class AccountServiceImpl extends AbstractService<Account> {
         }
     }
 
-    private Operation buildOperation(User user, String description, double amount){
+    // TODO EntityBuilder ???
+    private Operation buildOperation(User user, String description, Double amount){
         Operation operation = new Operation();
         operation.setUserId(user.getId());
         operation.setAccountId(user.getAccountId());

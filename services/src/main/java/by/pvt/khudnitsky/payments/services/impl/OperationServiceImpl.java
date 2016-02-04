@@ -82,7 +82,7 @@ public class OperationServiceImpl extends AbstractService<Operation> {
      * @throws SQLException
      */
     @Override
-    public Operation getById(int id) throws SQLException {
+    public Operation getById(Long id) throws SQLException {
         throw new UnsupportedOperationException();
     }
 
@@ -104,7 +104,7 @@ public class OperationServiceImpl extends AbstractService<Operation> {
      * @throws SQLException
      */
     @Override
-    public void delete(int id) throws SQLException {
+    public void delete(Long id) throws SQLException {
         throw new UnsupportedOperationException();
     }
 }

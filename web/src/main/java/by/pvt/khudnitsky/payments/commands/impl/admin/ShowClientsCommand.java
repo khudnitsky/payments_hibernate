@@ -27,7 +27,7 @@ public class ShowClientsCommand extends AbstractCommand{
 
     @Override
     public String execute(HttpServletRequest request) {
-        String page = null;
+        String page;
         HttpSession session = request.getSession();
         UserType userType = RequestParameterParser.getUserType(request);
         if(userType == UserType.ADMINISTRATOR){

@@ -19,9 +19,9 @@ public class UserServiceImplTest {
 
     @Before
     public void setUp(){
-        account = EntityBuilder.buildAccount(100, "TEST", 100, 0);
-        user = EntityBuilder.buildUser(100, "TEST", "TEST", account.getId(), "TEST", "TEST", 0);
-        operation = EntityBuilder.buildOperation(100, user.getId(), user.getAccountId(), 100, "TEST", "01.01.01");
+        account = EntityBuilder.buildAccount(100L, "TEST", 100D, 0);
+        user = EntityBuilder.buildUser(100L, "TEST", "TEST", account.getId(), "TEST", "TEST", 0);
+        operation = EntityBuilder.buildOperation(100L, user.getId(), user.getAccountId(), 100D, "TEST", "01.01.01");
     }
 
     @After
@@ -52,7 +52,7 @@ public class UserServiceImplTest {
     public void testGetUserByLogin() throws Exception {
         AccountDaoImpl.getInstance().add(account);
         UserDaoImpl.getInstance().add(user);
-        int userActualId = UserDaoImpl.getInstance().getMaxId();
+        Long userActualId = UserDaoImpl.getInstance().getMaxId();
         user.setId(userActualId);
         User actual = UserServiceImpl.getInstance().getUserByLogin(user.getLogin());
         AccountDaoImpl.getInstance().delete(account.getId());
@@ -65,7 +65,7 @@ public class UserServiceImplTest {
         UserDaoImpl.getInstance().add(user);
         UserType actual = UserServiceImpl.getInstance().checkAccessLevel(user);
         AccountDaoImpl.getInstance().delete(account.getId());
-        Assert.assertEquals(user.getAccessLevel(), actual.ordinal());
+        Assert.assertEquals(user.getAccessLevel(), (Integer) actual.ordinal());
     }
 
     @Test
@@ -80,7 +80,7 @@ public class UserServiceImplTest {
     public void testRegistrateUser() throws Exception {
         AccountDaoImpl.getInstance().add(account);
         UserServiceImpl.getInstance().registrateUser(user, account);
-        int userActualId = UserDaoImpl.getInstance().getMaxId();
+        Long userActualId = UserDaoImpl.getInstance().getMaxId();
         user.setId(userActualId);
         User actual = UserServiceImpl.getInstance().getUserByLogin(user.getLogin());
         AccountDaoImpl.getInstance().delete(account.getId());

@@ -16,9 +16,9 @@ public class OperationDaoImplTest {
 
     @Before
     public void setUp(){
-        account = EntityBuilder.buildAccount(100, "TEST", 0, 0);
-        user = EntityBuilder.buildUser(100, "TEST", "TEST", account.getId(), "TEST", "TEST", 0);
-        expected = EntityBuilder.buildOperation(100, user.getId(), user.getAccountId(), 100, "TEST", "01.01.01");
+        account = EntityBuilder.buildAccount(100L, "TEST", 0D, 0);
+        user = EntityBuilder.buildUser(100L, "TEST", "TEST", account.getId(), "TEST", "TEST", 0);
+        expected = EntityBuilder.buildOperation(100L, user.getId(), user.getAccountId(), 100D, "TEST", "01.01.01");
     }
 
     @After
@@ -38,10 +38,10 @@ public class OperationDaoImplTest {
     public void testAdd() throws Exception {
         AccountDaoImpl.getInstance().add(account);
         UserDaoImpl.getInstance().add(user);
-        int userActualId = UserDaoImpl.getInstance().getMaxId();
+        Long userActualId = UserDaoImpl.getInstance().getMaxId();
         expected.setUserId(userActualId);
         OperationDaoImpl.getInstance().add(expected);
-        int operationActualId = OperationDaoImpl.getInstance().getMaxId();
+        Long operationActualId = OperationDaoImpl.getInstance().getMaxId();
         Operation actual = OperationDaoImpl.getInstance().getById(operationActualId);
         AccountDaoImpl.getInstance().delete(account.getId());
         OperationDaoImpl.getInstance().delete(operationActualId);
@@ -52,10 +52,10 @@ public class OperationDaoImplTest {
     public void testDelete() throws Exception{
         AccountDaoImpl.getInstance().add(account);
         UserDaoImpl.getInstance().add(user);
-        int userActualId = UserDaoImpl.getInstance().getMaxId();
+        Long userActualId = UserDaoImpl.getInstance().getMaxId();
         expected.setUserId(userActualId);
         OperationDaoImpl.getInstance().add(expected);
-        int operationActualId = OperationDaoImpl.getInstance().getMaxId();
+        Long operationActualId = OperationDaoImpl.getInstance().getMaxId();
         OperationDaoImpl.getInstance().delete(operationActualId);
         Operation actual = OperationDaoImpl.getInstance().getById(operationActualId);
         AccountDaoImpl.getInstance().delete(account.getId());

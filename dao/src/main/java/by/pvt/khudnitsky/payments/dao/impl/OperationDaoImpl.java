@@ -44,8 +44,8 @@ public class OperationDaoImpl extends AbstractDao<Operation> {
         try {
             connection = PoolManager.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.CREATE_OPERATION);
-            statement.setInt(1, entity.getUserId());
-            statement.setInt(2, entity.getAccountId());
+            statement.setLong(1, entity.getUserId());
+            statement.setLong(2, entity.getAccountId());
             statement.setDouble(3, entity.getAmount());
             statement.setString(4, entity.getDescription());
             statement.executeUpdate();
@@ -85,12 +85,12 @@ public class OperationDaoImpl extends AbstractDao<Operation> {
     }
 
     @Override
-    public Operation getById(int id) throws DaoException {
+    public Operation getById(Long id) throws DaoException {
         Operation operation = null;
         try {
             connection = PoolManager.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.GET_OPERATION_BY_ID);
-            statement.setInt(1, id);
+            statement.setLong(1, id);
             result = statement.executeQuery();
             while (result.next()) {
                 operation = buildOperation(result);
@@ -109,14 +109,14 @@ public class OperationDaoImpl extends AbstractDao<Operation> {
     }
 
     @Override
-    public int getMaxId() throws DaoException {
-        int lastId = -1;
+    public Long getMaxId() throws DaoException {
+        Long lastId = -1L;
         try {
             connection = PoolManager.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.GET_LAST_OPERATION_ID);
             result = statement.executeQuery();
             while (result.next()) {
-                lastId = result.getInt(1);
+                lastId = result.getLong(1);
             }
         }
         catch(SQLException e){
@@ -132,11 +132,11 @@ public class OperationDaoImpl extends AbstractDao<Operation> {
     }
 
     @Override
-    public void delete(int id)throws DaoException{
+    public void delete(Long id)throws DaoException{
         try {
             connection = PoolManager.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.DELETE_OPERATION_BY_ID);
-            statement.setInt(1, id);
+            statement.setLong(1, id);
             statement.executeUpdate();
         }
         catch (SQLException e){
@@ -150,10 +150,10 @@ public class OperationDaoImpl extends AbstractDao<Operation> {
     }
 
     private Operation buildOperation(ResultSet result) throws SQLException{
-        int id = result.getInt(ColumnName.OPERATION_ID);
-        int accountId = result.getInt(ColumnName.ACCOUNT_ID);
-        int userId = result.getInt(ColumnName.USER_ID);
-        double amount = result.getDouble(ColumnName.OPERATION_AMOUNT);
+        Long id = result.getLong(ColumnName.OPERATION_ID);
+        Long accountId = result.getLong(ColumnName.ACCOUNT_ID);
+        Long userId = result.getLong(ColumnName.USER_ID);
+        Double amount = result.getDouble(ColumnName.OPERATION_AMOUNT);
         String description = result.getString(ColumnName.OPERATION_DESCRIPTION);
         String date = result.getString(ColumnName.OPERATION_DATE);
         Operation operation = EntityBuilder.buildOperation(id, userId, accountId, amount, description, date);

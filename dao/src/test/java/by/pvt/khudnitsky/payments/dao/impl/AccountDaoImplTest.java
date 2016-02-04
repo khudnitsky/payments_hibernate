@@ -12,7 +12,7 @@ public class AccountDaoImplTest {
 
     @Before
     public void setUp(){
-        expected = EntityBuilder.buildAccount(100, "TEST", 100, 0);
+        expected = EntityBuilder.buildAccount(100L, "TEST", 100D, 0);
     }
 
     @After
@@ -37,7 +37,7 @@ public class AccountDaoImplTest {
 
     @Test
     public void testGetById() throws Exception {
-        expected = EntityBuilder.buildAccount(1, "ADMIN", 0, 0);
+        expected = EntityBuilder.buildAccount(1L, "ADMIN", 0D, 0);
         Account actual = AccountDaoImpl.getInstance().getById(expected.getId());
         Assert.assertEquals(expected, actual);
     }
@@ -47,7 +47,7 @@ public class AccountDaoImplTest {
         AccountDaoImpl.getInstance().add(expected);
         double adding = 100;
         expected.setAmount(expected.getAmount() + adding);
-        AccountDaoImpl.getInstance().updateAmount(adding, expected.getId());
+        AccountDaoImpl.getInstance().updateAmount(expected.getId(), adding);
         Account actual = AccountDaoImpl.getInstance().getById(expected.getId());
         AccountDaoImpl.getInstance().delete(expected.getId());
         Assert.assertEquals(expected, actual);

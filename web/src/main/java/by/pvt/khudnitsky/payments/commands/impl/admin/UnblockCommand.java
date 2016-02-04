@@ -26,13 +26,13 @@ import by.pvt.khudnitsky.payments.managers.MessageManager;
 public class UnblockCommand extends AbstractCommand {
     @Override
     public String execute(HttpServletRequest request) {
-        String page = null;
+        String page;
         HttpSession session = request.getSession();
         UserType userType = RequestParameterParser.getUserType(request);
         if(userType == UserType.ADMINISTRATOR){
             try{
                 //TODO переделать
-                int aid = Integer.valueOf(request.getParameter(Parameters.OPERATION_UNBLOCK));
+                Long aid = Long.valueOf(request.getParameter(Parameters.OPERATION_UNBLOCK));
                 AccountServiceImpl.getInstance().updateAccountStatus(aid, AccountStatus.UNBLOCKED);
                 List<Account> list = AccountServiceImpl.getInstance().getBlockedAccounts();
                 session.setAttribute(Parameters.ACCOUNTS_LIST, list);

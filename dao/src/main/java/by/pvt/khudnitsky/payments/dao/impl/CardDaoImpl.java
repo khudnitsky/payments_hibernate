@@ -31,7 +31,7 @@ public class CardDaoImpl extends AbstractDao<Card> {
     }
 
     @Override
-    public int getMaxId() throws DaoException {
+    public Long getMaxId() throws DaoException {
         throw new UnsupportedOperationException();
     }
 
@@ -41,12 +41,12 @@ public class CardDaoImpl extends AbstractDao<Card> {
     }
 
     @Override
-    public Card getById(int id) throws DaoException {
+    public Card getById(Long id) throws DaoException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void delete(int id) throws DaoException {
+    public void delete(Long id) throws DaoException {
         throw new UnsupportedOperationException();
     }
 }

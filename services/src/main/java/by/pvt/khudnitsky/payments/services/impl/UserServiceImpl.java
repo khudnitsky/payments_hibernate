@@ -74,7 +74,7 @@ public class UserServiceImpl extends AbstractService<User> {
      * @throws SQLException
      */
     @Override
-    public User getById(int id) throws SQLException {
+    public User getById(Long id) throws SQLException {
         throw new UnsupportedOperationException();
     }
 
@@ -96,7 +96,7 @@ public class UserServiceImpl extends AbstractService<User> {
      * @throws SQLException
      */
     @Override
-    public void delete(int id) throws SQLException {
+    public void delete(Long id) throws SQLException {
         throw new UnsupportedOperationException();
     }
 

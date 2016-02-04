@@ -11,43 +11,28 @@ package by.pvt.khudnitsky.payments.entities;
  */
 public class Card extends Entity{
     private static final long serialVersionUID = 1L;
-    private int accountId;
+    private Long accountId;
     private String validity;
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + accountId;
-        result = prime * result + ((validity == null) ? 0 : validity.hashCode());
-        return result;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Card)) return false;
+        if (!super.equals(o)) return false;
+
+        Card card = (Card) o;
+
+        if (accountId != null ? !accountId.equals(card.accountId) : card.accountId != null) return false;
+        return validity != null ? validity.equals(card.validity) : card.validity == null;
+
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-        if (!(obj instanceof Card)) {
-            return false;
-        }
-        Card other = (Card) obj;
-        if (accountId != other.accountId) {
-            return false;
-        }
-        if (validity == null) {
-            if (other.validity != null) {
-                return false;
-            }
-        }
-        else
-        if (!validity.equals(other.validity)) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (accountId != null ? accountId.hashCode() : 0);
+        result = 31 * result + (validity != null ? validity.hashCode() : 0);
+        return result;
     }
 
     @Override
@@ -58,14 +43,14 @@ public class Card extends Entity{
     /**
      * @return the accountId
      */
-    public int getAccountId() {
+    public Long getAccountId() {
         return accountId;
     }
 
     /**
      * @param accountId the accountId to set
      */
-    public void setAccountId(int accountId) {
+    public void setAccountId(Long accountId) {
         this.accountId = accountId;
     }
 

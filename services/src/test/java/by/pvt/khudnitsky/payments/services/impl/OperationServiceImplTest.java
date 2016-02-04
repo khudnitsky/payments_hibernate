@@ -22,9 +22,9 @@ public class OperationServiceImplTest {
 
     @Before
     public void setUp(){
-        account = EntityBuilder.buildAccount(100, "TEST", 100, 0);
-        user = EntityBuilder.buildUser(100, "TEST", "TEST", account.getId(), "TEST", "TEST", 0);
-        operation = EntityBuilder.buildOperation(100, user.getId(), user.getAccountId(), 100, "TEST", "01.01.01");
+        account = EntityBuilder.buildAccount(100L, "TEST", 100D, 0);
+        user = EntityBuilder.buildUser(100L, "TEST", "TEST", account.getId(), "TEST", "TEST", 0);
+        operation = EntityBuilder.buildOperation(100L, user.getId(), user.getAccountId(), 100D, "TEST", "01.01.01");
     }
 
     @After
@@ -45,10 +45,10 @@ public class OperationServiceImplTest {
     public void testAdd() throws Exception {
         AccountDaoImpl.getInstance().add(account);
         UserDaoImpl.getInstance().add(user);
-        int userActualId = UserDaoImpl.getInstance().getMaxId();
+        Long userActualId = UserDaoImpl.getInstance().getMaxId();
         operation.setUserId(userActualId);
         OperationServiceImpl.getInstance().add(operation);
-        int operationActualId = OperationDaoImpl.getInstance().getMaxId();
+        Long operationActualId = OperationDaoImpl.getInstance().getMaxId();
         Operation actual = OperationDaoImpl.getInstance().getById(operationActualId);
         AccountDaoImpl.getInstance().delete(account.getId());
         Assert.assertEquals(operation.getDescription(), actual.getDescription());  // TODO исправить
