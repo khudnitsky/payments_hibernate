@@ -29,8 +29,8 @@ public class EntityBuilder {
         Account account = new Account();
         account.setId(id);
         account.setCurrency(currency);
-        account.setAmount(amount);
-        account.setStatus(status);
+        account.setDeposit(amount);
+        account.setAccountStatus(status);
         return account;
     }
 

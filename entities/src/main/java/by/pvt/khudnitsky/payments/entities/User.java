@@ -3,20 +3,33 @@
  */
 package by.pvt.khudnitsky.payments.entities;
 
+import by.pvt.khudnitsky.payments.constants.AccessLevel;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.SQLDelete;
+
+import javax.persistence.*;
+import java.util.Set;
+
 /**
  * Describes the entity <b>User</b>
  * @author khudnitsky
  * @version 1.0
  */
 
-public class User extends Entity{
-    private static final long serialVersionUID = 1L;
+@Entity
+@SQLDelete(sql = "UPDATE T_EMPLOYEE F_STATUS SET F_STATUS = 'deleted' WHERE F_ID = ?" )  // TODO to do deleting
+@OnDelete(action = OnDeleteAction.CASCADE)
+public class User extends AbstractEntity {
+    private static final long serialVersionUID = 2L;
+
     private String firstName;
     private String lastName;
     private String login;
-    private String password;
-    private Long accountId;
-    private Integer accessLevel;
+    private String password;       // TODO Шифрование
+    private Set<Account> accounts;
+    private Set<Operation> operations;
+    private AccessLevel accessLevel;
 
     public User() {
         super();
@@ -34,8 +47,8 @@ public class User extends Entity{
         if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
         if (login != null ? !login.equals(user.login) : user.login != null) return false;
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
-        if (accountId != null ? !accountId.equals(user.accountId) : user.accountId != null) return false;
-        return accessLevel != null ? accessLevel.equals(user.accessLevel) : user.accessLevel == null;
+        if (accounts != null ? !accounts.equals(user.accounts) : user.accounts != null) return false;
+        return accessLevel == user.accessLevel;
 
     }
 
@@ -46,19 +59,27 @@ public class User extends Entity{
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         result = 31 * result + (login != null ? login.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (accountId != null ? accountId.hashCode() : 0);
+        result = 31 * result + (accounts != null ? accounts.hashCode() : 0);
         result = 31 * result + (accessLevel != null ? accessLevel.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "User [firstName=" + firstName + ", lastName=" + lastName + ", login=" + login + ", password=" + password + ", accountId=" + accountId + ", accessLevel=" + accessLevel + "]";
+        return "User{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", accounts=" + accounts +
+                ", accessLevel=" + accessLevel +
+                '}';
     }
 
     /**
      * @return the firstName
      */
+    @Column(nullable = false, length = 15)
     public String getFirstName() {
         return firstName;
     }
@@ -73,6 +94,7 @@ public class User extends Entity{
     /**
      * @return the lastName
      */
+    @Column(nullable = false, length = 50)
     public String getLastName() {
         return lastName;
     }
@@ -87,6 +109,7 @@ public class User extends Entity{
     /**
      * @return the login
      */
+    @Column(unique = true, nullable = false, length = 25)
     public String getLogin() {
         return login;
     }
@@ -101,6 +124,7 @@ public class User extends Entity{
     /**
      * @return the password
      */
+    @Column(nullable = false, length = 50)
     public String getPassword() {
         return password;
     }
@@ -113,30 +137,43 @@ public class User extends Entity{
     }
 
     /**
-     * @return the accountId
+     * @return the set of accounts
      */
-    public Long getAccountId() {
-        return accountId;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    public Set<Account> getAccounts() {
+        return accounts;
     }
 
     /**
-     * @param accountId the accountId to set
+     *
+     * @param accounts the set of accounts
      */
-    public void setAccountId(Long accountId) {
-        this.accountId = accountId;
+    public void setAccounts(Set<Account> accounts) {
+        this.accounts = accounts;
     }
 
     /**
      * @return the accessLevel
      */
-    public Integer getAccessLevel() {
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "enum('CLIENT', 'ADMINISTRATOR')")
+    public AccessLevel getAccessLevel() {
         return accessLevel;
     }
 
     /**
      * @param accessLevel the accessLevel to set
      */
-    public void setAccessLevel(Integer accessLevel) {
+    public void setAccessLevel(AccessLevel accessLevel) {
         this.accessLevel = accessLevel;
+    }
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    public Set<Operation> getOperations() {
+        return operations;
+    }
+
+    public void setOperations(Set<Operation> operations) {
+        this.operations = operations;
     }
 }

@@ -29,8 +29,8 @@ public class ShowOperationsCommand extends AbstractCommand {
     public String execute(HttpServletRequest request) {
         String page;
         HttpSession session = request.getSession();
-        UserType userType = RequestParameterParser.getUserType(request);
-        if(userType == UserType.ADMINISTRATOR){
+        AccessLevel accessLevel = RequestParameterParser.getUserType(request);
+        if(accessLevel == AccessLevel.ADMINISTRATOR){
             try{
                 List<Operation> list = OperationServiceImpl.getInstance().getAll();
                 session.setAttribute(Parameters.OPERATIONS_LIST, list);

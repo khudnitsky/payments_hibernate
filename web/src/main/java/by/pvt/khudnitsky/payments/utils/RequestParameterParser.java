@@ -2,9 +2,8 @@ package by.pvt.khudnitsky.payments.utils;
 
 import by.pvt.khudnitsky.payments.commands.factory.CommandType;
 import by.pvt.khudnitsky.payments.constants.Parameters;
-import by.pvt.khudnitsky.payments.constants.UserType;
+import by.pvt.khudnitsky.payments.constants.AccessLevel;
 import by.pvt.khudnitsky.payments.entities.Account;
-import by.pvt.khudnitsky.payments.entities.Operation;
 import by.pvt.khudnitsky.payments.entities.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -56,8 +55,8 @@ public class RequestParameterParser {
         return account;
     }
 
-    public static UserType getUserType(HttpServletRequest request) {
-        return (UserType) request.getSession().getAttribute(Parameters.USERTYPE);
+    public static AccessLevel getUserType(HttpServletRequest request) {
+        return (AccessLevel) request.getSession().getAttribute(Parameters.USERTYPE);
     }
 
     public static List<Account> getAccountsList(HttpServletRequest request) {

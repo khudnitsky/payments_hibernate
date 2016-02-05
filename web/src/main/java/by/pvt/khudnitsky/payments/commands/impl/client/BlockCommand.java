@@ -32,8 +32,8 @@ public class BlockCommand extends AbstractCommand {
     public String execute(HttpServletRequest request) {
         String page;
         HttpSession session = request.getSession();
-        UserType userType = RequestParameterParser.getUserType(request);
-        if(userType == UserType.CLIENT){
+        AccessLevel accessLevel = RequestParameterParser.getUserType(request);
+        if(accessLevel == AccessLevel.CLIENT){
             user = RequestParameterParser.getRecordUser(request);
             commandType = RequestParameterParser.getCommandType(request);
             description = commandType.getValue();

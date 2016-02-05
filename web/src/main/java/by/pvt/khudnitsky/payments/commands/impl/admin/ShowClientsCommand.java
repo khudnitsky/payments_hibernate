@@ -29,8 +29,8 @@ public class ShowClientsCommand extends AbstractCommand{
     public String execute(HttpServletRequest request) {
         String page;
         HttpSession session = request.getSession();
-        UserType userType = RequestParameterParser.getUserType(request);
-        if(userType == UserType.ADMINISTRATOR){
+        AccessLevel accessLevel = RequestParameterParser.getUserType(request);
+        if(accessLevel == AccessLevel.ADMINISTRATOR){
             try{
                 List<User> list = UserServiceImpl.getInstance().getAll();
                 session.setAttribute(Parameters.USER_LIST, list);

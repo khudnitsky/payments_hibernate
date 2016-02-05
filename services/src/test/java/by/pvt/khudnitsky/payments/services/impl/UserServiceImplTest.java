@@ -1,6 +1,6 @@
 package by.pvt.khudnitsky.payments.services.impl;
 
-import by.pvt.khudnitsky.payments.constants.UserType;
+import by.pvt.khudnitsky.payments.constants.AccessLevel;
 import by.pvt.khudnitsky.payments.dao.impl.AccountDaoImpl;
 import by.pvt.khudnitsky.payments.utils.EntityBuilder;
 import by.pvt.khudnitsky.payments.dao.impl.UserDaoImpl;
@@ -63,7 +63,7 @@ public class UserServiceImplTest {
     public void testCheckAccessLevel() throws Exception {
         AccountDaoImpl.getInstance().add(account);
         UserDaoImpl.getInstance().add(user);
-        UserType actual = UserServiceImpl.getInstance().checkAccessLevel(user);
+        AccessLevel actual = UserServiceImpl.getInstance().checkAccessLevel(user);
         AccountDaoImpl.getInstance().delete(account.getId());
         Assert.assertEquals(user.getAccessLevel(), (Integer) actual.ordinal());
     }

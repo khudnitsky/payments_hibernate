@@ -3,17 +3,27 @@
  */
 package by.pvt.khudnitsky.payments.entities;
 
+import by.pvt.khudnitsky.payments.constants.AccountStatus;
+
+import javax.persistence.*;
+import java.util.Set;
+
 /**
  * Describes the entity <b>Account</b>
  * @author khudnitsky
  * @version 1.0
  *
  */
-public class Account extends Entity{
-    private static final long serialVersionUID = 1L;
+
+@Entity
+public class Account extends AbstractEntity {
+    private static final long serialVersionUID = 3L;
+    private User user;
     private String currency;
-    private Double amount;
-    private Integer status;
+    private Double deposit;
+    private AccountStatus accountStatus;
+    private Set<Card> cards;
+    private Set<Operation> operations;
 
     public Account() {
         super();
@@ -28,8 +38,8 @@ public class Account extends Entity{
         Account account = (Account) o;
 
         if (currency != null ? !currency.equals(account.currency) : account.currency != null) return false;
-        if (amount != null ? !amount.equals(account.amount) : account.amount != null) return false;
-        return status != null ? status.equals(account.status) : account.status == null;
+        if (deposit != null ? !deposit.equals(account.deposit) : account.deposit != null) return false;
+        return accountStatus != null ? accountStatus.equals(account.accountStatus) : account.accountStatus == null;
 
     }
 
@@ -37,19 +47,20 @@ public class Account extends Entity{
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + (currency != null ? currency.hashCode() : 0);
-        result = 31 * result + (amount != null ? amount.hashCode() : 0);
-        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (deposit != null ? deposit.hashCode() : 0);
+        result = 31 * result + (accountStatus != null ? accountStatus.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "Account [currency=" + currency + ", amount=" + amount + ", status=" + status + "]";
+        return "Account [currency=" + currency + ", amount=" + deposit + ", status=" + accountStatus + "]";
     }
 
     /**
      * @return the currency
      */
+    @Column(nullable = false, length = 3)
     public String getCurrency() {
         return currency;
     }
@@ -64,28 +75,66 @@ public class Account extends Entity{
     /**
      * @return the amount
      */
-    public Double getAmount() {
-        return amount;
+    @Column(nullable = false, precision = 2)
+    public Double getDeposit() {
+        return deposit;
     }
 
     /**
      * @param amount the amount to set
      */
-    public void setAmount(Double amount) {
-        this.amount = amount;
+    public void setDeposit(Double amount) {
+        this.deposit = amount;
     }
 
     /**
      * @return the status
      */
-    public Integer getStatus() {
-        return status;
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "enum('UNBLOCKED', 'BLOCKED')")
+    public AccountStatus getAccountStatus() {
+        return accountStatus;
     }
 
     /**
      * @param status the status to set
      */
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setAccountStatus(AccountStatus status) {
+        this.accountStatus = status;
+    }
+
+    /**
+     * @return user
+     */
+    @ManyToOne
+    @JoinColumn(name = "F_USER_ID")
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     *
+     * @param user - entity of <b>User</b>
+     */
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    public Set<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(Set<Card> cards) {
+        this.cards = cards;
+    }
+
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    public Set<Operation> getOperations() {
+        return operations;
+    }
+
+    public void setOperations(Set<Operation> operations) {
+        this.operations = operations;
     }
 }

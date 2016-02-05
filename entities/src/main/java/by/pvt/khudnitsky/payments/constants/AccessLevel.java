@@ -4,13 +4,11 @@
 package by.pvt.khudnitsky.payments.constants;
 
 /**
+ * Contains constants that describe types of user
  * @author khudnitsky
  * @version 1.0
- *
  */
-public class AccountStatus {
-    public static final Integer BLOCKED = 1;
-    public static final Integer UNBLOCKED = 0;
-
-    private AccountStatus(){}
+public enum AccessLevel {
+    CLIENT, ADMINISTRATOR
 }
+

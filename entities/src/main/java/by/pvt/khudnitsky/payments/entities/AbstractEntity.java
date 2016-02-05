@@ -3,26 +3,36 @@
  */
 package by.pvt.khudnitsky.payments.entities;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * Describes the abstract entity <b>Entity</b>
+ * Describes the abstract entity <b>AbstractEntity</b>
  * @author khudnitsky
  * @version 1.0
  *
  */
-public abstract class Entity implements Serializable{
+
+@MappedSuperclass
+@Access(AccessType.PROPERTY)
+public abstract class AbstractEntity implements Serializable{
     private static final long serialVersionUID = 1L;
+
+    @Id
+    @GenericGenerator(name = "increment", strategy = "increment")
+    @GeneratedValue(generator = "increment")
     protected Long id;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Entity)) return false;
+        if (!(o instanceof AbstractEntity)) return false;
 
-        Entity entity = (Entity) o;
+        AbstractEntity abstractEntity = (AbstractEntity) o;
 
-        return id != null ? id.equals(entity.id) : entity.id == null;
+        return id != null ? id.equals(abstractEntity.id) : abstractEntity.id == null;
 
     }
 
@@ -33,18 +43,18 @@ public abstract class Entity implements Serializable{
 
     @Override
     public String toString() {
-        return "Entity [id=" + id + "]";
+        return "AbstractEntity [id=" + id + "]";
     }
 
     /**
      * Creates new entity </b>
      */
-    public Entity() {}
+    public AbstractEntity() {}
 
     /**
      * Creates new entity </b>
      */
-    public Entity(Long id) {
+    public AbstractEntity(Long id) {
         this.id = id;
     }
 

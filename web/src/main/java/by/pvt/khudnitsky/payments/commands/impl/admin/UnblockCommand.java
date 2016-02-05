@@ -28,8 +28,8 @@ public class UnblockCommand extends AbstractCommand {
     public String execute(HttpServletRequest request) {
         String page;
         HttpSession session = request.getSession();
-        UserType userType = RequestParameterParser.getUserType(request);
-        if(userType == UserType.ADMINISTRATOR){
+        AccessLevel accessLevel = RequestParameterParser.getUserType(request);
+        if(accessLevel == AccessLevel.ADMINISTRATOR){
             try{
                 //TODO переделать
                 Long aid = Long.valueOf(request.getParameter(Parameters.OPERATION_UNBLOCK));

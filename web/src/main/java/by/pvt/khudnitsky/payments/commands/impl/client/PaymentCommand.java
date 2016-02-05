@@ -32,15 +32,15 @@ public class PaymentCommand extends AbstractCommand {
     public String execute(HttpServletRequest request) {
         String page;
         HttpSession session = request.getSession();
-        UserType userType = RequestParameterParser.getUserType(request);
-        if(userType == UserType.CLIENT){
+        AccessLevel accessLevel = RequestParameterParser.getUserType(request);
+        if(accessLevel == AccessLevel.CLIENT){
             user = RequestParameterParser.getRecordUser(request);
             try {
                 if(!AccountServiceImpl.getInstance().checkAccountStatus(user.getAccountId())){
                     payment = RequestParameterParser.getAmountFromPayment(request);
                     if(payment > 0){
                         Account account = AccountServiceImpl.getInstance().getById(user.getAccountId());
-                        if(account.getAmount() >= payment){
+                        if(account.getDeposit() >= payment){
                             CommandType type = RequestParameterParser.getCommandType(request);
                             String description = type.getValue();
                             AccountServiceImpl.getInstance().payment(user, description, payment);

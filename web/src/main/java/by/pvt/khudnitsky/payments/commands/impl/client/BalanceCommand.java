@@ -30,12 +30,12 @@ public class BalanceCommand extends AbstractCommand {
     public String execute(HttpServletRequest request) {
         String page;
         HttpSession session = request.getSession();
-        UserType userType = RequestParameterParser.getUserType(request);
-        if(userType == UserType.CLIENT){
+        AccessLevel accessLevel = RequestParameterParser.getUserType(request);
+        if(accessLevel == AccessLevel.CLIENT){
             user = RequestParameterParser.getRecordUser(request);
             try {
                 Account account = AccountServiceImpl.getInstance().getById(user.getAccountId());
-                request.setAttribute(Parameters.OPERATION_BALANCE, account.getAmount());
+                request.setAttribute(Parameters.OPERATION_BALANCE, account.getDeposit());
                 request.setAttribute(Parameters.ACCOUNT_CURRENCY, account.getCurrency());
                 page = ConfigurationManager.getInstance().getProperty(PagePath.CLIENT_BALANCE_PAGE_PATH);
             }

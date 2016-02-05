@@ -26,7 +26,7 @@ public class CardServiceImpl extends AbstractService<Card> {
     /**
      * Calls Dao add() method
      *
-     * @param entity - object of derived class Entity
+     * @param entity - object of derived class AbstractEntity
      * @throws SQLException
      */
     @Override
@@ -37,7 +37,7 @@ public class CardServiceImpl extends AbstractService<Card> {
     /**
      * Calls Dao getAll() method
      *
-     * @return list of objects of derived class Entity
+     * @return list of objects of derived class AbstractEntity
      * @throws SQLException
      */
     @Override
@@ -49,7 +49,7 @@ public class CardServiceImpl extends AbstractService<Card> {
      * Calls Dao getById() method
      *
      * @param id - id of entity
-     * @return object of derived class Entity
+     * @return object of derived class AbstractEntity
      * @throws SQLException
      */
     @Override
@@ -60,7 +60,7 @@ public class CardServiceImpl extends AbstractService<Card> {
     /**
      * Calls Dao update() method
      *
-     * @param entity - object of derived class Entity
+     * @param entity - object of derived class AbstractEntity
      * @throws SQLException
      */
     @Override

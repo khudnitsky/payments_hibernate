@@ -1,6 +1,6 @@
 package by.pvt.khudnitsky.payments.services.impl;
 
-import by.pvt.khudnitsky.payments.constants.UserType;
+import by.pvt.khudnitsky.payments.constants.AccessLevel;
 import by.pvt.khudnitsky.payments.dao.impl.AccountDaoImpl;
 import by.pvt.khudnitsky.payments.dao.impl.UserDaoImpl;
 import by.pvt.khudnitsky.payments.entities.Account;
@@ -10,9 +10,7 @@ import by.pvt.khudnitsky.payments.exceptions.ServiceException;
 import by.pvt.khudnitsky.payments.services.AbstractService;
 import by.pvt.khudnitsky.payments.managers.PoolManager;
 import by.pvt.khudnitsky.payments.utils.PaymentSystemLogger;
-import org.apache.log4j.Logger;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -34,7 +32,7 @@ public class UserServiceImpl extends AbstractService<User> {
     /**
      * Calls Dao add() method
      *
-     * @param entity - object of derived class Entity
+     * @param entity - object of derived class AbstractEntity
      * @throws SQLException
      */
     @Override
@@ -45,7 +43,7 @@ public class UserServiceImpl extends AbstractService<User> {
     /**
      * Calls Dao getAll() method
      *
-     * @return list of objects of derived class Entity
+     * @return list of objects of derived class AbstractEntity
      * @throws SQLException
      */
     @Override
@@ -70,7 +68,7 @@ public class UserServiceImpl extends AbstractService<User> {
      * Calls Dao getById() method
      *
      * @param id - id of entity
-     * @return object of derived class Entity
+     * @return object of derived class AbstractEntity
      * @throws SQLException
      */
     @Override
@@ -81,7 +79,7 @@ public class UserServiceImpl extends AbstractService<User> {
     /**
      * Calls Dao update() method
      *
-     * @param entity - object of derived class Entity
+     * @param entity - object of derived class AbstractEntity
      * @throws SQLException
      */
     @Override
@@ -134,15 +132,15 @@ public class UserServiceImpl extends AbstractService<User> {
         return user;
     }
 
-    public UserType checkAccessLevel(User user) throws SQLException{
-        UserType userType;
-        if(UserType.CLIENT.ordinal() == user.getAccessLevel()){
-            userType = UserType.CLIENT;
+    public AccessLevel checkAccessLevel(User user) throws SQLException{
+        AccessLevel accessLevel;
+        if(AccessLevel.CLIENT.ordinal() == user.getAccessLevel()){
+            accessLevel = AccessLevel.CLIENT;
         }
         else{
-            userType = UserType.ADMINISTRATOR;
+            accessLevel = AccessLevel.ADMINISTRATOR;
         }
-        return userType;
+        return accessLevel;
     }
 
     public boolean checkIsNewUser(User user) throws SQLException, ServiceException {

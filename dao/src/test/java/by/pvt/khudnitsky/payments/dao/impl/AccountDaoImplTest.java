@@ -46,7 +46,7 @@ public class AccountDaoImplTest {
     public void testUpdateAmount() throws Exception {
         AccountDaoImpl.getInstance().add(expected);
         double adding = 100;
-        expected.setAmount(expected.getAmount() + adding);
+        expected.setDeposit(expected.getDeposit() + adding);
         AccountDaoImpl.getInstance().updateAmount(expected.getId(), adding);
         Account actual = AccountDaoImpl.getInstance().getById(expected.getId());
         AccountDaoImpl.getInstance().delete(expected.getId());

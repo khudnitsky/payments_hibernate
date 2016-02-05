@@ -33,10 +33,10 @@ public class LoginUserCommand extends AbstractCommand {
             user = RequestParameterParser.getUser(request);
             if(UserServiceImpl.getInstance().checkUserAuthorization(user.getLogin(), user.getPassword())){
                 user = UserServiceImpl.getInstance().getUserByLogin(user.getLogin());
-                UserType userType = UserServiceImpl.getInstance().checkAccessLevel(user);
+                AccessLevel accessLevel = UserServiceImpl.getInstance().checkAccessLevel(user);
                 session.setAttribute(Parameters.USER, user);
-                session.setAttribute(Parameters.USERTYPE, userType);
-                if(UserType.CLIENT.equals(userType)){
+                session.setAttribute(Parameters.USERTYPE, accessLevel);
+                if(AccessLevel.CLIENT.equals(accessLevel)){
                     page = ConfigurationManager.getInstance().getProperty(PagePath.CLIENT_PAGE_PATH);
                 }
                 else{

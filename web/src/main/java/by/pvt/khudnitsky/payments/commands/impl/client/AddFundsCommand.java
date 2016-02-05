@@ -29,8 +29,8 @@ public class AddFundsCommand extends AbstractCommand {
     public String execute(HttpServletRequest request) {
         String page;
         HttpSession session = request.getSession();
-        UserType userType = RequestParameterParser.getUserType(request);
-        if(userType == UserType.CLIENT) {
+        AccessLevel accessLevel = RequestParameterParser.getUserType(request);
+        if(accessLevel == AccessLevel.CLIENT) {
             User user = RequestParameterParser.getRecordUser(request);
             try {
                 if (!AccountServiceImpl.getInstance().checkAccountStatus(user.getAccountId())) {

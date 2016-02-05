@@ -12,7 +12,6 @@ import by.pvt.khudnitsky.payments.managers.PoolManager;
 import by.pvt.khudnitsky.payments.utils.ClosingUtil;
 import by.pvt.khudnitsky.payments.utils.EntityBuilder;
 import by.pvt.khudnitsky.payments.utils.PaymentSystemLogger;
-import org.apache.log4j.Logger;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -54,9 +53,9 @@ public class AccountDaoImpl extends AbstractDao<Account> {
             connection = PoolManager.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.ADD_ACCOUNT_WITH_ID);
             statement.setLong(1, account.getId());
-            statement.setDouble(2, account.getAmount());
+            statement.setDouble(2, account.getDeposit());
             statement.setString(3, account.getCurrency());
-            statement.setInt(4, account.getStatus());
+            statement.setInt(4, account.getAccountStatus());
             statement.executeUpdate();
         }
         catch (SQLException e){
