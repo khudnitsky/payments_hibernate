@@ -8,7 +8,7 @@ Payments system (2'nd module project)
 5. Tests
 6. JavaDoc
 7. Mapping entities
-8. Configuration hibernate
+    + 8. Configuration hibernate
 9. One-to-One
 10. Many-to-One
 11. Many-to-Many
