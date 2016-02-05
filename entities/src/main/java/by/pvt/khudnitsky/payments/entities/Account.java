@@ -37,15 +37,17 @@ public class Account extends AbstractEntity {
 
         Account account = (Account) o;
 
+        if (user != null ? !user.equals(account.user) : account.user != null) return false;
         if (currency != null ? !currency.equals(account.currency) : account.currency != null) return false;
         if (deposit != null ? !deposit.equals(account.deposit) : account.deposit != null) return false;
-        return accountStatus != null ? accountStatus.equals(account.accountStatus) : account.accountStatus == null;
+        return accountStatus == account.accountStatus;
 
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
+        result = 31 * result + (user != null ? user.hashCode() : 0);
         result = 31 * result + (currency != null ? currency.hashCode() : 0);
         result = 31 * result + (deposit != null ? deposit.hashCode() : 0);
         result = 31 * result + (accountStatus != null ? accountStatus.hashCode() : 0);
@@ -54,7 +56,12 @@ public class Account extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "Account [currency=" + currency + ", amount=" + deposit + ", status=" + accountStatus + "]";
+        return "Account{" +
+                "accountStatus=" + accountStatus +
+                ", user=" + user +
+                ", currency='" + currency + '\'' +
+                ", deposit=" + deposit +
+                '}';
     }
 
     /**
