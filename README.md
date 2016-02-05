@@ -9,9 +9,9 @@ Payments system (2'nd module project)
 6. JavaDoc
     + 7. Mapping entities
     + 8. Configuration hibernate
-9. One-to-One
+9. One-to-One  (UserDetails)
     + 10. Many-to-One
-11. Many-to-Many
+11. Many-to-Many (UserType)
 12. HQL and Criteria
 13. Second layer cache
 14. Injection singletons
