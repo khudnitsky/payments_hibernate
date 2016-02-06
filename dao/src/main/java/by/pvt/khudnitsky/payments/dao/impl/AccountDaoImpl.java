@@ -3,6 +3,7 @@
  */
 package by.pvt.khudnitsky.payments.dao.impl;
 
+import by.pvt.khudnitsky.payments.dao.AbstractDao;
 import by.pvt.khudnitsky.payments.dao.IAccountDao;
 import by.pvt.khudnitsky.payments.entities.Account;
 import by.pvt.khudnitsky.payments.enums.ColumnName;

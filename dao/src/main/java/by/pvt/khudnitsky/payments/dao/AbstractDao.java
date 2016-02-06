@@ -1,9 +1,8 @@
 /**
  * Copyright (c) 2016, Khudnitsky. All rights reserved.
  */
-package by.pvt.khudnitsky.payments.dao.impl;
+package by.pvt.khudnitsky.payments.dao;
 
-import by.pvt.khudnitsky.payments.dao.IDao;
 import by.pvt.khudnitsky.payments.entities.AbstractEntity;
 import by.pvt.khudnitsky.payments.exceptions.DaoException;
 import by.pvt.khudnitsky.payments.utils.HibernateUtil;
