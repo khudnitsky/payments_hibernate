@@ -3,7 +3,7 @@
  */
 package by.pvt.khudnitsky.payments.dao.impl;
 
-import by.pvt.khudnitsky.payments.dao.intrf.ICardDao;
+import by.pvt.khudnitsky.payments.dao.ICardDao;
 import by.pvt.khudnitsky.payments.entities.Card;
 
 /**

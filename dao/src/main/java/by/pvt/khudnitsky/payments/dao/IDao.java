@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2016, Khudnitsky. All rights reserved.
  */
-package by.pvt.khudnitsky.payments.dao.intrf;
+package by.pvt.khudnitsky.payments.dao;
 
 import by.pvt.khudnitsky.payments.entities.AbstractEntity;
 import by.pvt.khudnitsky.payments.exceptions.DaoException;

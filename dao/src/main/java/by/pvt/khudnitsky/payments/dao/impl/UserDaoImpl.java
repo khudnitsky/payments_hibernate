@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import by.pvt.khudnitsky.payments.dao.intrf.IUserDao;
+import by.pvt.khudnitsky.payments.dao.IUserDao;
 import by.pvt.khudnitsky.payments.entities.User;
 import by.pvt.khudnitsky.payments.enums.ColumnName;
 import by.pvt.khudnitsky.payments.enums.SqlRequest;

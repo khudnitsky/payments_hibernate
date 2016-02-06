@@ -3,7 +3,7 @@
  */
 package by.pvt.khudnitsky.payments.dao.impl;
 
-import by.pvt.khudnitsky.payments.dao.intrf.IDao;
+import by.pvt.khudnitsky.payments.dao.IDao;
 import by.pvt.khudnitsky.payments.entities.AbstractEntity;
 import by.pvt.khudnitsky.payments.exceptions.DaoException;
 import by.pvt.khudnitsky.payments.utils.HibernateUtil;

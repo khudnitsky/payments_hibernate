@@ -1,4 +1,4 @@
-package by.pvt.khudnitsky.payments.dao.intrf;
+package by.pvt.khudnitsky.payments.dao;
 
 import by.pvt.khudnitsky.payments.entities.Currency;
 

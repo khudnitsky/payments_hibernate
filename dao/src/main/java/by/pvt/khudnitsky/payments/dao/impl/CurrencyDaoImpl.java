@@ -1,6 +1,6 @@
 package by.pvt.khudnitsky.payments.dao.impl;
 
-import by.pvt.khudnitsky.payments.dao.intrf.ICurrencyDao;
+import by.pvt.khudnitsky.payments.dao.ICurrencyDao;
 import by.pvt.khudnitsky.payments.entities.Currency;
 
 /**

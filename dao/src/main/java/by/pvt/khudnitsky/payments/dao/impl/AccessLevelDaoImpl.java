@@ -1,6 +1,6 @@
 package by.pvt.khudnitsky.payments.dao.impl;
 
-import by.pvt.khudnitsky.payments.dao.intrf.IAccessLevelDao;
+import by.pvt.khudnitsky.payments.dao.IAccessLevelDao;
 import by.pvt.khudnitsky.payments.entities.AccessLevel;
 
 /**
