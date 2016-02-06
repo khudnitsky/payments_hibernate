@@ -7,9 +7,7 @@ import by.pvt.khudnitsky.payments.exceptions.ServiceException;
 import by.pvt.khudnitsky.payments.services.AbstractService;
 import by.pvt.khudnitsky.payments.managers.PoolManager;
 import by.pvt.khudnitsky.payments.utils.PaymentSystemLogger;
-import org.apache.log4j.Logger;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -29,7 +27,7 @@ public class OperationServiceImpl extends AbstractService<Operation> {
     }
 
     /**
-     * Calls Dao add() method
+     * Calls Dao save() method
      *
      * @param entity - object of derived class AbstractEntity
      * @throws SQLException
@@ -39,7 +37,7 @@ public class OperationServiceImpl extends AbstractService<Operation> {
         try {
             connection = PoolManager.getInstance().getConnection();
             connection.setAutoCommit(false);
-            OperationDaoImpl.getInstance().add(entity);
+            OperationDaoImpl.getInstance().save(entity);
             connection.commit();
             PaymentSystemLogger.getInstance().logError(getClass(), "Transaction succeeded");
         }

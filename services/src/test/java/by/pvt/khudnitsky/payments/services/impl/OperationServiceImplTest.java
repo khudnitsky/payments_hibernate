@@ -43,12 +43,12 @@ public class OperationServiceImplTest {
 
     @Test
     public void testAdd() throws Exception {
-        AccountDaoImpl.getInstance().add(account);
-        UserDaoImpl.getInstance().add(user);
-        Long userActualId = UserDaoImpl.getInstance().getMaxId();
+        AccountDaoImpl.getInstance().save(account);
+        UserDaoImpl.getInstance().save(user);
+        Long userActualId = UserDaoImpl.getInstance().getLastId();
         operation.setUserId(userActualId);
         OperationServiceImpl.getInstance().add(operation);
-        Long operationActualId = OperationDaoImpl.getInstance().getMaxId();
+        Long operationActualId = OperationDaoImpl.getInstance().getLastId();
         Operation actual = OperationDaoImpl.getInstance().getById(operationActualId);
         AccountDaoImpl.getInstance().delete(account.getId());
         Assert.assertEquals(operation.getDescription(), actual.getDescription());  // TODO исправить

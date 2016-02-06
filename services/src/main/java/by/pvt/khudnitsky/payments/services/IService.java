@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface IService<T extends AbstractEntity> {
     /**
-     * Calls Dao add() method
+     * Calls Dao save() method
      * @param entity - object of derived class AbstractEntity
      * @throws SQLException
      */

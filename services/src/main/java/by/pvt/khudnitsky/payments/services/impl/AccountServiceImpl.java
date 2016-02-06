@@ -30,7 +30,7 @@ public class AccountServiceImpl extends AbstractService<Account> {
     }
 
     /**
-     * Calls AccountDaoImpl add() method
+     * Calls AccountDaoImpl save() method
      *
      * @param entity - Account object
      * @throws SQLException
@@ -40,7 +40,7 @@ public class AccountServiceImpl extends AbstractService<Account> {
         try {
             connection = PoolManager.getInstance().getConnection();
             connection.setAutoCommit(false);
-            AccountDaoImpl.getInstance().add(entity);
+            AccountDaoImpl.getInstance().save(entity);
             connection.commit();
             PaymentSystemLogger.getInstance().logError(getClass(), "Transaction succeeded");
          }
@@ -164,7 +164,7 @@ public class AccountServiceImpl extends AbstractService<Account> {
             connection = PoolManager.getInstance().getConnection();
             connection.setAutoCommit(false);
             Operation operation = buildOperation(user, description, amount);
-            OperationDaoImpl.getInstance().add(operation);
+            OperationDaoImpl.getInstance().save(operation);
             AccountDaoImpl.getInstance().updateAmount(user.getAccountId(), amount);
             connection.commit();
             PaymentSystemLogger.getInstance().logError(getClass(), "Transaction succeeded");
@@ -181,7 +181,7 @@ public class AccountServiceImpl extends AbstractService<Account> {
             connection = PoolManager.getInstance().getConnection();
             connection.setAutoCommit(false);
             Operation operation = buildOperation(user, description, 0D);
-            OperationDaoImpl.getInstance().add(operation);
+            OperationDaoImpl.getInstance().save(operation);
             AccountDaoImpl.getInstance().updateAccountStatus(user.getAccountId(), AccountStatusEnum.BLOCKED);
             connection.commit();
             PaymentSystemLogger.getInstance().logError(getClass(), "Transaction succeeded");
@@ -198,7 +198,7 @@ public class AccountServiceImpl extends AbstractService<Account> {
             connection = PoolManager.getInstance().getConnection();
             connection.setAutoCommit(false);
             Operation operation = buildOperation(user, description, amount);
-            OperationDaoImpl.getInstance().add(operation);
+            OperationDaoImpl.getInstance().save(operation);
             AccountDaoImpl.getInstance().updateAmount(user.getAccountId(), (-1) * amount);
             connection.commit();
             PaymentSystemLogger.getInstance().logError(getClass(), "Transaction succeeded");

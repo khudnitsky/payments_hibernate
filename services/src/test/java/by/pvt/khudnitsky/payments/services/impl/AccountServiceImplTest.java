@@ -58,9 +58,9 @@ public class AccountServiceImplTest {
 
     @Test
     public void testAddFunds() throws Exception {
-        AccountDaoImpl.getInstance().add(account);
-        UserDaoImpl.getInstance().add(user);
-        user.setId(UserDaoImpl.getInstance().getMaxId());
+        AccountDaoImpl.getInstance().save(account);
+        UserDaoImpl.getInstance().save(user);
+        user.setId(UserDaoImpl.getInstance().getLastId());
         AccountServiceImpl.getInstance().addFunds(user, operation.getDescription(), operation.getAmount());
         Double expected = account.getDeposit() + operation.getAmount();
         Double actual = AccountDaoImpl.getInstance().getById(account.getId()).getDeposit();
@@ -70,9 +70,9 @@ public class AccountServiceImplTest {
 
     @Test
     public void testBlockAccount() throws Exception {
-        AccountDaoImpl.getInstance().add(account);
-        UserDaoImpl.getInstance().add(user);
-        user.setId(UserDaoImpl.getInstance().getMaxId());
+        AccountDaoImpl.getInstance().save(account);
+        UserDaoImpl.getInstance().save(user);
+        user.setId(UserDaoImpl.getInstance().getLastId());
         AccountServiceImpl.getInstance().blockAccount(user, operation.getDescription());
         Integer expected = AccountStatusEnum.BLOCKED;
         Integer actual = AccountDaoImpl.getInstance().getById(account.getId()).getAccountStatusEnum();
@@ -82,9 +82,9 @@ public class AccountServiceImplTest {
 
     @Test
     public void testPayment() throws Exception {
-        AccountDaoImpl.getInstance().add(account);
-        UserDaoImpl.getInstance().add(user);
-        user.setId(UserDaoImpl.getInstance().getMaxId());
+        AccountDaoImpl.getInstance().save(account);
+        UserDaoImpl.getInstance().save(user);
+        user.setId(UserDaoImpl.getInstance().getLastId());
         AccountServiceImpl.getInstance().payment(user, operation.getDescription(), operation.getAmount());
         Double expected = account.getDeposit() - operation.getAmount();
         Double actual = AccountDaoImpl.getInstance().getById(account.getId()).getDeposit();

@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import by.pvt.khudnitsky.payments.dao.AbstractDao;
 import by.pvt.khudnitsky.payments.entities.Operation;
 import by.pvt.khudnitsky.payments.enums.ColumnName;
 import by.pvt.khudnitsky.payments.enums.SqlRequest;
@@ -27,7 +26,9 @@ public class OperationDaoImpl extends AbstractDao<Operation> {
     private static OperationDaoImpl instance;
     static String message;
 
-    private OperationDaoImpl(){}
+    private OperationDaoImpl(){
+        super(Operation.class);
+    }
 
     public static synchronized OperationDaoImpl getInstance(){
         if(instance == null){
@@ -37,7 +38,7 @@ public class OperationDaoImpl extends AbstractDao<Operation> {
     }
 
     @Override
-    public void add(Operation entity) throws DaoException {
+    public void save(Operation entity) throws DaoException {
         try {
             connection = PoolManager.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.CREATE_OPERATION);
@@ -48,7 +49,7 @@ public class OperationDaoImpl extends AbstractDao<Operation> {
             statement.executeUpdate();
         }
         catch (SQLException e){
-            message = "Unable to add the operation ";
+            message = "Unable to save the operation ";
             PaymentSystemLogger.getInstance().logError(getClass(), message);
             throw new DaoException(message, e);
         }
@@ -106,7 +107,7 @@ public class OperationDaoImpl extends AbstractDao<Operation> {
     }
 
     @Override
-    public Long getMaxId() throws DaoException {
+    public Long getLastId() throws DaoException {
         Long lastId = -1L;
         try {
             connection = PoolManager.getInstance().getConnection();

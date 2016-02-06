@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import by.pvt.khudnitsky.payments.dao.AbstractDao;
+import by.pvt.khudnitsky.payments.dao.intrf.IUserDao;
 import by.pvt.khudnitsky.payments.entities.User;
 import by.pvt.khudnitsky.payments.enums.ColumnName;
 import by.pvt.khudnitsky.payments.enums.SqlRequest;
@@ -23,11 +23,13 @@ import by.pvt.khudnitsky.payments.utils.PaymentSystemLogger;
  * @version 1.0
  *
  */
-public class UserDaoImpl extends AbstractDao<User> {
+public class UserDaoImpl extends AbstractDao<User> implements IUserDao{
     private static UserDaoImpl instance;
     static String message;
 
-    private UserDaoImpl(){}
+    private UserDaoImpl(){
+        super(User.class);
+    }
 
     public static synchronized UserDaoImpl getInstance(){
         if(instance == null){
@@ -37,7 +39,7 @@ public class UserDaoImpl extends AbstractDao<User> {
     }
 
     @Override
-    public void add(User user) throws DaoException{
+    public void save(User user) throws DaoException{
         try {
             connection = PoolManager.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.ADD_USER);
@@ -49,7 +51,7 @@ public class UserDaoImpl extends AbstractDao<User> {
             statement.executeUpdate();
         }
         catch (SQLException e){
-            message = "Unable to add the user account ";
+            message = "Unable to save the user account ";
             PaymentSystemLogger.getInstance().logError(getClass(), message);
             throw new DaoException(message, e);
         }
@@ -179,7 +181,7 @@ public class UserDaoImpl extends AbstractDao<User> {
     }
 
     @Override
-    public Long getMaxId() throws DaoException {
+    public Long getLastId() throws DaoException {
         Long lastId = -1L;
         try {
             connection = PoolManager.getInstance().getConnection();

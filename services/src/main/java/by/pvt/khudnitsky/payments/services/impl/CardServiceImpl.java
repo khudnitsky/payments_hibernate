@@ -24,7 +24,7 @@ public class CardServiceImpl extends AbstractService<Card> {
     }
 
     /**
-     * Calls Dao add() method
+     * Calls Dao save() method
      *
      * @param entity - object of derived class AbstractEntity
      * @throws SQLException

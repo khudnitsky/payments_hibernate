@@ -30,7 +30,7 @@ public class UserServiceImpl extends AbstractService<User> {
     }
 
     /**
-     * Calls Dao add() method
+     * Calls Dao save() method
      *
      * @param entity - object of derived class AbstractEntity
      * @throws SQLException
@@ -167,8 +167,8 @@ public class UserServiceImpl extends AbstractService<User> {
         try {
             connection = PoolManager.getInstance().getConnection();
             connection.setAutoCommit(false);
-            AccountDaoImpl.getInstance().add(account);
-            UserDaoImpl.getInstance().add(user);
+            AccountDaoImpl.getInstance().save(account);
+            UserDaoImpl.getInstance().save(user);
             connection.commit();
             PaymentSystemLogger.getInstance().logError(getClass(), "Transaction succeeded");
         }

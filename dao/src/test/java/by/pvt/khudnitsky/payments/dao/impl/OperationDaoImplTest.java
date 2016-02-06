@@ -36,12 +36,12 @@ public class OperationDaoImplTest {
 
     @Test
     public void testAdd() throws Exception {
-        AccountDaoImpl.getInstance().add(account);
-        UserDaoImpl.getInstance().add(user);
-        Long userActualId = UserDaoImpl.getInstance().getMaxId();
+        AccountDaoImpl.getInstance().save(account);
+        UserDaoImpl.getInstance().save(user);
+        Long userActualId = UserDaoImpl.getInstance().getLastId();
         expected.setUserId(userActualId);
-        OperationDaoImpl.getInstance().add(expected);
-        Long operationActualId = OperationDaoImpl.getInstance().getMaxId();
+        OperationDaoImpl.getInstance().save(expected);
+        Long operationActualId = OperationDaoImpl.getInstance().getLastId();
         Operation actual = OperationDaoImpl.getInstance().getById(operationActualId);
         AccountDaoImpl.getInstance().delete(account.getId());
         OperationDaoImpl.getInstance().delete(operationActualId);
@@ -50,12 +50,12 @@ public class OperationDaoImplTest {
 
     @Test
     public void testDelete() throws Exception{
-        AccountDaoImpl.getInstance().add(account);
-        UserDaoImpl.getInstance().add(user);
-        Long userActualId = UserDaoImpl.getInstance().getMaxId();
+        AccountDaoImpl.getInstance().save(account);
+        UserDaoImpl.getInstance().save(user);
+        Long userActualId = UserDaoImpl.getInstance().getLastId();
         expected.setUserId(userActualId);
-        OperationDaoImpl.getInstance().add(expected);
-        Long operationActualId = OperationDaoImpl.getInstance().getMaxId();
+        OperationDaoImpl.getInstance().save(expected);
+        Long operationActualId = OperationDaoImpl.getInstance().getLastId();
         OperationDaoImpl.getInstance().delete(operationActualId);
         Operation actual = OperationDaoImpl.getInstance().getById(operationActualId);
         AccountDaoImpl.getInstance().delete(account.getId());

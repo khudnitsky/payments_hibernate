@@ -2,7 +2,7 @@
 Payments system (2'nd module project)
 
     + 1. Id type migration from int to Long
-2. Dao methods to BaseDao
+    + 2. Dao methods to BaseDao
 3. Pagination
 4. CardDao
 5. Tests

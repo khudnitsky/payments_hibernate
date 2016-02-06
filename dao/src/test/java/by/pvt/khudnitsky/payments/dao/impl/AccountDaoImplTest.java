@@ -29,7 +29,7 @@ public class AccountDaoImplTest {
 
     @Test
     public void testAdd() throws Exception{
-        AccountDaoImpl.getInstance().add(expected);
+        AccountDaoImpl.getInstance().save(expected);
         Account actual = AccountDaoImpl.getInstance().getById(expected.getId());
         Assert.assertEquals(expected, actual);
         AccountDaoImpl.getInstance().delete(expected.getId());
@@ -44,7 +44,7 @@ public class AccountDaoImplTest {
 
     @Test
     public void testUpdateAmount() throws Exception {
-        AccountDaoImpl.getInstance().add(expected);
+        AccountDaoImpl.getInstance().save(expected);
         double adding = 100;
         expected.setDeposit(expected.getDeposit() + adding);
         AccountDaoImpl.getInstance().updateAmount(expected.getId(), adding);
@@ -55,7 +55,7 @@ public class AccountDaoImplTest {
 
     @Test
     public void testDelete() throws Exception{
-        AccountDaoImpl.getInstance().add(expected);
+        AccountDaoImpl.getInstance().save(expected);
         AccountDaoImpl.getInstance().delete(expected.getId());
         Account actual = AccountDaoImpl.getInstance().getById(expected.getId());
         Assert.assertNull(actual);

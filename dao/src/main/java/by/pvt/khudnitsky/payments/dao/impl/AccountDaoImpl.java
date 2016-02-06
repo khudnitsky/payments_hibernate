@@ -3,7 +3,7 @@
  */
 package by.pvt.khudnitsky.payments.dao.impl;
 
-import by.pvt.khudnitsky.payments.dao.AbstractDao;
+import by.pvt.khudnitsky.payments.dao.intrf.IAccountDao;
 import by.pvt.khudnitsky.payments.entities.Account;
 import by.pvt.khudnitsky.payments.enums.ColumnName;
 import by.pvt.khudnitsky.payments.enums.SqlRequest;
@@ -25,11 +25,13 @@ import java.util.List;
  * @version 1.0
  *
  */
-public class AccountDaoImpl extends AbstractDao<Account> {
+public class AccountDaoImpl extends AbstractDao<Account> implements IAccountDao{
     private static AccountDaoImpl instance;
     static String message;
 
-    private AccountDaoImpl(){}
+    private AccountDaoImpl(){
+        super(Account.class);
+    }
 
     /**
      * Singleton method
@@ -48,7 +50,7 @@ public class AccountDaoImpl extends AbstractDao<Account> {
      * @throws DaoException
      */
     @Override
-    public void add(Account account) throws DaoException {
+    public void save(Account account) throws DaoException {
         try {
             connection = PoolManager.getInstance().getConnection();
             statement = connection.prepareStatement(SqlRequest.ADD_ACCOUNT_WITH_ID);
@@ -59,7 +61,7 @@ public class AccountDaoImpl extends AbstractDao<Account> {
             statement.executeUpdate();
         }
         catch (SQLException e){
-            message = "Unable to add the account ";
+            message = "Unable to save the account ";
             PaymentSystemLogger.getInstance().logError(getClass(), message);
             throw new DaoException(message, e);
         }
@@ -193,7 +195,7 @@ public class AccountDaoImpl extends AbstractDao<Account> {
      * @throws DaoException
      */
     @Override
-    public Long getMaxId() throws DaoException {
+    public Long getLastId() throws DaoException {
         Long lastId = -1L;
         try {
             connection = PoolManager.getInstance().getConnection();

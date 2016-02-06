@@ -40,8 +40,8 @@ public class UserServiceImplTest {
 
     @Test
     public void testCheckUserAuthorization() throws Exception {
-        AccountDaoImpl.getInstance().add(account);
-        UserDaoImpl.getInstance().add(user);
+        AccountDaoImpl.getInstance().save(account);
+        UserDaoImpl.getInstance().save(user);
         boolean expected = true;
         boolean actual = UserServiceImpl.getInstance().checkUserAuthorization(user.getLogin(), user.getPassword());
         AccountDaoImpl.getInstance().delete(account.getId());
@@ -50,9 +50,9 @@ public class UserServiceImplTest {
 
     @Test
     public void testGetUserByLogin() throws Exception {
-        AccountDaoImpl.getInstance().add(account);
-        UserDaoImpl.getInstance().add(user);
-        Long userActualId = UserDaoImpl.getInstance().getMaxId();
+        AccountDaoImpl.getInstance().save(account);
+        UserDaoImpl.getInstance().save(user);
+        Long userActualId = UserDaoImpl.getInstance().getLastId();
         user.setId(userActualId);
         User actual = UserServiceImpl.getInstance().getUserByLogin(user.getLogin());
         AccountDaoImpl.getInstance().delete(account.getId());
@@ -61,8 +61,8 @@ public class UserServiceImplTest {
 
     @Test
     public void testCheckAccessLevel() throws Exception {
-        AccountDaoImpl.getInstance().add(account);
-        UserDaoImpl.getInstance().add(user);
+        AccountDaoImpl.getInstance().save(account);
+        UserDaoImpl.getInstance().save(user);
         AccessLevelEnum actual = UserServiceImpl.getInstance().checkAccessLevel(user);
         AccountDaoImpl.getInstance().delete(account.getId());
         Assert.assertEquals(user.getAccessLevelEnum(), (Integer) actual.ordinal());
@@ -78,9 +78,9 @@ public class UserServiceImplTest {
     @Ignore
     @Test
     public void testRegistrateUser() throws Exception {
-        AccountDaoImpl.getInstance().add(account);
+        AccountDaoImpl.getInstance().save(account);
         UserServiceImpl.getInstance().registrateUser(user, account);
-        Long userActualId = UserDaoImpl.getInstance().getMaxId();
+        Long userActualId = UserDaoImpl.getInstance().getLastId();
         user.setId(userActualId);
         User actual = UserServiceImpl.getInstance().getUserByLogin(user.getLogin());
         AccountDaoImpl.getInstance().delete(account.getId());
