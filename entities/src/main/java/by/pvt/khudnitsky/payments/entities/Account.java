@@ -23,8 +23,8 @@ public class Account extends AbstractEntity {
     public Double getDeposit() {
         return deposit;
     }
-    public void setDeposit(Double amount) {
-        this.deposit = amount;
+    public void setDeposit(Double deposit) {
+        this.deposit = deposit;
     }
     private Double deposit;
 
