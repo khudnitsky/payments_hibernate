@@ -5,8 +5,8 @@ package by.pvt.khudnitsky.payments.dao.impl;
 
 import by.pvt.khudnitsky.payments.dao.AbstractDao;
 import by.pvt.khudnitsky.payments.entities.Account;
-import by.pvt.khudnitsky.payments.constants.ColumnName;
-import by.pvt.khudnitsky.payments.constants.SqlRequest;
+import by.pvt.khudnitsky.payments.enums.ColumnName;
+import by.pvt.khudnitsky.payments.enums.SqlRequest;
 import by.pvt.khudnitsky.payments.exceptions.DaoException;
 import by.pvt.khudnitsky.payments.managers.PoolManager;
 import by.pvt.khudnitsky.payments.utils.ClosingUtil;
@@ -55,7 +55,7 @@ public class AccountDaoImpl extends AbstractDao<Account> {
             statement.setLong(1, account.getId());
             statement.setDouble(2, account.getDeposit());
             statement.setString(3, account.getCurrency());
-            statement.setInt(4, account.getAccountStatus());
+            statement.setInt(4, account.getAccountStatusEnum());
             statement.executeUpdate();
         }
         catch (SQLException e){

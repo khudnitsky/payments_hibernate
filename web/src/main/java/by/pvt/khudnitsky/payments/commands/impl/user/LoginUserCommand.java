@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import by.pvt.khudnitsky.payments.commands.AbstractCommand;
-import by.pvt.khudnitsky.payments.constants.*;
+import by.pvt.khudnitsky.payments.enums.*;
 import by.pvt.khudnitsky.payments.entities.User;
 import by.pvt.khudnitsky.payments.exceptions.ServiceException;
 import by.pvt.khudnitsky.payments.managers.ConfigurationManager;
@@ -33,10 +33,10 @@ public class LoginUserCommand extends AbstractCommand {
             user = RequestParameterParser.getUser(request);
             if(UserServiceImpl.getInstance().checkUserAuthorization(user.getLogin(), user.getPassword())){
                 user = UserServiceImpl.getInstance().getUserByLogin(user.getLogin());
-                AccessLevel accessLevel = UserServiceImpl.getInstance().checkAccessLevel(user);
+                AccessLevelEnum accessLevelEnum = UserServiceImpl.getInstance().checkAccessLevel(user);
                 session.setAttribute(Parameters.USER, user);
-                session.setAttribute(Parameters.USERTYPE, accessLevel);
-                if(AccessLevel.CLIENT.equals(accessLevel)){
+                session.setAttribute(Parameters.USERTYPE, accessLevelEnum);
+                if(AccessLevelEnum.CLIENT.equals(accessLevelEnum)){
                     page = ConfigurationManager.getInstance().getProperty(PagePath.CLIENT_PAGE_PATH);
                 }
                 else{

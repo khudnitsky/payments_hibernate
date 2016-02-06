@@ -2,7 +2,7 @@ package by.pvt.khudnitsky.payments.utils;
 
 import by.pvt.khudnitsky.payments.commands.ICommand;
 import by.pvt.khudnitsky.payments.commands.factory.CommandFactory;
-import by.pvt.khudnitsky.payments.constants.PagePath;
+import by.pvt.khudnitsky.payments.enums.PagePath;
 import by.pvt.khudnitsky.payments.managers.ConfigurationManager;
 
 import javax.servlet.RequestDispatcher;

@@ -17,11 +17,53 @@ import java.util.Calendar;
 public class Operation extends AbstractEntity {
     private static final long serialVersionUID = 4L;
 
-    private User user;
-    private Account account;
-    private Double amount;
+    @Column(nullable = false, precision = 2, updatable = false)
+    public Double getAmount() {
+        return amount;
+    }
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+    private Double amount;   //TODO BigDecimal
+
+    @Column(nullable = false, length = 50, updatable = false)
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
     private String description;
+
+    @Temporal(value = TemporalType.TIMESTAMP) // TODO разобраться
+    @Column(nullable = false, updatable = false)
+    public Calendar getDate() {
+        return date;
+    }
+    public void setDate(Calendar date) {
+        this.date = date;
+    }
     private Calendar date;
+
+    @ManyToOne
+    @JoinColumn(name = "F_USER_ID", updatable = false)
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "F_ACCOUNT_ID", updatable = false)
+    public Account getAccount() {
+        return account;
+    }
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+    private Account account;
 
     public Operation() {
         super();
@@ -64,65 +106,5 @@ public class Operation extends AbstractEntity {
                 ", description='" + description + '\'' +
                 ", date=" + date +
                 '}';
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "F_USER_ID")
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "F_ACCOUNT_ID")
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-
-    /**
-     * @return the amount
-     */
-    @Column(nullable = false, precision = 2)
-    public Double getAmount() {
-        return amount;
-    }
-
-    /**
-     * @param amount the amount to set
-     */
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
-
-    /**
-     * @return the description
-     */
-    @Column(nullable = false, length = 50)
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * @param description the description to set
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @Temporal(value = TemporalType.TIMESTAMP) // TODO разобраться
-    @Column(nullable = false)
-    public Calendar getDate() {
-        return date;
-    }
-
-    public void setDate(Calendar date) {
-        this.date = date;
     }
 }

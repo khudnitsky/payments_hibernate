@@ -3,7 +3,7 @@
  */
 package by.pvt.khudnitsky.payments.filters;
 
-import by.pvt.khudnitsky.payments.constants.PagePath;
+import by.pvt.khudnitsky.payments.enums.PagePath;
 import by.pvt.khudnitsky.payments.managers.ConfigurationManager;
 
 import java.io.IOException;

@@ -30,7 +30,7 @@ public class EntityBuilder {
         account.setId(id);
         account.setCurrency(currency);
         account.setDeposit(amount);
-        account.setAccountStatus(status);
+        account.setAccountStatusEnum(status);
         return account;
     }
 
@@ -74,7 +74,7 @@ public class EntityBuilder {
         user.setAccountId(aid);
         user.setLogin(login);
         user.setPassword(password);
-        user.setAccessLevel(accessLevel);
+        user.setAccessLevelEnum(accessLevel);
         return user;
     }
 

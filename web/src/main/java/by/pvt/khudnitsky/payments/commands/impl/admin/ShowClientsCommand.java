@@ -9,7 +9,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import by.pvt.khudnitsky.payments.constants.*;
+import by.pvt.khudnitsky.payments.enums.*;
 import by.pvt.khudnitsky.payments.entities.User;
 import by.pvt.khudnitsky.payments.exceptions.ServiceException;
 import by.pvt.khudnitsky.payments.services.impl.UserServiceImpl;
@@ -29,8 +29,8 @@ public class ShowClientsCommand extends AbstractCommand{
     public String execute(HttpServletRequest request) {
         String page;
         HttpSession session = request.getSession();
-        AccessLevel accessLevel = RequestParameterParser.getUserType(request);
-        if(accessLevel == AccessLevel.ADMINISTRATOR){
+        AccessLevelEnum accessLevelEnum = RequestParameterParser.getUserType(request);
+        if(accessLevelEnum == AccessLevelEnum.ADMINISTRATOR){
             try{
                 List<User> list = UserServiceImpl.getInstance().getAll();
                 session.setAttribute(Parameters.USER_LIST, list);

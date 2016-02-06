@@ -5,7 +5,7 @@ package by.pvt.khudnitsky.payments.managers;
 
 import java.util.ResourceBundle;
 
-import by.pvt.khudnitsky.payments.constants.ConfigConstant;
+import by.pvt.khudnitsky.payments.enums.ConfigConstant;
 
 /**
  * @author khudnitsky

@@ -23,7 +23,15 @@ public abstract class AbstractEntity implements Serializable{
     @Id
     @GenericGenerator(name = "increment", strategy = "increment")
     @GeneratedValue(generator = "increment")
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
     protected Long id;
+
+    public AbstractEntity() {}
 
     @Override
     public boolean equals(Object o) {
@@ -44,31 +52,5 @@ public abstract class AbstractEntity implements Serializable{
     @Override
     public String toString() {
         return "AbstractEntity [id=" + id + "]";
-    }
-
-    /**
-     * Creates new entity </b>
-     */
-    public AbstractEntity() {}
-
-    /**
-     * Creates new entity </b>
-     */
-    public AbstractEntity(Long id) {
-        this.id = id;
-    }
-
-    /**
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
     }
 }

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import by.pvt.khudnitsky.payments.commands.AbstractCommand;
-import by.pvt.khudnitsky.payments.constants.*;
+import by.pvt.khudnitsky.payments.enums.*;
 import by.pvt.khudnitsky.payments.entities.Operation;
 import by.pvt.khudnitsky.payments.exceptions.ServiceException;
 import by.pvt.khudnitsky.payments.managers.MessageManager;
@@ -29,8 +29,8 @@ public class ShowOperationsCommand extends AbstractCommand {
     public String execute(HttpServletRequest request) {
         String page;
         HttpSession session = request.getSession();
-        AccessLevel accessLevel = RequestParameterParser.getUserType(request);
-        if(accessLevel == AccessLevel.ADMINISTRATOR){
+        AccessLevelEnum accessLevelEnum = RequestParameterParser.getUserType(request);
+        if(accessLevelEnum == AccessLevelEnum.ADMINISTRATOR){
             try{
                 List<Operation> list = OperationServiceImpl.getInstance().getAll();
                 session.setAttribute(Parameters.OPERATIONS_LIST, list);

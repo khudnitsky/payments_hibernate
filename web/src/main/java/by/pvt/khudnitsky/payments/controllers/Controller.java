@@ -5,16 +5,11 @@ package by.pvt.khudnitsky.payments.controllers;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import by.pvt.khudnitsky.payments.commands.factory.CommandFactory;
-import by.pvt.khudnitsky.payments.commands.ICommand;
-import by.pvt.khudnitsky.payments.constants.PagePath;
-import by.pvt.khudnitsky.payments.managers.ConfigurationManager;
 import by.pvt.khudnitsky.payments.utils.RequestHandler;
 
 /**

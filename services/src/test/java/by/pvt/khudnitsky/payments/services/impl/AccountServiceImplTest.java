@@ -1,6 +1,6 @@
 package by.pvt.khudnitsky.payments.services.impl;
 
-import by.pvt.khudnitsky.payments.constants.AccountStatus;
+import by.pvt.khudnitsky.payments.enums.AccountStatusEnum;
 import by.pvt.khudnitsky.payments.dao.impl.AccountDaoImpl;
 import by.pvt.khudnitsky.payments.utils.EntityBuilder;
 import by.pvt.khudnitsky.payments.dao.impl.UserDaoImpl;
@@ -74,8 +74,8 @@ public class AccountServiceImplTest {
         UserDaoImpl.getInstance().add(user);
         user.setId(UserDaoImpl.getInstance().getMaxId());
         AccountServiceImpl.getInstance().blockAccount(user, operation.getDescription());
-        Integer expected = AccountStatus.BLOCKED;
-        Integer actual = AccountDaoImpl.getInstance().getById(account.getId()).getAccountStatus();
+        Integer expected = AccountStatusEnum.BLOCKED;
+        Integer actual = AccountDaoImpl.getInstance().getById(account.getId()).getAccountStatusEnum();
         AccountDaoImpl.getInstance().delete(account.getId());
         Assert.assertEquals(expected, actual);
     }

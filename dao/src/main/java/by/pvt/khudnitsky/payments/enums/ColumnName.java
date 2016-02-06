@@ -1,10 +1,10 @@
 /**
  * Copyright (c) 2016, Khudnitsky. All rights reserved.
  */
-package by.pvt.khudnitsky.payments.constants;
+package by.pvt.khudnitsky.payments.enums;
 
 /**
- * Contains constants that describe column name in database tables
+ * Contains enums that describe column name in database tables
  * @author khudnitsky
  * @version 1.0
  */

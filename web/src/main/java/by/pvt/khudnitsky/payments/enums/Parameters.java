@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2016, Khudnitsky. All rights reserved.
  */
-package by.pvt.khudnitsky.payments.constants;
+package by.pvt.khudnitsky.payments.enums;
 
 /**
  * @author khudnitsky

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import by.pvt.khudnitsky.payments.commands.AbstractCommand;
-import by.pvt.khudnitsky.payments.constants.*;
+import by.pvt.khudnitsky.payments.enums.*;
 import by.pvt.khudnitsky.payments.entities.Account;
 import by.pvt.khudnitsky.payments.exceptions.ServiceException;
 import by.pvt.khudnitsky.payments.services.impl.AccountServiceImpl;
@@ -28,12 +28,12 @@ public class UnblockCommand extends AbstractCommand {
     public String execute(HttpServletRequest request) {
         String page;
         HttpSession session = request.getSession();
-        AccessLevel accessLevel = RequestParameterParser.getUserType(request);
-        if(accessLevel == AccessLevel.ADMINISTRATOR){
+        AccessLevelEnum accessLevelEnum = RequestParameterParser.getUserType(request);
+        if(accessLevelEnum == AccessLevelEnum.ADMINISTRATOR){
             try{
                 //TODO переделать
                 Long aid = Long.valueOf(request.getParameter(Parameters.OPERATION_UNBLOCK));
-                AccountServiceImpl.getInstance().updateAccountStatus(aid, AccountStatus.UNBLOCKED);
+                AccountServiceImpl.getInstance().updateAccountStatus(aid, AccountStatusEnum.UNBLOCKED);
                 List<Account> list = AccountServiceImpl.getInstance().getBlockedAccounts();
                 session.setAttribute(Parameters.ACCOUNTS_LIST, list);
                 page = ConfigurationManager.getInstance().getProperty(PagePath.ADMIN_UNBLOCK_PAGE);

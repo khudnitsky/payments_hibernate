@@ -4,6 +4,7 @@
 package by.pvt.khudnitsky.payments.entities;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Calendar;
 
 /**
@@ -16,7 +17,34 @@ import java.util.Calendar;
 @Entity
 public class Card extends AbstractEntity {
     private static final long serialVersionUID = 5L;
+
+    @Column(nullable = false, updatable = false)
+    public Integer getCardNumber() {
+        return cardNumber;
+    }
+    public void setCardNumber(Integer cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+    private Integer cardNumber;
+
+    @Temporal(value = TemporalType.TIMESTAMP) // TODO разобраться
+    @Column(nullable = false, updatable = false)
+    public Calendar getValidity() {
+        return validity;
+    }
+    public void setValidity(Calendar validity) {
+        this.validity = validity;
+    }
     private Calendar validity;
+
+    @ManyToOne
+    @JoinColumn(name = "F_ACCOUNT_ID", updatable = false)
+    public Account getAccount() {
+        return account;
+    }
+    public void setAccount(Account account) {
+        this.account = account;
+    }
     private Account account;
 
     public Card() {
@@ -50,25 +78,5 @@ public class Card extends AbstractEntity {
                 "validity=" + validity +
                 ", account=" + account +
                 '}';
-    }
-
-    @Temporal(value = TemporalType.TIMESTAMP) // TODO разобраться
-    @Column(nullable = false)
-    public Calendar getValidity() {
-        return validity;
-    }
-
-    public void setValidity(Calendar validity) {
-        this.validity = validity;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "F_ACCOUNT_ID")
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
     }
 }

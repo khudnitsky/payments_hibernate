@@ -7,14 +7,14 @@ import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletRequest;
 
-import by.pvt.khudnitsky.payments.constants.PagePath;
+import by.pvt.khudnitsky.payments.enums.PagePath;
 import by.pvt.khudnitsky.payments.entities.Account;
 import by.pvt.khudnitsky.payments.entities.User;
 import by.pvt.khudnitsky.payments.exceptions.ServiceException;
 import by.pvt.khudnitsky.payments.services.impl.UserServiceImpl;
 import by.pvt.khudnitsky.payments.commands.AbstractCommand;
-import by.pvt.khudnitsky.payments.constants.MessageConstants;
-import by.pvt.khudnitsky.payments.constants.Parameters;
+import by.pvt.khudnitsky.payments.enums.MessageConstants;
+import by.pvt.khudnitsky.payments.enums.Parameters;
 import by.pvt.khudnitsky.payments.utils.RequestParameterParser;
 import by.pvt.khudnitsky.payments.managers.ConfigurationManager;
 import by.pvt.khudnitsky.payments.managers.MessageManager;

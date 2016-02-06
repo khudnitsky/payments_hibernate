@@ -1,6 +1,6 @@
 package by.pvt.khudnitsky.payments.managers;
 
-import by.pvt.khudnitsky.payments.constants.DBConfigConstant;
+import by.pvt.khudnitsky.payments.enums.DBConfigConstant;
 
 import java.util.ResourceBundle;
 

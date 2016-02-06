@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import by.pvt.khudnitsky.payments.commands.AbstractCommand;
-import by.pvt.khudnitsky.payments.constants.*;
+import by.pvt.khudnitsky.payments.enums.*;
 import by.pvt.khudnitsky.payments.entities.Account;
 import by.pvt.khudnitsky.payments.exceptions.ServiceException;
 import by.pvt.khudnitsky.payments.managers.ConfigurationManager;
@@ -29,8 +29,8 @@ public class GoToUnblockCommand extends AbstractCommand {
     public String execute(HttpServletRequest request) {
         String page;
         HttpSession session = request.getSession();
-        AccessLevel accessLevel = RequestParameterParser.getUserType(request);
-        if(accessLevel == AccessLevel.ADMINISTRATOR){
+        AccessLevelEnum accessLevelEnum = RequestParameterParser.getUserType(request);
+        if(accessLevelEnum == AccessLevelEnum.ADMINISTRATOR){
             try {
                 List<Account> list = AccountServiceImpl.getInstance().getBlockedAccounts();
                 session.setAttribute(Parameters.ACCOUNTS_LIST, list);

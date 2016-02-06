@@ -4,8 +4,8 @@
 package by.pvt.khudnitsky.payments.filters;
 
 import by.pvt.khudnitsky.payments.commands.factory.CommandType;
-import by.pvt.khudnitsky.payments.constants.PagePath;
-import by.pvt.khudnitsky.payments.constants.AccessLevel;
+import by.pvt.khudnitsky.payments.enums.PagePath;
+import by.pvt.khudnitsky.payments.enums.AccessLevelEnum;
 import by.pvt.khudnitsky.payments.managers.ConfigurationManager;
 import by.pvt.khudnitsky.payments.utils.RequestParameterParser;
 
@@ -28,7 +28,7 @@ public class SecurityFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         HttpSession session = httpRequest.getSession();
-        AccessLevel type = RequestParameterParser.getUserType(httpRequest);
+        AccessLevelEnum type = RequestParameterParser.getUserType(httpRequest);
         try {
             CommandType commandType = RequestParameterParser.getCommandType(httpRequest);
             if (type == null) {

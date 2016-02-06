@@ -3,7 +3,6 @@
  */
 package by.pvt.khudnitsky.payments.entities;
 
-import by.pvt.khudnitsky.payments.constants.AccessLevel;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.SQLDelete;
@@ -23,13 +22,81 @@ import java.util.Set;
 public class User extends AbstractEntity {
     private static final long serialVersionUID = 2L;
 
+    @Column(nullable = false, length = 15)
+    public String getFirstName() {
+        return firstName;
+    }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
     private String firstName;
+
+    @Column(nullable = false, length = 50)
+    public String getLastName() {
+        return lastName;
+    }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
     private String lastName;
+
+    @Column(unique = true, nullable = false, length = 25)
+    public String getLogin() {
+        return login;
+    }
+    public void setLogin(String login) {
+        this.login = login;
+    }
     private String login;
+
+    @Column(nullable = false, length = 50)
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
     private String password;       // TODO Шифрование
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    public UserDetail getUserDetail() {
+        return userDetail;
+    }
+    public void setUserDetail(UserDetail userDetail) {
+        this.userDetail = userDetail;
+    }
+    private UserDetail userDetail;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    public Set<Account> getAccounts() {
+        return accounts;
+    }
+    public void setAccounts(Set<Account> accounts) {
+        this.accounts = accounts;
+    }
     private Set<Account> accounts;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    public Set<Operation> getOperations() {
+        return operations;
+    }
+    public void setOperations(Set<Operation> operations) {
+        this.operations = operations;
+    }
     private Set<Operation> operations;
-    private AccessLevel accessLevel;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "T_USER_ACCESS_LEVEL",
+            joinColumns = @JoinColumn(name = "F_USER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "F_ACCESS_LEVEL_ID"))
+    public Set<AccessLevel> getAccessLevels() {
+        return accessLevels;
+    }
+    public void setAccessLevels(Set<AccessLevel> accessLevels) {
+        this.accessLevels = accessLevels;
+    }
+    private Set<AccessLevel> accessLevels;
 
     public User() {
         super();
@@ -47,7 +114,7 @@ public class User extends AbstractEntity {
         if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
         if (login != null ? !login.equals(user.login) : user.login != null) return false;
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
-        return accessLevel == user.accessLevel;
+        return userDetail != null ? userDetail.equals(user.userDetail) : user.userDetail == null;
 
     }
 
@@ -58,7 +125,7 @@ public class User extends AbstractEntity {
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         result = 31 * result + (login != null ? login.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (accessLevel != null ? accessLevel.hashCode() : 0);
+        result = 31 * result + (userDetail != null ? userDetail.hashCode() : 0);
         return result;
     }
 
@@ -69,108 +136,7 @@ public class User extends AbstractEntity {
                 ", lastName='" + lastName + '\'' +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
-                ", accessLevel=" + accessLevel +
+                ", userDetail=" + userDetail +
                 '}';
-    }
-
-    /**
-     * @return the firstName
-     */
-    @Column(nullable = false, length = 15)
-    public String getFirstName() {
-        return firstName;
-    }
-
-    /**
-     * @param firstName the firstName to set
-     */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    /**
-     * @return the lastName
-     */
-    @Column(nullable = false, length = 50)
-    public String getLastName() {
-        return lastName;
-    }
-
-    /**
-     * @param lastName the lastName to set
-     */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    /**
-     * @return the login
-     */
-    @Column(unique = true, nullable = false, length = 25)
-    public String getLogin() {
-        return login;
-    }
-
-    /**
-     * @param login the login to set
-     */
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    /**
-     * @return the password
-     */
-    @Column(nullable = false, length = 50)
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * @param password the password to set
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
-     * @return the set of accounts
-     */
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    public Set<Account> getAccounts() {
-        return accounts;
-    }
-
-    /**
-     *
-     * @param accounts the set of accounts
-     */
-    public void setAccounts(Set<Account> accounts) {
-        this.accounts = accounts;
-    }
-
-    /**
-     * @return the accessLevel
-     */
-    @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "enum('CLIENT', 'ADMINISTRATOR')")
-    public AccessLevel getAccessLevel() {
-        return accessLevel;
-    }
-
-    /**
-     * @param accessLevel the accessLevel to set
-     */
-    public void setAccessLevel(AccessLevel accessLevel) {
-        this.accessLevel = accessLevel;
-    }
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    public Set<Operation> getOperations() {
-        return operations;
-    }
-
-    public void setOperations(Set<Operation> operations) {
-        this.operations = operations;
     }
 }

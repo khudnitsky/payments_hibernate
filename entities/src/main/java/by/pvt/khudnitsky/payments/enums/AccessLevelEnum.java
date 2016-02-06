@@ -1,14 +1,14 @@
 /**
  * Copyright (c) 2016, Khudnitsky. All rights reserved.
  */
-package by.pvt.khudnitsky.payments.constants;
+package by.pvt.khudnitsky.payments.enums;
 
 /**
- * Contains constants that describe types of user
+ * Contains enums that describe types of user
  * @author khudnitsky
  * @version 1.0
  */
-public enum AccessLevel {
+public enum AccessLevelEnum {
     CLIENT, ADMINISTRATOR
 }
 

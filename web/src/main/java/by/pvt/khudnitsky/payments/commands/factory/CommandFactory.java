@@ -7,9 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import by.pvt.khudnitsky.payments.commands.ICommand;
 import by.pvt.khudnitsky.payments.commands.impl.user.LoginUserCommand;
-import by.pvt.khudnitsky.payments.constants.Parameters;
 import by.pvt.khudnitsky.payments.utils.RequestParameterParser;
-import org.apache.log4j.Logger;
 
 /**
  * @author khudnitsky

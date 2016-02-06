@@ -1,9 +1,9 @@
 /**
  * Copyright (c) 2016, Khudnitsky. All rights reserved.
  */
-package by.pvt.khudnitsky.payments.constants;
+package by.pvt.khudnitsky.payments.enums;
 /**
- * Contains constants that describe SQL requests
+ * Contains enums that describe SQL requests
  * @author khudnitsky
  * @version 1.0
  */

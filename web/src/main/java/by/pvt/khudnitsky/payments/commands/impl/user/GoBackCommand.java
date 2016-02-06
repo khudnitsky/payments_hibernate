@@ -6,7 +6,7 @@ package by.pvt.khudnitsky.payments.commands.impl.user;
 import javax.servlet.http.HttpServletRequest;
 
 import by.pvt.khudnitsky.payments.commands.AbstractCommand;
-import by.pvt.khudnitsky.payments.constants.PagePath;
+import by.pvt.khudnitsky.payments.enums.PagePath;
 import by.pvt.khudnitsky.payments.managers.ConfigurationManager;
 
 /**

@@ -3,8 +3,6 @@
  */
 package by.pvt.khudnitsky.payments.dao.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,14 +10,13 @@ import java.util.List;
 
 import by.pvt.khudnitsky.payments.dao.AbstractDao;
 import by.pvt.khudnitsky.payments.entities.User;
-import by.pvt.khudnitsky.payments.constants.ColumnName;
-import by.pvt.khudnitsky.payments.constants.SqlRequest;
+import by.pvt.khudnitsky.payments.enums.ColumnName;
+import by.pvt.khudnitsky.payments.enums.SqlRequest;
 import by.pvt.khudnitsky.payments.exceptions.DaoException;
 import by.pvt.khudnitsky.payments.managers.PoolManager;
 import by.pvt.khudnitsky.payments.utils.ClosingUtil;
 import by.pvt.khudnitsky.payments.utils.EntityBuilder;
 import by.pvt.khudnitsky.payments.utils.PaymentSystemLogger;
-import org.apache.log4j.Logger;
 
 /**
  * @author khudnitsky
