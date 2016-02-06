@@ -75,7 +75,7 @@ public class AccountServiceImplTest {
         user.setId(UserDaoImpl.getInstance().getLastId());
         AccountServiceImpl.getInstance().blockAccount(user, operation.getDescription());
         Integer expected = AccountStatusEnum.BLOCKED;
-        Integer actual = AccountDaoImpl.getInstance().getById(account.getId()).getAccountStatusEnum();
+        Integer actual = AccountDaoImpl.getInstance().getById(account.getId()).getAccountStatus();
         AccountDaoImpl.getInstance().delete(account.getId());
         Assert.assertEquals(expected, actual);
     }

@@ -30,13 +30,13 @@ public class Account extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "enum('UNBLOCKED', 'BLOCKED')")
-    public AccountStatusEnum getAccountStatusEnum() {
-        return accountStatusEnum;
+    public AccountStatusEnum getAccountStatus() {
+        return accountStatus;
     }
-    public void setAccountStatusEnum(AccountStatusEnum status) {
-        this.accountStatusEnum = status;
+    public void setAccountStatus(AccountStatusEnum status) {
+        this.accountStatus = status;
     }
-    private AccountStatusEnum accountStatusEnum;
+    private AccountStatusEnum accountStatus;
 
     @ManyToOne
     @JoinColumn(name = "F_CURRENCY_ID", updatable = false)
@@ -91,7 +91,7 @@ public class Account extends AbstractEntity {
         if (user != null ? !user.equals(account.user) : account.user != null) return false;
         if (currency != null ? !currency.equals(account.currency) : account.currency != null) return false;
         if (deposit != null ? !deposit.equals(account.deposit) : account.deposit != null) return false;
-        return accountStatusEnum == account.accountStatusEnum;
+        return accountStatus == account.accountStatus;
 
     }
 
@@ -101,14 +101,14 @@ public class Account extends AbstractEntity {
         result = 31 * result + (user != null ? user.hashCode() : 0);
         result = 31 * result + (currency != null ? currency.hashCode() : 0);
         result = 31 * result + (deposit != null ? deposit.hashCode() : 0);
-        result = 31 * result + (accountStatusEnum != null ? accountStatusEnum.hashCode() : 0);
+        result = 31 * result + (accountStatus != null ? accountStatus.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "Account{" +
-                "accountStatusEnum=" + accountStatusEnum +
+                "accountStatusEnum=" + accountStatus +
                 ", user=" + user +
                 ", currency='" + currency + '\'' +
                 ", deposit=" + deposit +
