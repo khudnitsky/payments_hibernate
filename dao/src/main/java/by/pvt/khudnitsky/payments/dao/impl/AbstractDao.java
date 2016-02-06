@@ -53,39 +53,21 @@ public abstract class AbstractDao<T extends AbstractEntity> implements IDao<T> {
     }
 
     @Override
-    public void delete(Long id) throws DaoException{
+    public List<T> getAll() throws DaoException {
+        List<T> results;
         try {
             Session session = util.getSession();
             transaction = session.beginTransaction();
-            T entity = (T) session.get(persistentClass, id);
-            session.delete(entity);
+            Criteria criteria = session.createCriteria(persistentClass);
+            results = criteria.list();
             transaction.commit();
         }
         catch(HibernateException e){
             logger.error("Error was thrown in DAO: " + e);
             transaction.rollback();
-            throw new DaoException(e.getMessage());
-        }
-        catch(IllegalArgumentException e){
-            logger.error("Error was thrown in DAO: " + e);
-            transaction.rollback();
             throw new DaoException();
         }
-    }
-
-    @Override
-    public void update(T entity) throws DaoException{
-        try {
-            Session session = util.getSession();
-            transaction = session.beginTransaction();
-            session.merge(entity);
-            transaction.commit();
-        }
-        catch(HibernateException e) {
-            logger.error("Error was thrown in DAO: " + e);
-            transaction.rollback();
-            throw new DaoException();
-        }
+        return results;
     }
 
     @Override
@@ -106,20 +88,38 @@ public abstract class AbstractDao<T extends AbstractEntity> implements IDao<T> {
     }
 
     @Override
-    public List<T> getAll() throws DaoException {
-        List<T> results;
+    public void update(T entity) throws DaoException{
         try {
             Session session = util.getSession();
             transaction = session.beginTransaction();
-            Criteria criteria = session.createCriteria(persistentClass);
-            results = criteria.list();
+            session.merge(entity);
+            transaction.commit();
+        }
+        catch(HibernateException e) {
+            logger.error("Error was thrown in DAO: " + e);
+            transaction.rollback();
+            throw new DaoException();
+        }
+    }
+
+    @Override
+    public void delete(Long id) throws DaoException{
+        try {
+            Session session = util.getSession();
+            transaction = session.beginTransaction();
+            T entity = (T) session.get(persistentClass, id);
+            session.delete(entity);
             transaction.commit();
         }
         catch(HibernateException e){
             logger.error("Error was thrown in DAO: " + e);
             transaction.rollback();
+            throw new DaoException(e.getMessage());
+        }
+        catch(IllegalArgumentException e){
+            logger.error("Error was thrown in DAO: " + e);
+            transaction.rollback();
             throw new DaoException();
         }
-        return results;
     }
 }

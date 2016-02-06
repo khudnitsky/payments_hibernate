@@ -17,7 +17,7 @@ import java.util.Set;
  */
 
 @Entity
-@SQLDelete(sql = "UPDATE T_EMPLOYEE F_STATUS SET F_STATUS = 'deleted' WHERE F_ID = ?" )  // TODO to do deleting
+@SQLDelete(sql = "UPDATE T_USER F_STATUS SET F_STATUS = 'deleted' WHERE F_ID = ?" )  // TODO to do deleting
 @OnDelete(action = OnDeleteAction.CASCADE)
 public class User extends AbstractEntity {
     private static final long serialVersionUID = 2L;
