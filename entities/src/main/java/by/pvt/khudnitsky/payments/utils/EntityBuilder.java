@@ -27,10 +27,10 @@ public class EntityBuilder {
      */
     public static Account buildAccount(Long id, String currency, Double amount, Integer status){
         Account account = new Account();
-        account.setId(id);
-        account.setCurrency(currency);
-        account.setDeposit(amount);
-        account.setAccountStatusEnum(status);
+//        account.setId(id);
+//        account.setCurrency(currency);
+//        account.setDeposit(amount);
+//        account.setAccountStatusEnum(status);
         return account;
     }
 
@@ -46,12 +46,12 @@ public class EntityBuilder {
      */
     public static Operation buildOperation(Long id, Long userId, Long accountId, Double amount, String description, String date){
         Operation operation = new Operation();
-        operation.setId(id);
-        operation.setUserId(userId);
-        operation.setAccountId(accountId);
-        operation.setAmount(amount);
-        operation.setDescription(description);
-        operation.setDate(date);
+//        operation.setId(id);
+//        operation.setUserId(userId);
+//        operation.setAccountId(accountId);
+//        operation.setAmount(amount);
+//        operation.setDescription(description);
+//        operation.setDate(date);
         return operation;
     }
 
@@ -68,13 +68,13 @@ public class EntityBuilder {
      */
     public static User buildUser(Long id, String firstName, String lastName, Long aid, String login, String password, Integer accessLevel){
         User user = new User();
-        user.setId(id);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setAccountId(aid);
-        user.setLogin(login);
-        user.setPassword(password);
-        user.setAccessLevelEnum(accessLevel);
+//        user.setId(id);
+//        user.setFirstName(firstName);
+//        user.setLastName(lastName);
+//        user.setAccountId(aid);
+//        user.setLogin(login);
+//        user.setPassword(password);
+//        user.setAccessLevelEnum(accessLevel);
         return user;
     }
 
