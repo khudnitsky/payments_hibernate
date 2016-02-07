@@ -54,19 +54,16 @@ public class AccountDaoImpl extends AbstractDao<Account> implements IAccountDao{
         boolean isBlocked = false;
         try {
             Session session = util.getSession();
-            transaction = session.beginTransaction();
             Criteria criteria = session.createCriteria(Account.class);
             criteria.add(Restrictions.eq("id", id));
             criteria.add(Restrictions.eq("accountStatus", AccountStatusType.BLOCKED));
             if(criteria.uniqueResult() != null){
                 isBlocked = true;
             }
-            transaction.commit();
         }
         catch(HibernateException e){
             message = "Unable to check account status. Error was thrown in DAO: ";
             logger.error(message + e);
-            transaction.rollback();
             throw new DaoException(message, e);
         }
         return isBlocked;
@@ -82,16 +79,13 @@ public class AccountDaoImpl extends AbstractDao<Account> implements IAccountDao{
         List<Account> list;
         try {
             Session session = util.getSession();
-            transaction = session.beginTransaction();
             Criteria criteria = session.createCriteria(Account.class);
             criteria.add(Restrictions.eq("accountStatus", AccountStatusType.BLOCKED));
             list = criteria.list();
-            transaction.commit();
         }
         catch(HibernateException e){
             message = "Unable to return list of blocked accounts. Error was thrown in DAO: ";
             logger.error(message + e);
-            transaction.rollback();
             throw new DaoException(message, e);
         }
         return list;

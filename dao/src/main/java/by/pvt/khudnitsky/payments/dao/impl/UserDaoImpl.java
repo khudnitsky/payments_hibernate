@@ -51,16 +51,13 @@ public class UserDaoImpl extends AbstractDao<User> implements IUserDao{
         List<User> results;
         try {
             Session session = util.getSession();
-            transaction = session.beginTransaction();
             Query query = session.createQuery(GET_ALL_CLIENTS);
             query.setParameter("accessLevelType", AccessLevelType.CLIENT);
             results = query.list();
-            transaction.commit();
         }
         catch(HibernateException e){
             message = "Unable to return list of clients. Error was thrown in DAO: ";
             logger.error(message + e);
-            transaction.rollback();
             throw new DaoException(message, e);
         }
         return results;
@@ -71,16 +68,13 @@ public class UserDaoImpl extends AbstractDao<User> implements IUserDao{
         User user;
         try {
             Session session = util.getSession();
-            transaction = session.beginTransaction();
             Query query = session.createQuery(GET_BY_LOGIN);
             query.setParameter("login", login);
             user = (User) query.uniqueResult();
-            transaction.commit();
         }
         catch(HibernateException e){
             message = "Unable to return user by login. Error was thrown in DAO: ";
             logger.error(message + e);
-            transaction.rollback();
             throw new DaoException(message, e);
         }
         return user;
@@ -100,19 +94,16 @@ public class UserDaoImpl extends AbstractDao<User> implements IUserDao{
         boolean isLogIn = false;
         try {
             Session session = util.getSession();
-            transaction = session.beginTransaction();
             Query query = session.createQuery(CHECK_AUTHORIZATION);
             query.setParameter("login", login);
             query.setParameter("password", password);
             if(query.uniqueResult() != null){
                 isLogIn = true;
             }
-            transaction.commit();
         }
         catch(HibernateException e){
             message = "Unable to check authorization. Error was thrown in DAO: ";
             logger.error(message + e);
-            transaction.rollback();
             throw new DaoException(message, e);
         }
         return isLogIn;

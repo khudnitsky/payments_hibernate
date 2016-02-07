@@ -27,7 +27,6 @@ import java.util.List;
 public abstract class AbstractDao<T extends AbstractEntity> implements IDao<T> {
     private static Logger logger = Logger.getLogger(AbstractDao.class);
     protected static HibernateUtil util = HibernateUtil.getInstance();
-    protected Transaction transaction;
     private Class persistentClass;
 
     protected AbstractDao(Class persistentClass){
@@ -39,15 +38,11 @@ public abstract class AbstractDao<T extends AbstractEntity> implements IDao<T> {
         Serializable id;
         try {
             Session session = util.getSession();
-            transaction = session.beginTransaction();
             session.saveOrUpdate(entity);
-            //session.update(entity);
             id = session.getIdentifier(entity);
-            transaction.commit();
         }
         catch(HibernateException e) {
-            logger.error("Error was thrown in DAO: " + e);
-            transaction.rollback();
+            logger.error("Error was thrown in DAO: " + e);     // TODO вынести в message
             throw new DaoException();
         }
         return id;
@@ -58,14 +53,11 @@ public abstract class AbstractDao<T extends AbstractEntity> implements IDao<T> {
         List<T> results;
         try {
             Session session = util.getSession();
-            transaction = session.beginTransaction();
             Criteria criteria = session.createCriteria(persistentClass);
             results = criteria.list();
-            transaction.commit();
         }
         catch(HibernateException e){
             logger.error("Error was thrown in DAO: " + e);
-            transaction.rollback();
             throw new DaoException();
         }
         return results;
@@ -76,13 +68,10 @@ public abstract class AbstractDao<T extends AbstractEntity> implements IDao<T> {
         T entity;
         try {
             Session session = util.getSession();
-            transaction = session.beginTransaction();
             entity = (T)session.get(persistentClass, id);
-            transaction.commit();
         }
         catch(HibernateException e){
             logger.error("Error was thrown in DAO: " + e);
-            transaction.rollback();
             throw new DaoException();
         }
         return entity;
@@ -92,13 +81,10 @@ public abstract class AbstractDao<T extends AbstractEntity> implements IDao<T> {
     public void update(T entity) throws DaoException{
         try {
             Session session = util.getSession();
-            transaction = session.beginTransaction();
             session.merge(entity);
-            transaction.commit();
         }
         catch(HibernateException e) {
             logger.error("Error was thrown in DAO: " + e);
-            transaction.rollback();
             throw new DaoException();
         }
     }
@@ -107,20 +93,16 @@ public abstract class AbstractDao<T extends AbstractEntity> implements IDao<T> {
     public void delete(Long id) throws DaoException{
         try {
             Session session = util.getSession();
-            transaction = session.beginTransaction();
             T entity = (T) session.get(persistentClass, id);
             session.delete(entity);
-            transaction.commit();
         }
         catch(HibernateException e){
             //TODO исправить
             logger.error("Error was thrown in DAO: " + e);
-            transaction.rollback();
             throw new DaoException(e.getMessage());
         }
         catch(IllegalArgumentException e){
             logger.error("Error was thrown in DAO: " + e);
-            transaction.rollback();
             throw new DaoException();
         }
     }
@@ -130,16 +112,13 @@ public abstract class AbstractDao<T extends AbstractEntity> implements IDao<T> {
         Long amount;
         try {
             Session session = util.getSession();
-            transaction = session.beginTransaction();
             Criteria criteria = session.createCriteria(persistentClass);
             Projection count = Projections.rowCount();
             criteria.setProjection(count);
             amount = (Long) criteria.uniqueResult();
-            transaction.commit();
         }
         catch(HibernateException e){
             logger.error("Error was thrown in DAO: " + e);
-            transaction.rollback();
             throw new DaoException();
         }
         return amount;
