@@ -5,6 +5,9 @@ import by.pvt.khudnitsky.payments.enums.AccessLevelType;
 import by.pvt.khudnitsky.payments.enums.AccountStatusType;
 import by.pvt.khudnitsky.payments.enums.CurrencyType;
 import by.pvt.khudnitsky.payments.utils.EntityBuilder;
+import by.pvt.khudnitsky.payments.utils.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.junit.*;
 
 import java.io.Serializable;
@@ -16,12 +19,14 @@ import java.util.Set;
  * Copyright (c) 2016, Khudnitsky. All rights reserved.
  */
 public class UserDaoImplTest {
-    private OperationDaoImpl operationDao = OperationDaoImpl.getInstance();
-    private UserDaoImpl userDao = UserDaoImpl.getInstance();
-    private AccountDaoImpl accountDao = AccountDaoImpl.getInstance();
-    private UserDetailDaoImpl userDetailDao = UserDetailDaoImpl.getInstance();
-    private CurrencyDaoImpl currencyDao = CurrencyDaoImpl.getInstance();
-    private AccessLevelDaoImpl accessLevelDao = AccessLevelDaoImpl.getInstance();
+    private static OperationDaoImpl operationDao;
+    private static AccountDaoImpl accountDao;
+    private static CurrencyDaoImpl currencyDao;
+    private static UserDaoImpl userDao;
+    private static UserDetailDaoImpl userDetailDao;
+    private static AccessLevelDaoImpl accessLevelDao;
+    private static HibernateUtil util;
+    private static Session session;
     private User expectedUser;
     private User actualUser;
     private Operation operation;
@@ -34,6 +39,19 @@ public class UserDaoImplTest {
     private Serializable userId;
     private Serializable currencyId;
     private Serializable accessLevelId;
+    private Transaction transaction;
+
+    @BeforeClass
+    public static void initTest(){
+        operationDao = OperationDaoImpl.getInstance();
+        accountDao = AccountDaoImpl.getInstance();
+        currencyDao = CurrencyDaoImpl.getInstance();
+        userDao = UserDaoImpl.getInstance();
+        userDetailDao = UserDetailDaoImpl.getInstance();
+        accessLevelDao = AccessLevelDaoImpl.getInstance();
+        util = HibernateUtil.getInstance();
+        session = util.getSession();
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -59,6 +77,7 @@ public class UserDaoImplTest {
         operation = EntityBuilder.buildOperation(200D, "TEST", Calendar.getInstance(), expectedUser, account);
         Set<Operation> operations = new HashSet<>();
         expectedUser.setOperations(operations);
+        transaction = session.beginTransaction();
     }
 
     @Test
@@ -70,6 +89,7 @@ public class UserDaoImplTest {
         delete();
     }
 
+    @Ignore
     @Test
     public void testGetAll() throws Exception {
         Long expectedSize = (long) userDao.getAll().size();
@@ -108,6 +128,7 @@ public class UserDaoImplTest {
 
     @After
     public void tearDown() throws Exception{
+        transaction.commit();
         expectedUser = null;
         actualUser = null;
         account = null;
@@ -120,6 +141,19 @@ public class UserDaoImplTest {
         userId = null;
         currencyId = null;
         accessLevelId = null;
+        transaction = null;
+    }
+
+    @AfterClass
+    public static void closeTest() throws Exception{
+        operationDao = null;
+        accountDao = null;
+        currencyDao = null;
+        userDao = null;
+        userDetailDao = null;
+        accessLevelDao = null;
+        util = null;
+        //session.close();           // TODO Разобраться с сессиями
     }
 
     private void persistEntities() throws Exception {
@@ -131,7 +165,7 @@ public class UserDaoImplTest {
         operationId = operationDao.save(operation);
     }
 
-    private void delete() throws by.pvt.khudnitsky.payments.exceptions.DaoException {
+    private void delete() throws Exception {
         operationDao.delete((Long) operationId);
         userDao.delete((Long) userId);
         currencyDao.delete((Long) currencyId);

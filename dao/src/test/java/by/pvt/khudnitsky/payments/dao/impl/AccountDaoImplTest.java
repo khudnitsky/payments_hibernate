@@ -4,6 +4,9 @@ import by.pvt.khudnitsky.payments.entities.*;
 import by.pvt.khudnitsky.payments.enums.AccountStatusType;
 import by.pvt.khudnitsky.payments.enums.CurrencyType;
 import by.pvt.khudnitsky.payments.utils.EntityBuilder;
+import by.pvt.khudnitsky.payments.utils.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.junit.*;
 
 import java.io.Serializable;
@@ -12,10 +15,12 @@ import java.io.Serializable;
  * Copyright (c) 2016, Khudnitsky. All rights reserved.
  */
 public class AccountDaoImplTest {
-    private AccountDaoImpl accountDao = AccountDaoImpl.getInstance();
-    private CurrencyDaoImpl currencyDao = CurrencyDaoImpl.getInstance();
-    private UserDaoImpl userDao = UserDaoImpl.getInstance();
-    private UserDetailDaoImpl userDetailDao = UserDetailDaoImpl.getInstance();
+    private static AccountDaoImpl accountDao;
+    private static CurrencyDaoImpl currencyDao;
+    private static UserDaoImpl userDao;
+    private static UserDetailDaoImpl userDetailDao;
+    private static HibernateUtil util;
+    private static Session session;
     private Account expectedAccount;
     private Account actualAccount;
     private User user;
@@ -24,7 +29,17 @@ public class AccountDaoImplTest {
     private Serializable accountId;
     private Serializable userId;
     private Serializable currencyId;
+    private Transaction transaction;
 
+    @BeforeClass
+    public static void initTest(){
+        accountDao = AccountDaoImpl.getInstance();
+        currencyDao = CurrencyDaoImpl.getInstance();
+        userDao = UserDaoImpl.getInstance();
+        userDetailDao = UserDetailDaoImpl.getInstance();
+        util = HibernateUtil.getInstance();
+        session = util.getSession();
+    }
 
     @Before
     public void setUp(){
@@ -33,6 +48,8 @@ public class AccountDaoImplTest {
         user = EntityBuilder.buildUser("TEST", "TEST", "TEST", "TEST", userDetail);
         currency = EntityBuilder.buildCurrency(CurrencyType.BYR);
         expectedAccount = EntityBuilder.buildAccount(200D, AccountStatusType.UNBLOCKED, currency, user);
+        session = util.getSession();
+        transaction = session.beginTransaction();
     }
 
     @Test
@@ -100,6 +117,7 @@ public class AccountDaoImplTest {
         delete();
     }
 
+    @Ignore
     @Test
     public void testGetBlockedAccounts() throws Exception {
         //TODO доделать
@@ -112,6 +130,7 @@ public class AccountDaoImplTest {
 
     @After
     public void tearDown() throws Exception{
+        transaction.commit();
         expectedAccount = null;
         actualAccount = null;
         user = null;
@@ -120,6 +139,17 @@ public class AccountDaoImplTest {
         accountId = null;
         userId = null;
         currencyId = null;
+        transaction = null;
+    }
+
+    @AfterClass
+    public static void closeTest() throws Exception{
+        accountDao = null;
+        currencyDao = null;
+        userDao = null;
+        userDetailDao = null;
+        util = null;
+        //session.close();
     }
 
     private void persistEntities() throws Exception {
