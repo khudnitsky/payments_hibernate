@@ -1,6 +1,7 @@
 package by.pvt.khudnitsky.payments.services.impl;
 
 import by.pvt.khudnitsky.payments.entities.Card;
+import by.pvt.khudnitsky.payments.exceptions.ServiceException;
 import by.pvt.khudnitsky.payments.services.AbstractService;
 
 import java.sql.Connection;
@@ -30,7 +31,7 @@ public class CardServiceImpl extends AbstractService<Card> {
      * @throws SQLException
      */
     @Override
-    public void add(Card entity) throws SQLException {
+    public void save(Card entity) throws ServiceException {
         throw new UnsupportedOperationException();
     }
 
@@ -41,7 +42,7 @@ public class CardServiceImpl extends AbstractService<Card> {
      * @throws SQLException
      */
     @Override
-    public List<Card> getAll() throws SQLException {
+    public List<Card> getAll() throws ServiceException {
         throw new UnsupportedOperationException();
     }
 
@@ -53,7 +54,7 @@ public class CardServiceImpl extends AbstractService<Card> {
      * @throws SQLException
      */
     @Override
-    public Card getById(Long id) throws SQLException {
+    public Card getById(Long id) throws ServiceException {
         throw new UnsupportedOperationException();
     }
 
@@ -64,7 +65,7 @@ public class CardServiceImpl extends AbstractService<Card> {
      * @throws SQLException
      */
     @Override
-    public void update(Card entity) throws SQLException {
+    public void update(Card entity) throws ServiceException {
         throw new UnsupportedOperationException();
     }
 
@@ -75,7 +76,7 @@ public class CardServiceImpl extends AbstractService<Card> {
      * @throws SQLException
      */
     @Override
-    public void delete(Long id) throws SQLException {
+    public void delete(Long id) throws ServiceException {
         throw new UnsupportedOperationException();
     }
 }
