@@ -13,8 +13,8 @@ import org.hibernate.cfg.Configuration;
  */
 public class HibernateUtil {
     private static Logger logger = Logger.getLogger(HibernateUtil.class);
-    private static HibernateUtil util = null;
-    private SessionFactory sessionFactory = null;
+    private static HibernateUtil util;
+    private SessionFactory sessionFactory;
     private final ThreadLocal <Session> sessions = new ThreadLocal<Session>();
 
     private HibernateUtil(){
