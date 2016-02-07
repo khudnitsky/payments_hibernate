@@ -46,6 +46,8 @@ public class UserDaoImpl extends AbstractDao<User> implements IUserDao{
         return instance;
     }
 
+    // TODO дописать тесты
+
     @Override
     public List<User> getAll() throws DaoException {
         List<User> results;
@@ -78,15 +80,6 @@ public class UserDaoImpl extends AbstractDao<User> implements IUserDao{
             throw new DaoException(message, e);
         }
         return user;
-    }
-
-    @Override
-    public boolean isNewUser(String login) throws DaoException {
-        boolean isNew = true;
-        if(getByLogin(login) != null){
-            isNew = false;
-        }
-        return isNew;
     }
 
     @Override
