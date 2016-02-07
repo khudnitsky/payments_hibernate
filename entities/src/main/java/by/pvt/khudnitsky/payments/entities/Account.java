@@ -3,7 +3,7 @@
  */
 package by.pvt.khudnitsky.payments.entities;
 
-import by.pvt.khudnitsky.payments.enums.AccountStatusEnum;
+import by.pvt.khudnitsky.payments.enums.AccountStatusType;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -30,13 +30,13 @@ public class Account extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "enum('UNBLOCKED', 'BLOCKED')")
-    public AccountStatusEnum getAccountStatus() {
+    public AccountStatusType getAccountStatus() {
         return accountStatus;
     }
-    public void setAccountStatus(AccountStatusEnum status) {
+    public void setAccountStatus(AccountStatusType status) {
         this.accountStatus = status;
     }
-    private AccountStatusEnum accountStatus;
+    private AccountStatusType accountStatus;
 
     @ManyToOne
     @JoinColumn(name = "F_CURRENCY_ID", updatable = false)

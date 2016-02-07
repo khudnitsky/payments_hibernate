@@ -6,7 +6,7 @@ package by.pvt.khudnitsky.payments.commands.impl.client;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import by.pvt.khudnitsky.payments.enums.AccessLevelEnum;
+import by.pvt.khudnitsky.payments.enums.AccessLevelType;
 import by.pvt.khudnitsky.payments.enums.PagePath;
 import by.pvt.khudnitsky.payments.commands.AbstractCommand;
 import by.pvt.khudnitsky.payments.managers.ConfigurationManager;
@@ -23,8 +23,8 @@ public class GoToAddFundsCommand extends AbstractCommand {
     public String execute(HttpServletRequest request) {
         String page;
         HttpSession session = request.getSession();
-        AccessLevelEnum accessLevelEnum = RequestParameterParser.getUserType(request);
-        if(accessLevelEnum == AccessLevelEnum.CLIENT){
+        AccessLevelType accessLevelType = RequestParameterParser.getUserType(request);
+        if(accessLevelType == AccessLevelType.CLIENT){
             page = ConfigurationManager.getInstance().getProperty(PagePath.CLIENT_ADDFUNDS_PAGE_PATH);
         }
         else{

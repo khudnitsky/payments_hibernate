@@ -1,6 +1,6 @@
 package by.pvt.khudnitsky.payments.services.impl;
 
-import by.pvt.khudnitsky.payments.enums.AccessLevelEnum;
+import by.pvt.khudnitsky.payments.enums.AccessLevelType;
 import by.pvt.khudnitsky.payments.dao.impl.AccountDaoImpl;
 import by.pvt.khudnitsky.payments.utils.EntityBuilder;
 import by.pvt.khudnitsky.payments.dao.impl.UserDaoImpl;
@@ -63,7 +63,7 @@ public class UserServiceImplTest {
     public void testCheckAccessLevel() throws Exception {
         AccountDaoImpl.getInstance().save(account);
         UserDaoImpl.getInstance().save(user);
-        AccessLevelEnum actual = UserServiceImpl.getInstance().checkAccessLevel(user);
+        AccessLevelType actual = UserServiceImpl.getInstance().checkAccessLevel(user);
         AccountDaoImpl.getInstance().delete(account.getId());
         Assert.assertEquals(user.getAccessLevelEnum(), (Integer) actual.ordinal());
     }

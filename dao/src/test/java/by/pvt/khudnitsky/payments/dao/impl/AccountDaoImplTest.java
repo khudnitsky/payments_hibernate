@@ -1,63 +1,137 @@
 package by.pvt.khudnitsky.payments.dao.impl;
 
-import by.pvt.khudnitsky.payments.entities.Account;
+import by.pvt.khudnitsky.payments.entities.*;
+import by.pvt.khudnitsky.payments.enums.AccountStatusType;
+import by.pvt.khudnitsky.payments.enums.CurrencyType;
 import by.pvt.khudnitsky.payments.utils.EntityBuilder;
 import org.junit.*;
+
+import java.io.Serializable;
 
 /**
  * Copyright (c) 2016, Khudnitsky. All rights reserved.
  */
 public class AccountDaoImplTest {
-    private Account expected;
+    private AccountDaoImpl accountDao = AccountDaoImpl.getInstance();
+    private CurrencyDaoImpl currencyDao = CurrencyDaoImpl.getInstance();
+    private UserDaoImpl userDao = UserDaoImpl.getInstance();
+    private UserDetailDaoImpl userDetailDao = UserDetailDaoImpl.getInstance();
+    private Account expectedAccount;
+    private Account actualAccount;
+    private User user;
+    private UserDetail userDetail;
+    private Currency currency;
+    private Serializable accountId;
+    private Serializable userId;
+    private Serializable currencyId;
+
 
     @Before
     public void setUp(){
-        expected = EntityBuilder.buildAccount(100L, "TEST", 100D, 0);
-    }
-
-    @After
-    public void tearDown(){
-        expected = null;
-    }
-
-    @Test
-    public void testGetInstance() throws Exception {
-        AccountDaoImpl instance1 = AccountDaoImpl.getInstance();
-        AccountDaoImpl instance2 = AccountDaoImpl.getInstance();
-        Assert.assertEquals(instance1.hashCode(), instance2.hashCode());
+        Address address = EntityBuilder.buildAddress("TEST", "TEST", "TEST");
+        userDetail = EntityBuilder.buildUserDetail(address);
+        user = EntityBuilder.buildUser("TEST", "TEST", "TEST", "TEST", userDetail);
+        currency = EntityBuilder.buildCurrency(CurrencyType.BYR);
+        expectedAccount = EntityBuilder.buildAccount(200D, AccountStatusType.UNBLOCKED, currency, user);
     }
 
     @Test
-    public void testAdd() throws Exception{
-        AccountDaoImpl.getInstance().save(expected);
-        Account actual = AccountDaoImpl.getInstance().getById(expected.getId());
-        Assert.assertEquals(expected, actual);
-        AccountDaoImpl.getInstance().delete(expected.getId());
+    public void testSave() throws Exception{
+        persistEntities();
+        expectedAccount.setId((Long) accountId);
+        actualAccount = accountDao.getById((Long) accountId);
+        Assert.assertEquals("save() method failed: ", expectedAccount, actualAccount);
+        delete();
+    }
+
+    @Test
+    public void testGetAll() throws Exception {
+        Long expectedSize = (long) accountDao.getAll().size();
+        Long actualSize = accountDao.getAmount();
+        Assert.assertEquals("getAll() method failed: ", expectedSize, actualSize);
     }
 
     @Test
     public void testGetById() throws Exception {
-        expected = EntityBuilder.buildAccount(1L, "ADMIN", 0D, 0);
-        Account actual = AccountDaoImpl.getInstance().getById(expected.getId());
-        Assert.assertEquals(expected, actual);
+        persistEntities();
+        expectedAccount.setId((Long) accountId);
+        actualAccount = accountDao.getById((Long) accountId);
+        Assert.assertEquals("getById() method failed: ", expectedAccount, actualAccount);
+        delete();
+    }
+
+
+    @Test
+    public void testUpdate() throws Exception {
+        persistEntities();
+        expectedAccount.setId((Long) accountId);
+        expectedAccount.setDeposit(3000D);
+        accountDao.update(expectedAccount);
+        actualAccount = accountDao.getById((Long) accountId);
+        Assert.assertEquals("update() method failed: ", expectedAccount, actualAccount);
+        delete();
     }
 
     @Test
-    public void testUpdateAmount() throws Exception {
-        AccountDaoImpl.getInstance().save(expected);
-        double adding = 100;
-        expected.setDeposit(expected.getDeposit() + adding);
-        AccountDaoImpl.getInstance().updateAmount(expected.getId(), adding);
-        Account actual = AccountDaoImpl.getInstance().getById(expected.getId());
-        AccountDaoImpl.getInstance().delete(expected.getId());
-        Assert.assertEquals(expected, actual);
+    public void testDelete() throws Exception {
+        persistEntities();
+        delete();
+        actualAccount = accountDao.getById((Long) accountId);
+        Assert.assertNull("delete() method failed: ", actualAccount);
     }
 
     @Test
-    public void testDelete() throws Exception{
-        AccountDaoImpl.getInstance().save(expected);
-        AccountDaoImpl.getInstance().delete(expected.getId());
-        Account actual = AccountDaoImpl.getInstance().getById(expected.getId());
-        Assert.assertNull(actual);
+    public void testIsAccountStatusBlocked() throws Exception {
+        Boolean expected;
+        Boolean actual;
+
+        expectedAccount.setAccountStatus(AccountStatusType.UNBLOCKED);
+        persistEntities();
+        expected = false;
+        actual = accountDao.isAccountStatusBlocked((Long) accountId);
+        Assert.assertEquals("isAccountStatusBlocked() method failed: ", expected, actual);
+
+        expectedAccount.setAccountStatus(AccountStatusType.BLOCKED);
+        accountDao.update(expectedAccount);
+        expected = true;
+        actual = accountDao.isAccountStatusBlocked((Long) accountId);
+        Assert.assertEquals("isAccountStatusBlocked() method failed: ", expected, actual);
+
+        delete();
+    }
+
+    @Test
+    public void testGetBlockedAccounts() throws Exception {
+        //TODO доделать
+//        expectedAccount.setAccountStatus(AccountStatusType.BLOCKED);
+//        persistEntities();
+//        Long expectedSize = (long) accountDao.getBlockedAccounts().size();
+//        Long actualSize = accountDao.getAmount();
+//        Assert.assertEquals("getAll() method failed: ", expectedSize, actualSize);
+    }
+
+    @After
+    public void tearDown() throws Exception{
+        expectedAccount = null;
+        actualAccount = null;
+        user = null;
+        userDetail = null;
+        currency = null;
+        accountId = null;
+        userId = null;
+        currencyId = null;
+    }
+
+    private void persistEntities() throws Exception {
+        userDetailDao.save(userDetail);
+        userId = userDao.save(user);
+        currencyId = currencyDao.save(currency);
+        accountId = accountDao.save(expectedAccount);
+    }
+
+    private void delete() throws by.pvt.khudnitsky.payments.exceptions.DaoException {
+        accountDao.delete((Long) accountId);
+        userDao.delete((Long) userId);
+        currencyDao.delete((Long) currencyId);
     }
 }

@@ -1,6 +1,6 @@
 package by.pvt.khudnitsky.payments.services.impl;
 
-import by.pvt.khudnitsky.payments.enums.AccessLevelEnum;
+import by.pvt.khudnitsky.payments.enums.AccessLevelType;
 import by.pvt.khudnitsky.payments.dao.impl.AccountDaoImpl;
 import by.pvt.khudnitsky.payments.dao.impl.UserDaoImpl;
 import by.pvt.khudnitsky.payments.entities.Account;
@@ -132,15 +132,15 @@ public class UserServiceImpl extends AbstractService<User> {
         return user;
     }
 
-    public AccessLevelEnum checkAccessLevel(User user) throws SQLException{
-        AccessLevelEnum accessLevelEnum;
-        if(AccessLevelEnum.CLIENT.ordinal() == user.getAccessLevelEnum()){
-            accessLevelEnum = AccessLevelEnum.CLIENT;
+    public AccessLevelType checkAccessLevel(User user) throws SQLException{
+        AccessLevelType accessLevelType;
+        if(AccessLevelType.CLIENT.ordinal() == user.getAccessLevelEnum()){
+            accessLevelType = AccessLevelType.CLIENT;
         }
         else{
-            accessLevelEnum = AccessLevelEnum.ADMINISTRATOR;
+            accessLevelType = AccessLevelType.ADMINISTRATOR;
         }
-        return accessLevelEnum;
+        return accessLevelType;
     }
 
     public boolean checkIsNewUser(User user) throws SQLException, ServiceException {

@@ -13,7 +13,7 @@ import java.io.Serializable;
 public class Address implements Serializable {
     private static final long serialVersionUID = 3L;
 
-    @Column(name = "F_CITY")
+    @Column(name = "F_CITY", length = 50)
     public String getCity() {
         return city;
     }
@@ -22,7 +22,7 @@ public class Address implements Serializable {
     }
     private String city;
 
-    @Column(name = "F_STREET")
+    @Column(name = "F_STREET", length = 50)
     public String getStreet() {
         return street;
     }
@@ -31,7 +31,7 @@ public class Address implements Serializable {
     }
     private String street;
 
-    @Column(name = "F_ZIP_CODE")
+    @Column(name = "F_ZIP_CODE", length = 15)
     public String getZipCode() {
         return zipCode;
     }

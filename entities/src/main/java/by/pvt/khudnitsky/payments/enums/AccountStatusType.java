@@ -8,6 +8,6 @@ package by.pvt.khudnitsky.payments.enums;
  * @version 1.0
  *
  */
-public enum AccountStatusEnum {
+public enum AccountStatusType {
     UNBLOCKED, BLOCKED
 }

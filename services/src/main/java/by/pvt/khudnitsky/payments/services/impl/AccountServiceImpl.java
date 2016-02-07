@@ -5,7 +5,7 @@ import by.pvt.khudnitsky.payments.dao.impl.OperationDaoImpl;
 import by.pvt.khudnitsky.payments.entities.Account;
 import by.pvt.khudnitsky.payments.entities.Operation;
 import by.pvt.khudnitsky.payments.entities.User;
-import by.pvt.khudnitsky.payments.enums.AccountStatusEnum;
+import by.pvt.khudnitsky.payments.enums.AccountStatusType;
 import by.pvt.khudnitsky.payments.exceptions.DaoException;
 import by.pvt.khudnitsky.payments.exceptions.ServiceException;
 import by.pvt.khudnitsky.payments.services.AbstractService;
@@ -182,7 +182,7 @@ public class AccountServiceImpl extends AbstractService<Account> {
             connection.setAutoCommit(false);
             Operation operation = buildOperation(user, description, 0D);
             OperationDaoImpl.getInstance().save(operation);
-            AccountDaoImpl.getInstance().updateAccountStatus(user.getAccountId(), AccountStatusEnum.BLOCKED);
+            AccountDaoImpl.getInstance().updateAccountStatus(user.getAccountId(), AccountStatusType.BLOCKED);
             connection.commit();
             PaymentSystemLogger.getInstance().logError(getClass(), "Transaction succeeded");
         }

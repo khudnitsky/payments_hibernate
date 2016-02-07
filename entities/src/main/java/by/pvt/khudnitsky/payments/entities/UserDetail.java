@@ -47,8 +47,7 @@ public class UserDetail extends AbstractEntity{
 
         UserDetail that = (UserDetail) o;
 
-        if (address != null ? !address.equals(that.address) : that.address != null) return false;
-        return user != null ? user.equals(that.user) : that.user == null;
+        return address != null ? address.equals(that.address) : that.address == null;
 
     }
 
@@ -56,7 +55,6 @@ public class UserDetail extends AbstractEntity{
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + (address != null ? address.hashCode() : 0);
-        result = 31 * result + (user != null ? user.hashCode() : 0);
         return result;
     }
 
@@ -64,7 +62,6 @@ public class UserDetail extends AbstractEntity{
     public String toString() {
         return "UserDetail{" +
                 "address=" + address +
-                ", user=" + user +
                 '}';
     }
 }

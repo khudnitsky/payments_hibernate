@@ -6,24 +6,14 @@ package by.pvt.khudnitsky.payments.dao.impl;
 import by.pvt.khudnitsky.payments.dao.AbstractDao;
 import by.pvt.khudnitsky.payments.dao.IAccountDao;
 import by.pvt.khudnitsky.payments.entities.Account;
-import by.pvt.khudnitsky.payments.enums.AccountStatusEnum;
-import by.pvt.khudnitsky.payments.enums.ColumnName;
-import by.pvt.khudnitsky.payments.enums.SqlRequest;
+import by.pvt.khudnitsky.payments.enums.AccountStatusType;
 import by.pvt.khudnitsky.payments.exceptions.DaoException;
-import by.pvt.khudnitsky.payments.managers.PoolManager;
-import by.pvt.khudnitsky.payments.utils.ClosingUtil;
-import by.pvt.khudnitsky.payments.utils.EntityBuilder;
-import by.pvt.khudnitsky.payments.utils.PaymentSystemLogger;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -67,7 +57,7 @@ public class AccountDaoImpl extends AbstractDao<Account> implements IAccountDao{
             transaction = session.beginTransaction();
             Criteria criteria = session.createCriteria(Account.class);
             criteria.add(Restrictions.eq("id", id));
-            criteria.add(Restrictions.eq("accountStatus", AccountStatusEnum.BLOCKED));
+            criteria.add(Restrictions.eq("accountStatus", AccountStatusType.BLOCKED));
             if(criteria.uniqueResult() != null){
                 isBlocked = true;
             }
@@ -94,7 +84,7 @@ public class AccountDaoImpl extends AbstractDao<Account> implements IAccountDao{
             Session session = util.getSession();
             transaction = session.beginTransaction();
             Criteria criteria = session.createCriteria(Account.class);
-            criteria.add(Restrictions.eq("accountStatus", AccountStatusEnum.BLOCKED));
+            criteria.add(Restrictions.eq("accountStatus", AccountStatusType.BLOCKED));
             list = criteria.list();
             transaction.commit();
         }

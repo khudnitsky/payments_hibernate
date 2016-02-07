@@ -30,8 +30,8 @@ public class BalanceCommand extends AbstractCommand {
     public String execute(HttpServletRequest request) {
         String page;
         HttpSession session = request.getSession();
-        AccessLevelEnum accessLevelEnum = RequestParameterParser.getUserType(request);
-        if(accessLevelEnum == AccessLevelEnum.CLIENT){
+        AccessLevelType accessLevelType = RequestParameterParser.getUserType(request);
+        if(accessLevelType == AccessLevelType.CLIENT){
             user = RequestParameterParser.getRecordUser(request);
             try {
                 Account account = AccountServiceImpl.getInstance().getById(user.getAccountId());

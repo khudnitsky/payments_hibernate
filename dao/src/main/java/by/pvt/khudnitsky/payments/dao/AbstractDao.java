@@ -11,6 +11,8 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
 
 import java.io.Serializable;
 import java.util.List;
@@ -39,7 +41,7 @@ public abstract class AbstractDao<T extends AbstractEntity> implements IDao<T> {
             Session session = util.getSession();
             transaction = session.beginTransaction();
             session.saveOrUpdate(entity);
-            session.update(entity);
+            //session.update(entity);
             id = session.getIdentifier(entity);
             transaction.commit();
         }
@@ -111,6 +113,7 @@ public abstract class AbstractDao<T extends AbstractEntity> implements IDao<T> {
             transaction.commit();
         }
         catch(HibernateException e){
+            //TODO исправить
             logger.error("Error was thrown in DAO: " + e);
             transaction.rollback();
             throw new DaoException(e.getMessage());
@@ -120,5 +123,25 @@ public abstract class AbstractDao<T extends AbstractEntity> implements IDao<T> {
             transaction.rollback();
             throw new DaoException();
         }
+    }
+
+    @Override
+    public Long getAmount() throws DaoException{
+        Long amount;
+        try {
+            Session session = util.getSession();
+            transaction = session.beginTransaction();
+            Criteria criteria = session.createCriteria(persistentClass);
+            Projection count = Projections.rowCount();
+            criteria.setProjection(count);
+            amount = (Long) criteria.uniqueResult();
+            transaction.commit();
+        }
+        catch(HibernateException e){
+            logger.error("Error was thrown in DAO: " + e);
+            transaction.rollback();
+            throw new DaoException();
+        }
+        return amount;
     }
 }

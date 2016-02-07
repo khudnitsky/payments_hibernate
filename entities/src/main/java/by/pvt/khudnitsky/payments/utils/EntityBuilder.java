@@ -4,10 +4,11 @@
 package by.pvt.khudnitsky.payments.utils;
 
 import by.pvt.khudnitsky.payments.entities.*;
-import by.pvt.khudnitsky.payments.enums.AccountStatusEnum;
+import by.pvt.khudnitsky.payments.enums.AccessLevelType;
+import by.pvt.khudnitsky.payments.enums.AccountStatusType;
+import by.pvt.khudnitsky.payments.enums.CurrencyType;
 
 import java.util.Calendar;
-import java.util.Set;
 
 /**
  * Utility class for entities buildings
@@ -18,14 +19,12 @@ import java.util.Set;
 public class EntityBuilder {
     private EntityBuilder(){}
 
-    public static Account buildAccount(Double deposit, AccountStatusEnum accountStatus, Currency currency, User user, Set<Card> cards, Set<Operation> operations){
+    public static Account buildAccount(Double deposit, AccountStatusType accountStatus, Currency currency, User user){
         Account account = new Account();
         account.setDeposit(deposit);
         account.setAccountStatus(accountStatus);
         account.setCurrency(currency);
         account.setUser(user);
-        account.setCards(cards);
-        account.setOperations(operations);
         return account;
     }
 
@@ -39,16 +38,13 @@ public class EntityBuilder {
         return operation;
     }
 
-    public static User buildUser(String firstName, String lastName, String login, String password, UserDetail userDetail, Set<Account> accounts, Set<Operation> operations, Set<AccessLevel> accessLevels){
+    public static User buildUser(String firstName, String lastName, String login, String password, UserDetail userDetail){
         User user = new User();
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setLogin(login);
         user.setPassword(password);
         user.setUserDetail(userDetail);
-        user.setAccounts(accounts);
-        user.setOperations(operations);
-        user.setAccessLevels(accessLevels);
         return user;
     }
 
@@ -59,5 +55,31 @@ public class EntityBuilder {
      */
     public static Card buildCard(){
         throw new UnsupportedOperationException();
+    }
+
+    public static Currency buildCurrency(CurrencyType currencyType){
+        Currency currency = new Currency();
+        currency.setCurrencyType(currencyType);
+        return currency;
+    }
+
+    public static UserDetail buildUserDetail(Address address){
+        UserDetail userDetail = new UserDetail();
+        userDetail.setAddress(address);
+        return userDetail;
+    }
+
+    public static Address buildAddress (String city, String street, String zipCode){
+        Address address = new Address();
+        address.setCity(city);
+        address.setStreet(street);
+        address.setZipCode(zipCode);
+        return address;
+    }
+
+    public static AccessLevel buildAccessLevel(AccessLevelType accessLevelType){
+        AccessLevel accessLevel = new AccessLevel();
+        accessLevel.setAccessLevelType(accessLevelType);
+        return accessLevel;
     }
 }

@@ -1,11 +1,8 @@
 package by.pvt.khudnitsky.payments.entities;
 
-import by.pvt.khudnitsky.payments.enums.CurrencyEnum;
+import by.pvt.khudnitsky.payments.enums.CurrencyType;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.Set;
 
 /**
@@ -17,13 +14,15 @@ import java.util.Set;
 public class Currency extends AbstractEntity{
     private static final long serialVersionUID = 9L;
 
-    public CurrencyEnum getCurrency() {
-        return currency;
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "enum('BYR', 'USD', 'EUR')", length = 3)
+    public CurrencyType getCurrencyType() {
+        return currencyType;
     }
-    public void setCurrency(CurrencyEnum currency) {
-        this.currency = currency;
+    public void setCurrencyType(CurrencyType currency) {
+        this.currencyType = currency;
     }
-    private CurrencyEnum currency;
+    private CurrencyType currencyType;
 
     @OneToMany(mappedBy = "currency", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public Set<Account> getAccounts() {
@@ -46,21 +45,21 @@ public class Currency extends AbstractEntity{
 
         Currency currency1 = (Currency) o;
 
-        return currency == currency1.currency;
+        return currencyType == currency1.currencyType;
 
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (currency != null ? currency.hashCode() : 0);
+        result = 31 * result + (currencyType != null ? currencyType.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "Currency{" +
-                "currency=" + currency +
+                "currency=" + currencyType +
                 '}';
     }
 }

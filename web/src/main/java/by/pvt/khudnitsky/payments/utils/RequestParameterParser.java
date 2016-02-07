@@ -2,7 +2,7 @@ package by.pvt.khudnitsky.payments.utils;
 
 import by.pvt.khudnitsky.payments.commands.factory.CommandType;
 import by.pvt.khudnitsky.payments.enums.Parameters;
-import by.pvt.khudnitsky.payments.enums.AccessLevelEnum;
+import by.pvt.khudnitsky.payments.enums.AccessLevelType;
 import by.pvt.khudnitsky.payments.entities.Account;
 import by.pvt.khudnitsky.payments.entities.User;
 
@@ -55,8 +55,8 @@ public class RequestParameterParser {
         return account;
     }
 
-    public static AccessLevelEnum getUserType(HttpServletRequest request) {
-        return (AccessLevelEnum) request.getSession().getAttribute(Parameters.USERTYPE);
+    public static AccessLevelType getUserType(HttpServletRequest request) {
+        return (AccessLevelType) request.getSession().getAttribute(Parameters.USERTYPE);
     }
 
     public static List<Account> getAccountsList(HttpServletRequest request) {

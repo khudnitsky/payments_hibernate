@@ -8,7 +8,7 @@ package by.pvt.khudnitsky.payments.enums;
  * @author khudnitsky
  * @version 1.0
  */
-public enum AccessLevelEnum {
+public enum AccessLevelType {
     CLIENT, ADMINISTRATOR
 }
 

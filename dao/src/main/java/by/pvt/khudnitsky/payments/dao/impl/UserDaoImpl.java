@@ -8,6 +8,7 @@ import java.util.List;
 import by.pvt.khudnitsky.payments.dao.AbstractDao;
 import by.pvt.khudnitsky.payments.dao.IUserDao;
 import by.pvt.khudnitsky.payments.entities.User;
+import by.pvt.khudnitsky.payments.enums.AccessLevelType;
 import by.pvt.khudnitsky.payments.exceptions.DaoException;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -22,7 +23,7 @@ import org.hibernate.Session;
 public class UserDaoImpl extends AbstractDao<User> implements IUserDao{
     private static Logger logger = Logger.getLogger(UserDaoImpl.class);
     private static UserDaoImpl instance;
-    private final String GET_ALL_CLIENTS = "from User as user inner join AccessLevel as level where level.accessLevel = AccessLevelEnum.CLIENT";
+    private final String GET_ALL_CLIENTS = "from User user join user.accessLevels level where level.accessLevelType = :accessLevelType";
     private final String GET_BY_LOGIN = "from User where login = :login"; // TODO вынести в отдельный класс
     private final String CHECK_AUTHORIZATION = "from User where login = :login and password = :password";
 
@@ -52,6 +53,7 @@ public class UserDaoImpl extends AbstractDao<User> implements IUserDao{
             Session session = util.getSession();
             transaction = session.beginTransaction();
             Query query = session.createQuery(GET_ALL_CLIENTS);
+            query.setParameter("accessLevelType", AccessLevelType.CLIENT);
             results = query.list();
             transaction.commit();
         }

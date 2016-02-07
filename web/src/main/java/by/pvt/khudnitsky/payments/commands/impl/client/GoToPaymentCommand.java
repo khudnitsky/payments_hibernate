@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import by.pvt.khudnitsky.payments.enums.PagePath;
-import by.pvt.khudnitsky.payments.enums.AccessLevelEnum;
+import by.pvt.khudnitsky.payments.enums.AccessLevelType;
 import by.pvt.khudnitsky.payments.commands.AbstractCommand;
 import by.pvt.khudnitsky.payments.managers.ConfigurationManager;
 import by.pvt.khudnitsky.payments.utils.RequestParameterParser;
@@ -23,8 +23,8 @@ public class GoToPaymentCommand extends AbstractCommand {
     public String execute(HttpServletRequest request) {
         String page;
         HttpSession session = request.getSession();
-        AccessLevelEnum accessLevelEnum = RequestParameterParser.getUserType(request);
-        if(accessLevelEnum == AccessLevelEnum.CLIENT){
+        AccessLevelType accessLevelType = RequestParameterParser.getUserType(request);
+        if(accessLevelType == AccessLevelType.CLIENT){
             page = ConfigurationManager.getInstance().getProperty(PagePath.CLIENT_PAYMENT_PAGE_PATH);
         }
         else{

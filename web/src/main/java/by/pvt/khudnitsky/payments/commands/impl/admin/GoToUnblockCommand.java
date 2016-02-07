@@ -29,8 +29,8 @@ public class GoToUnblockCommand extends AbstractCommand {
     public String execute(HttpServletRequest request) {
         String page;
         HttpSession session = request.getSession();
-        AccessLevelEnum accessLevelEnum = RequestParameterParser.getUserType(request);
-        if(accessLevelEnum == AccessLevelEnum.ADMINISTRATOR){
+        AccessLevelType accessLevelType = RequestParameterParser.getUserType(request);
+        if(accessLevelType == AccessLevelType.ADMINISTRATOR){
             try {
                 List<Account> list = AccountServiceImpl.getInstance().getBlockedAccounts();
                 session.setAttribute(Parameters.ACCOUNTS_LIST, list);

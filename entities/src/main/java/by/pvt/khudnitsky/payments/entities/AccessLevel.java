@@ -1,6 +1,6 @@
 package by.pvt.khudnitsky.payments.entities;
 
-import by.pvt.khudnitsky.payments.enums.AccessLevelEnum;
+import by.pvt.khudnitsky.payments.enums.AccessLevelType;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -17,13 +17,13 @@ public class AccessLevel extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "enum('CLIENT', 'ADMINISTRATOR')")
-    public AccessLevelEnum getAccessLevel() {
-        return accessLevel;
+    public AccessLevelType getAccessLevelType() {
+        return accessLevelType;
     }
-    public void setAccessLevel(AccessLevelEnum accessLevel) {
-        this.accessLevel = accessLevel;
+    public void setAccessLevelType(AccessLevelType accessLevel) {
+        this.accessLevelType = accessLevel;
     }
-    private AccessLevelEnum accessLevel;
+    private AccessLevelType accessLevelType;
 
     @ManyToMany(mappedBy = "accessLevels")
     public Set<User> getUsers() {
@@ -46,21 +46,21 @@ public class AccessLevel extends AbstractEntity {
 
         AccessLevel that = (AccessLevel) o;
 
-        return accessLevel == that.accessLevel;
+        return accessLevelType == that.accessLevelType;
 
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (accessLevel != null ? accessLevel.hashCode() : 0);
+        result = 31 * result + (accessLevelType != null ? accessLevelType.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "AccessLevel{" +
-                "accessLevel=" + accessLevel +
+                "accessLevel=" + accessLevelType +
                 '}';
     }
 }

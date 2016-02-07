@@ -28,12 +28,12 @@ public class UnblockCommand extends AbstractCommand {
     public String execute(HttpServletRequest request) {
         String page;
         HttpSession session = request.getSession();
-        AccessLevelEnum accessLevelEnum = RequestParameterParser.getUserType(request);
-        if(accessLevelEnum == AccessLevelEnum.ADMINISTRATOR){
+        AccessLevelType accessLevelType = RequestParameterParser.getUserType(request);
+        if(accessLevelType == AccessLevelType.ADMINISTRATOR){
             try{
                 //TODO переделать
                 Long aid = Long.valueOf(request.getParameter(Parameters.OPERATION_UNBLOCK));
-                AccountServiceImpl.getInstance().updateAccountStatus(aid, AccountStatusEnum.UNBLOCKED);
+                AccountServiceImpl.getInstance().updateAccountStatus(aid, AccountStatusType.UNBLOCKED);
                 List<Account> list = AccountServiceImpl.getInstance().getBlockedAccounts();
                 session.setAttribute(Parameters.ACCOUNTS_LIST, list);
                 page = ConfigurationManager.getInstance().getProperty(PagePath.ADMIN_UNBLOCK_PAGE);
