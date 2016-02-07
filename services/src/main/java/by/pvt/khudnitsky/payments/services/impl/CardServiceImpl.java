@@ -3,7 +3,9 @@ package by.pvt.khudnitsky.payments.services.impl;
 import by.pvt.khudnitsky.payments.entities.Card;
 import by.pvt.khudnitsky.payments.exceptions.ServiceException;
 import by.pvt.khudnitsky.payments.services.AbstractService;
+import by.pvt.khudnitsky.payments.services.ICardService;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -11,9 +13,8 @@ import java.util.List;
 /**
  * Copyright (c) 2016, Khudnitsky. All rights reserved.
  */
-public class CardServiceImpl extends AbstractService<Card> {
+public class CardServiceImpl extends AbstractService<Card> implements ICardService{
     private static CardServiceImpl instance;
-    private Connection connection;
 
     private CardServiceImpl(){}
 
@@ -31,7 +32,7 @@ public class CardServiceImpl extends AbstractService<Card> {
      * @throws SQLException
      */
     @Override
-    public void save(Card entity) throws ServiceException {
+    public Serializable save(Card entity) throws ServiceException {
         throw new UnsupportedOperationException();
     }
 

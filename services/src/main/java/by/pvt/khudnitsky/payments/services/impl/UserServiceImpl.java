@@ -1,5 +1,6 @@
 package by.pvt.khudnitsky.payments.services.impl;
 
+import by.pvt.khudnitsky.payments.entities.AccessLevel;
 import by.pvt.khudnitsky.payments.enums.AccessLevelType;
 import by.pvt.khudnitsky.payments.dao.impl.AccountDaoImpl;
 import by.pvt.khudnitsky.payments.dao.impl.UserDaoImpl;
@@ -9,16 +10,28 @@ import by.pvt.khudnitsky.payments.exceptions.DaoException;
 import by.pvt.khudnitsky.payments.exceptions.ServiceException;
 import by.pvt.khudnitsky.payments.services.AbstractService;
 import by.pvt.khudnitsky.payments.managers.PoolManager;
+import by.pvt.khudnitsky.payments.services.IUserService;
 import by.pvt.khudnitsky.payments.utils.PaymentSystemLogger;
+import by.pvt.khudnitsky.payments.utils.TransactionUtil;
+import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
+import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Copyright (c) 2016, Khudnitsky. All rights reserved.
  */
-public class UserServiceImpl extends AbstractService<User> {
+public class UserServiceImpl extends AbstractService<User> implements IUserService{
+    private static Logger logger = Logger.getLogger(UserServiceImpl.class);
     private static UserServiceImpl instance;
+    private UserDaoImpl userDao = UserDaoImpl.getInstance();
+    private AccountDaoImpl accountDao = AccountDaoImpl.getInstance();
 
     private UserServiceImpl(){}
 
@@ -36,8 +49,23 @@ public class UserServiceImpl extends AbstractService<User> {
      * @throws SQLException
      */
     @Override
-    public void add(User entity) throws SQLException {
-        throw new UnsupportedOperationException();
+    public Serializable save(User entity) throws ServiceException {
+        Serializable id;
+        Session session = util.getSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            id = userDao.save(entity);
+            transaction.commit();
+            logger.info(TRANSACTION_SUCCEEDED);
+            logger.info(entity);
+        }
+        catch (DaoException e) {
+            TransactionUtil.rollback(transaction, e);
+            logger.error(TRANSACTION_FAILED, e);
+            throw new ServiceException(TRANSACTION_FAILED + e);
+        }
+        return id;
     }
 
     /**
@@ -47,19 +75,21 @@ public class UserServiceImpl extends AbstractService<User> {
      * @throws SQLException
      */
     @Override
-    public List<User> getAll() throws SQLException, ServiceException {
-        List<User> users = null;
+    public List<User> getAll() throws ServiceException {
+        List<User> users;
+        Session session = util.getSession();
+        Transaction transaction = null;
         try {
-            connection = PoolManager.getInstance().getConnection();
-            connection.setAutoCommit(false);
-            users = UserDaoImpl.getInstance().getAll();
-            connection.commit();
-            PaymentSystemLogger.getInstance().logError(getClass(), "Transaction succeeded");
+            transaction = session.beginTransaction();
+            users = userDao.getAll();
+            transaction.commit();
+            logger.info(TRANSACTION_SUCCEEDED);
+            logger.info(users);
         }
-        catch (SQLException | DaoException e) {
-            connection.rollback();
-            PaymentSystemLogger.getInstance().logError(getClass(), "Transaction failed");
-            throw new ServiceException(e.getMessage());
+        catch (DaoException e) {
+            TransactionUtil.rollback(transaction, e);
+            logger.error(TRANSACTION_FAILED, e);
+            throw new ServiceException(TRANSACTION_FAILED + e);
         }
         return users;
     }
@@ -72,8 +102,22 @@ public class UserServiceImpl extends AbstractService<User> {
      * @throws SQLException
      */
     @Override
-    public User getById(Long id) throws SQLException {
-        throw new UnsupportedOperationException();
+    public User getById(Long id) throws ServiceException {
+        User user;
+        Session session = util.getSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            user = userDao.getById(id);
+            transaction.commit();
+            logger.info(user);
+        }
+        catch (DaoException e) {
+            TransactionUtil.rollback(transaction, e);
+            logger.error(TRANSACTION_FAILED, e);
+            throw new ServiceException(TRANSACTION_FAILED + e);
+        }
+        return user;
     }
 
     /**
@@ -83,8 +127,21 @@ public class UserServiceImpl extends AbstractService<User> {
      * @throws SQLException
      */
     @Override
-    public void update(User entity) throws SQLException {
-        throw new UnsupportedOperationException();
+    public void update(User entity) throws ServiceException {
+        Session session = util.getSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            userDao.update(entity);
+            transaction.commit();
+            logger.info(TRANSACTION_SUCCEEDED);
+            logger.info(entity);
+        }
+        catch (DaoException e) {
+            TransactionUtil.rollback(transaction, e);
+            logger.error(TRANSACTION_FAILED, e);
+            throw new ServiceException(TRANSACTION_FAILED + e);
+        }
     }
 
     /**
@@ -94,88 +151,113 @@ public class UserServiceImpl extends AbstractService<User> {
      * @throws SQLException
      */
     @Override
-    public void delete(Long id) throws SQLException {
-        throw new UnsupportedOperationException();
+    public void delete(Long id) throws ServiceException {
+        Session session = util.getSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            userDao.delete(id);
+            transaction.commit();
+            logger.info(TRANSACTION_SUCCEEDED);
+            logger.info("Deleted user #" + id);
+        }
+        catch (DaoException e) {
+            TransactionUtil.rollback(transaction, e);
+            logger.error(TRANSACTION_FAILED, e);
+            throw new ServiceException(TRANSACTION_FAILED + e);
+        }
     }
 
-    public boolean checkUserAuthorization(String login, String password) throws SQLException, ServiceException {
+    public boolean checkUserAuthorization(String login, String password) throws ServiceException {
         boolean isAuthorized = false;
+        Session session = util.getSession();
+        Transaction transaction = null;
         try {
-            connection = PoolManager.getInstance().getConnection();
-            connection.setAutoCommit(false);
-            isAuthorized = UserDaoImpl.getInstance().isAuthorized(login, password);
-            connection.commit();
-            PaymentSystemLogger.getInstance().logError(getClass(), "Transaction succeeded");
+            transaction = session.beginTransaction();
+            isAuthorized = userDao.isAuthorized(login, password);
+            transaction.commit();
+            logger.info(TRANSACTION_SUCCEEDED);
+            logger.info("User " + login + " is authorized");
         }
-        catch (SQLException | DaoException e) {
-            connection.rollback();
-            PaymentSystemLogger.getInstance().logError(getClass(), "Transaction failed");
-            throw new ServiceException(e.getMessage());
+        catch (DaoException e) {
+            TransactionUtil.rollback(transaction, e);
+            logger.error(TRANSACTION_FAILED, e);
+            throw new ServiceException(TRANSACTION_FAILED + e);
         }
         return isAuthorized;
     }
 
-    public User getUserByLogin(String login) throws SQLException, ServiceException {
-        User user = null;
+    public User getUserByLogin(String login) throws ServiceException {
+        User user;
+        Session session = util.getSession();
+        Transaction transaction = null;
         try {
-            connection = PoolManager.getInstance().getConnection();
-            connection.setAutoCommit(false);
-            user = UserDaoImpl.getInstance().getByLogin(login);
-            connection.commit();
-            PaymentSystemLogger.getInstance().logError(getClass(), "Transaction succeeded");
+            transaction = session.beginTransaction();
+            user = userDao.getByLogin(login);
+            transaction.commit();
         }
-        catch (SQLException | DaoException e) {
-            connection.rollback();
-            PaymentSystemLogger.getInstance().logError(getClass(), "Transaction failed");
-            throw new ServiceException(e.getMessage());
+        catch (DaoException e) {
+            TransactionUtil.rollback(transaction, e);
+            logger.error(TRANSACTION_FAILED, e);
+            throw new ServiceException(TRANSACTION_FAILED + e);
         }
         return user;
     }
 
-    public AccessLevelType checkAccessLevel(User user) throws SQLException{
-        AccessLevelType accessLevelType;
-        if(AccessLevelType.CLIENT.ordinal() == user.getAccessLevelEnum()){
-            accessLevelType = AccessLevelType.CLIENT;
+    public AccessLevelType checkAccessLevel(User user) throws ServiceException{
+        AccessLevel accessLevel = new AccessLevel();
+        accessLevel.setAccessLevelType(AccessLevelType.CLIENT);
+        Set<AccessLevel> accessLevels = user.getAccessLevels();
+        Iterator<AccessLevel> iterator = accessLevels.iterator();
+        while (iterator.hasNext()) {
+            if((iterator.next()).getAccessLevelType().equals(AccessLevelType.CLIENT)){
+                accessLevel.setAccessLevelType(AccessLevelType.CLIENT);
+            }
+            else {
+                accessLevel.setAccessLevelType(AccessLevelType.ADMINISTRATOR);
+            }
         }
-        else{
-            accessLevelType = AccessLevelType.ADMINISTRATOR;
-        }
-        return accessLevelType;
+        return accessLevel.getAccessLevelType();
+        //TODO сделать множественность ролей
     }
 
-    public boolean checkIsNewUser(User user) throws SQLException, ServiceException {
+    public boolean checkIsNewUser(User user) throws ServiceException {
         boolean isNew = false;
+        Session session = util.getSession();
+        Transaction transaction = null;
         try {
-            connection = PoolManager.getInstance().getConnection();
-            connection.setAutoCommit(false);
-            if ((AccountDaoImpl.getInstance().getById(user.getAccountId()) == null) & (UserDaoImpl.getInstance().isNewUser(user.getLogin()))) {
+            transaction = session.beginTransaction();
+            if((userDao.getByLogin(user.getLogin()) == null) & (user.getAccounts() == null)){
                 isNew = true;
             }
-            connection.commit();
-            PaymentSystemLogger.getInstance().logError(getClass(), "Transaction succeeded");
+            transaction.commit();
+            logger.info(TRANSACTION_SUCCEEDED);
+            logger.info("User " + user + " is new");
         }
-        catch (SQLException | DaoException e) {
-            connection.rollback();
-            PaymentSystemLogger.getInstance().logError(getClass(), "Transaction failed");
-            throw new ServiceException(e.getMessage());
+        catch (DaoException e) {
+            TransactionUtil.rollback(transaction, e);
+            logger.error(TRANSACTION_FAILED, e);
+            throw new ServiceException(TRANSACTION_FAILED + e);
         }
-        //PoolManager.getInstance().releaseConnection(connection);
         return isNew;
     }
 
-    public void registrateUser(User user, Account account) throws SQLException, ServiceException {
+    public void registrateUser(User user, Account account) throws ServiceException {
+        Session session = util.getSession();
+        Transaction transaction = null;
         try {
-            connection = PoolManager.getInstance().getConnection();
-            connection.setAutoCommit(false);
-            AccountDaoImpl.getInstance().save(account);
-            UserDaoImpl.getInstance().save(user);
-            connection.commit();
-            PaymentSystemLogger.getInstance().logError(getClass(), "Transaction succeeded");
+            transaction = session.beginTransaction();
+            accountDao.save(account);
+            userDao.save(user);
+            transaction.commit();
+            logger.info(TRANSACTION_SUCCEEDED);
+            logger.info(user);
+            logger.info(account);
         }
-        catch (SQLException | DaoException e) {
-            connection.rollback();
-            PaymentSystemLogger.getInstance().logError(getClass(), "Transaction failed");
-            throw new ServiceException(e.getMessage());
+        catch (DaoException e) {
+            TransactionUtil.rollback(transaction, e);
+            logger.error(TRANSACTION_FAILED, e);
+            throw new ServiceException(TRANSACTION_FAILED + e);
         }
     }
 }

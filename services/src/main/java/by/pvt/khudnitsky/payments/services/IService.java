@@ -3,6 +3,7 @@ package by.pvt.khudnitsky.payments.services;
 import by.pvt.khudnitsky.payments.entities.AbstractEntity;
 import by.pvt.khudnitsky.payments.exceptions.ServiceException;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -15,14 +16,14 @@ public interface IService<T extends AbstractEntity> {
      * @param entity - object of derived class AbstractEntity
      * @throws SQLException
      */
-    void add(T entity) throws SQLException, ServiceException;
+    Serializable save(T entity) throws ServiceException;
 
     /**
      *  Calls Dao getAll() method
      * @return list of objects of derived class AbstractEntity
      * @throws SQLException
      */
-    List<T> getAll() throws SQLException, ServiceException;
+    List<T> getAll() throws ServiceException;
 
     /**
      * Calls Dao getById() method
@@ -30,19 +31,19 @@ public interface IService<T extends AbstractEntity> {
      * @return object of derived class AbstractEntity
      * @throws SQLException
      */
-    T getById(Long id) throws SQLException, ServiceException;
+    T getById(Long id) throws ServiceException;
 
     /**
      * Calls Dao update() method
      * @param entity - object of derived class AbstractEntity
      * @throws SQLException
      */
-    void update(T entity) throws SQLException, ServiceException;
+    void update(T entity) throws ServiceException;
 
     /**
      * Calls Dao delete() method
      * @param id - id of entity
      * @throws SQLException
      */
-    void delete(Long id) throws SQLException, ServiceException;
+    void delete(Long id) throws ServiceException;
 }

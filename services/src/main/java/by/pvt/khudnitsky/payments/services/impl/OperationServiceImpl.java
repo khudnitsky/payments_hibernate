@@ -6,16 +6,26 @@ import by.pvt.khudnitsky.payments.exceptions.DaoException;
 import by.pvt.khudnitsky.payments.exceptions.ServiceException;
 import by.pvt.khudnitsky.payments.services.AbstractService;
 import by.pvt.khudnitsky.payments.managers.PoolManager;
+import by.pvt.khudnitsky.payments.services.IOperationService;
 import by.pvt.khudnitsky.payments.utils.PaymentSystemLogger;
+import by.pvt.khudnitsky.payments.utils.TransactionUtil;
+import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
 
 /**
  * Copyright (c) 2016, Khudnitsky. All rights reserved.
  */
-public class OperationServiceImpl extends AbstractService<Operation> {
+public class OperationServiceImpl extends AbstractService<Operation> implements IOperationService{
+    private static Logger logger = Logger.getLogger(OperationServiceImpl.class);
     private static OperationServiceImpl instance;
+
+    private OperationDaoImpl operationDao = OperationDaoImpl.getInstance();
 
     private OperationServiceImpl(){}
 
@@ -33,19 +43,23 @@ public class OperationServiceImpl extends AbstractService<Operation> {
      * @throws SQLException
      */
     @Override
-    public void add(Operation entity) throws SQLException, ServiceException {
+    public Serializable save(Operation entity) throws ServiceException {
+        Serializable id;
+        Session session = util.getSession();
+        Transaction transaction = null;
         try {
-            connection = PoolManager.getInstance().getConnection();
-            connection.setAutoCommit(false);
-            OperationDaoImpl.getInstance().save(entity);
-            connection.commit();
-            PaymentSystemLogger.getInstance().logError(getClass(), "Transaction succeeded");
+            transaction = session.beginTransaction();
+            id = operationDao.save(entity);
+            transaction.commit();
+            logger.info(TRANSACTION_SUCCEEDED);
+            logger.info(entity);
         }
-        catch (SQLException | DaoException e) {
-            connection.rollback();
-            PaymentSystemLogger.getInstance().logError(getClass(), "Transaction failed");
-            throw new ServiceException(e.getMessage());
+        catch (DaoException e) {
+            TransactionUtil.rollback(transaction, e);
+            logger.error(TRANSACTION_FAILED, e);
+            throw new ServiceException(TRANSACTION_FAILED + e);
         }
+        return id;
     }
 
     /**
@@ -55,19 +69,21 @@ public class OperationServiceImpl extends AbstractService<Operation> {
      * @throws SQLException
      */
     @Override
-    public List<Operation> getAll() throws SQLException, ServiceException {
-        List<Operation> operations = null;
+    public List<Operation> getAll() throws ServiceException {
+        List<Operation> operations;
+        Session session = util.getSession();
+        Transaction transaction = null;
         try {
-            connection = PoolManager.getInstance().getConnection();
-            connection.setAutoCommit(false);
-            operations = OperationDaoImpl.getInstance().getAll();
-            connection.commit();
-            PaymentSystemLogger.getInstance().logError(getClass(), "Transaction succeeded");
+            transaction = session.beginTransaction();
+            operations = operationDao.getAll();
+            transaction.commit();
+            logger.info(TRANSACTION_SUCCEEDED);
+            logger.info(operations);
         }
-        catch (SQLException | DaoException e) {
-            connection.rollback();
-            PaymentSystemLogger.getInstance().logError(getClass(), "Transaction failed");
-            throw new ServiceException(e.getMessage());
+        catch (DaoException e) {
+            TransactionUtil.rollback(transaction, e);
+            logger.error(TRANSACTION_FAILED, e);
+            throw new ServiceException(TRANSACTION_FAILED + e);
         }
         return operations;
     }
@@ -80,7 +96,7 @@ public class OperationServiceImpl extends AbstractService<Operation> {
      * @throws SQLException
      */
     @Override
-    public Operation getById(Long id) throws SQLException {
+    public Operation getById(Long id) throws ServiceException {
         throw new UnsupportedOperationException();
     }
 
@@ -91,7 +107,7 @@ public class OperationServiceImpl extends AbstractService<Operation> {
      * @throws SQLException
      */
     @Override
-    public void update(Operation entity) throws SQLException {
+    public void update(Operation entity) throws ServiceException {
         throw new UnsupportedOperationException();
     }
 
@@ -102,7 +118,20 @@ public class OperationServiceImpl extends AbstractService<Operation> {
      * @throws SQLException
      */
     @Override
-    public void delete(Long id) throws SQLException {
-        throw new UnsupportedOperationException();
+    public void delete(Long id) throws ServiceException {
+        Session session = util.getSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            operationDao.delete(id);
+            transaction.commit();
+            logger.info(TRANSACTION_SUCCEEDED);
+            logger.info("Deleted operation #" + id);
+        }
+        catch (DaoException e) {
+            TransactionUtil.rollback(transaction, e);
+            logger.error(TRANSACTION_FAILED, e);
+            throw new ServiceException(TRANSACTION_FAILED + e);
+        }
     }
 }
