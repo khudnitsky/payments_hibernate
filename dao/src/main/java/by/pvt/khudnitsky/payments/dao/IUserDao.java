@@ -10,6 +10,5 @@ import by.pvt.khudnitsky.payments.exceptions.DaoException;
  */
 public interface IUserDao extends IDao<User> {
     User getByLogin(String login) throws DaoException;
-    boolean isNewUser(String login) throws DaoException;
     boolean isAuthorized(String login, String password) throws DaoException;
 }
