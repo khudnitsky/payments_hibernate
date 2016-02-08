@@ -1,56 +1,115 @@
 package by.pvt.khudnitsky.payments.services.impl;
 
 import by.pvt.khudnitsky.payments.dao.impl.AccountDaoImpl;
+import by.pvt.khudnitsky.payments.entities.*;
+import by.pvt.khudnitsky.payments.enums.AccessLevelType;
+import by.pvt.khudnitsky.payments.enums.AccountStatusType;
+import by.pvt.khudnitsky.payments.enums.CurrencyType;
 import by.pvt.khudnitsky.payments.utils.EntityBuilder;
 import by.pvt.khudnitsky.payments.dao.impl.OperationDaoImpl;
 import by.pvt.khudnitsky.payments.dao.impl.UserDaoImpl;
-import by.pvt.khudnitsky.payments.entities.Account;
-import by.pvt.khudnitsky.payments.entities.Operation;
-import by.pvt.khudnitsky.payments.entities.User;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
+
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Copyright (c) 2016, Khudnitsky. All rights reserved.
  */
 public class OperationServiceImplTest {
-    private Account account;
+    private static UserServiceImpl userService;
+    private static OperationServiceImpl operationService;
+    private static AccountServiceImpl accountService;
+    private Operation expectedOperation;
+    private Operation actualOperation;
     private User user;
-    private Operation operation;
+    private Account account;
+    private Serializable operationId;
+    private Serializable userId;
+    private Serializable accountId;
+
+    @BeforeClass
+    public static void initTest(){
+        userService = UserServiceImpl.getInstance();
+        operationService = OperationServiceImpl.getInstance();
+        accountService = AccountServiceImpl.getInstance();
+    }
 
     @Before
-    public void setUp(){
-        account = EntityBuilder.buildAccount(100L, "TEST", 100D, 0);
-        user = EntityBuilder.buildUser(100L, "TEST", "TEST", account.getId(), "TEST", "TEST", 0);
-        operation = EntityBuilder.buildOperation(100L, user.getId(), user.getAccountId(), 100D, "TEST", "01.01.01");
+    public void setUp() throws Exception {
+        user = EntityBuilder.buildUser("TEST", "TEST", "TEST", "TEST", null);
+        account = EntityBuilder.buildAccount(200D, AccountStatusType.UNBLOCKED, null, user);
+        Set<Account> accounts = new HashSet<>();
+        accounts.add(account);
+        user.setAccounts(accounts);
+        expectedOperation = EntityBuilder.buildOperation(200D, "TEST", Calendar.getInstance(), user, account);
+        Set<Operation> operations = new HashSet<>();
+        user.setOperations(operations);
+        persistEntities();
+    }
+
+    @Test
+    public void testSave() throws Exception {
+        expectedOperation.setId((Long) operationId);
+        actualOperation = operationService.getById((Long) operationId);
+        delete();
+        Assert.assertEquals("save() method failed: ", expectedOperation, actualOperation);
+    }
+
+    @Test
+    public void testGetById() throws Exception{
+        expectedOperation.setId((Long) operationId);
+        actualOperation = operationService.getById((Long) operationId);
+        delete();
+        Assert.assertEquals("getById() method failed: ", expectedOperation, actualOperation);
+    }
+
+    @Test
+    public void testDelete() throws Exception {
+        delete();
+        actualOperation = operationService.getById((Long) operationId);
+        Assert.assertNull("delete() method failed: ", actualOperation);
+    }
+
+    @Ignore
+    @Test
+    public void testDeleteByAccountId() throws Exception {
+        // TODO Session flush
+        operationService.deleteByAccountId((Long) accountId);
+        actualOperation = operationService.getById((Long) operationId);
+        Assert.assertNull("delete() method failed: ", actualOperation);
+        accountService.delete((Long) accountId);
+        userService.delete((Long) userId);
     }
 
     @After
     public void tearDown() throws Exception{
+        expectedOperation = null;
+        actualOperation = null;
         account = null;
         user = null;
-        operation = null;
+        operationId = null;
+        userId = null;
+        accountId = null;
     }
 
-    @Test
-    public void testGetInstance() throws Exception {
-        OperationServiceImpl instance1 = OperationServiceImpl.getInstance();
-        OperationServiceImpl instance2 = OperationServiceImpl.getInstance();
-        Assert.assertEquals(instance1.hashCode(), instance2.hashCode());
+    @AfterClass
+    public static void closeTest() throws Exception{
+        operationService = null;
+        accountService = null;
+        userService = null;
     }
 
-    @Test
-    public void testAdd() throws Exception {
-        AccountDaoImpl.getInstance().save(account);
-        UserDaoImpl.getInstance().save(user);
-        Long userActualId = UserDaoImpl.getInstance().getLastId();
-        operation.setUserId(userActualId);
-        OperationServiceImpl.getInstance().add(operation);
-        Long operationActualId = OperationDaoImpl.getInstance().getLastId();
-        Operation actual = OperationDaoImpl.getInstance().getById(operationActualId);
-        AccountDaoImpl.getInstance().delete(account.getId());
-        Assert.assertEquals(operation.getDescription(), actual.getDescription());  // TODO исправить
+    private void persistEntities() throws Exception {
+        userId = userService.save(user);
+        accountId = accountService.save(account);
+        operationId = operationService.save(expectedOperation);
+    }
+
+    private void delete() throws Exception {
+        operationService.delete((Long) operationId);
+        userService.delete((Long) userId);
     }
 }

@@ -19,6 +19,7 @@ import org.hibernate.Transaction;
 
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -294,6 +295,7 @@ public class AccountServiceImpl extends AbstractService<Account> implements IAcc
         operation.setAccount(account);
         operation.setAmount(amount);
         operation.setDescription(description);
+        operation.setDate(Calendar.getInstance());
         return operation;
     }
 }

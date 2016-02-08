@@ -97,7 +97,21 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
      */
     @Override
     public Operation getById(Long id) throws ServiceException {
-        throw new UnsupportedOperationException();
+        Operation operation;
+        Session session = util.getSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            operation = operationDao.getById(id);
+            transaction.commit();
+            logger.info(operation);
+        }
+        catch (DaoException e) {
+            TransactionUtil.rollback(transaction, e);
+            logger.error(TRANSACTION_FAILED, e);
+            throw new ServiceException(TRANSACTION_FAILED + e);
+        }
+        return operation;
     }
 
     /**
@@ -127,6 +141,23 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
             transaction.commit();
             logger.info(TRANSACTION_SUCCEEDED);
             logger.info("Deleted operation #" + id);
+        }
+        catch (DaoException e) {
+            TransactionUtil.rollback(transaction, e);
+            logger.error(TRANSACTION_FAILED, e);
+            throw new ServiceException(TRANSACTION_FAILED + e);
+        }
+    }
+
+    @Override
+    public void deleteByAccountId(Long id) throws ServiceException {
+        Session session = util.getSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            operationDao.deleteByAccountId(id);
+            transaction.commit();
+            logger.info(TRANSACTION_SUCCEEDED);
         }
         catch (DaoException e) {
             TransactionUtil.rollback(transaction, e);

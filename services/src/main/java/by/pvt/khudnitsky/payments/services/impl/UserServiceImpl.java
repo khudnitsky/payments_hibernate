@@ -242,7 +242,7 @@ public class UserServiceImpl extends AbstractService<User> implements IUserServi
         return isNew;
     }
 
-    public void registrateUser(User user, Account account) throws ServiceException {
+    public void bookUser(User user, Account account) throws ServiceException {
         Session session = util.getSession();
         Transaction transaction = null;
         try {

@@ -1,89 +1,190 @@
 package by.pvt.khudnitsky.payments.services.impl;
 
+import by.pvt.khudnitsky.payments.dao.impl.*;
+import by.pvt.khudnitsky.payments.entities.*;
 import by.pvt.khudnitsky.payments.enums.AccessLevelType;
-import by.pvt.khudnitsky.payments.dao.impl.AccountDaoImpl;
+import by.pvt.khudnitsky.payments.enums.AccountStatusType;
+import by.pvt.khudnitsky.payments.enums.CurrencyType;
 import by.pvt.khudnitsky.payments.utils.EntityBuilder;
-import by.pvt.khudnitsky.payments.dao.impl.UserDaoImpl;
-import by.pvt.khudnitsky.payments.entities.Account;
-import by.pvt.khudnitsky.payments.entities.Operation;
-import by.pvt.khudnitsky.payments.entities.User;
 import org.junit.*;
+
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Copyright (c) 2016, Khudnitsky. All rights reserved.
  */
 public class UserServiceImplTest {
-    private Account account;
-    private User user;
+    private static UserServiceImpl userService;
+    private static OperationServiceImpl operationService;
+    private static CurrencyServiceImpl currencyService;
+    private static AccessLevelServiceImpl accessLevelService;
+    private static AccountServiceImpl accountService;
+    private static UserDetailServiceImpl userDetailService;
+    private User expectedUser;
+    private User actualUser;
     private Operation operation;
+    private UserDetail userDetail;
+    private Account account;
+    private Currency currency;
+    private AccessLevel accessLevel;
+    private Serializable operationId;
+    private Serializable userId;
+    private Serializable currencyId;
+
+    @BeforeClass
+    public static void initTest(){
+        userService = UserServiceImpl.getInstance();
+        operationService = OperationServiceImpl.getInstance();
+        currencyService = CurrencyServiceImpl.getInstance();
+        accessLevelService = AccessLevelServiceImpl.getInstance();
+        accountService = AccountServiceImpl.getInstance();
+        userDetailService = UserDetailServiceImpl.getInstance();
+    }
 
     @Before
-    public void setUp(){
-        account = EntityBuilder.buildAccount(100L, "TEST", 100D, 0);
-        user = EntityBuilder.buildUser(100L, "TEST", "TEST", account.getId(), "TEST", "TEST", 0);
-        operation = EntityBuilder.buildOperation(100L, user.getId(), user.getAccountId(), 100D, "TEST", "01.01.01");
-    }
+    public void setUp() throws Exception {
+        accessLevel = EntityBuilder.buildAccessLevel(AccessLevelType.CLIENT);
+        Set<AccessLevel> accessLevels = new HashSet<>();
+        accessLevels.add(accessLevel);
 
-    @After
-    public void tearDown() throws Exception{
-        account = null;
-        user = null;
-        operation = null;
-    }
+        Address address = EntityBuilder.buildAddress("TEST", "TEST", "TEST");
+        userDetail = EntityBuilder.buildUserDetail(address);
+        expectedUser = EntityBuilder.buildUser("TEST", "TEST", "TEST", "TEST", userDetail);
+        Set<User> users = new HashSet<>();
+        users.add(expectedUser);
 
-    @Test
-    public void testGetInstance() throws Exception {
-        UserServiceImpl instance1 = UserServiceImpl.getInstance();
-        UserServiceImpl instance2 = UserServiceImpl.getInstance();
-        Assert.assertEquals(instance1.hashCode(), instance2.hashCode());
-    }
+        expectedUser.setAccessLevels(accessLevels);
+        accessLevel.setUsers(users);
 
-    @Test
-    public void testCheckUserAuthorization() throws Exception {
-        AccountDaoImpl.getInstance().save(account);
-        UserDaoImpl.getInstance().save(user);
-        boolean expected = true;
-        boolean actual = UserServiceImpl.getInstance().checkUserAuthorization(user.getLogin(), user.getPassword());
-        AccountDaoImpl.getInstance().delete(account.getId());
-        Assert.assertEquals(new Boolean(expected), new Boolean(actual));
+        currency = EntityBuilder.buildCurrency(CurrencyType.BYR);
+        account = EntityBuilder.buildAccount(200D, AccountStatusType.UNBLOCKED, currency, expectedUser);
+        Set<Account> accounts = new HashSet<>();
+        accounts.add(account);
+        expectedUser.setAccounts(accounts);
+
+        operation = EntityBuilder.buildOperation(200D, "TEST", Calendar.getInstance(), expectedUser, account);
+        Set<Operation> operations = new HashSet<>();
+        expectedUser.setOperations(operations);
+        persistEntities();
     }
 
     @Test
-    public void testGetUserByLogin() throws Exception {
-        AccountDaoImpl.getInstance().save(account);
-        UserDaoImpl.getInstance().save(user);
-        Long userActualId = UserDaoImpl.getInstance().getLastId();
-        user.setId(userActualId);
-        User actual = UserServiceImpl.getInstance().getUserByLogin(user.getLogin());
-        AccountDaoImpl.getInstance().delete(account.getId());
-        Assert.assertEquals(user, actual);
-    }
-
-    @Test
-    public void testCheckAccessLevel() throws Exception {
-        AccountDaoImpl.getInstance().save(account);
-        UserDaoImpl.getInstance().save(user);
-        AccessLevelType actual = UserServiceImpl.getInstance().checkAccessLevel(user);
-        AccountDaoImpl.getInstance().delete(account.getId());
-        Assert.assertEquals(user.getAccessLevelEnum(), (Integer) actual.ordinal());
-    }
-
-    @Test
-    public void testCheckIsNewUser() throws Exception {
-        boolean expected = true;
-        boolean actual = UserServiceImpl.getInstance().checkIsNewUser(user);
-        Assert.assertEquals(new Boolean(expected), new Boolean(actual));
+    public void testSave() throws Exception {
+        expectedUser.setId((Long) userId);
+        actualUser = userService.getById((Long) userId);
+        delete();
+        Assert.assertEquals("save() method failed: ", expectedUser, actualUser);
     }
 
     @Ignore
     @Test
-    public void testRegistrateUser() throws Exception {
-        AccountDaoImpl.getInstance().save(account);
-        UserServiceImpl.getInstance().registrateUser(user, account);
-        Long userActualId = UserDaoImpl.getInstance().getLastId();
-        user.setId(userActualId);
-        User actual = UserServiceImpl.getInstance().getUserByLogin(user.getLogin());
-        AccountDaoImpl.getInstance().delete(account.getId());
-        Assert.assertEquals(user, actual);
+    public void testGetAll() throws Exception {
+
+    }
+
+    @Test
+    public void testGetById() throws Exception {
+        expectedUser.setId((Long) userId);
+        actualUser = userService.getById((Long) userId);
+        delete();
+        Assert.assertEquals("getById() method failed: ", expectedUser, actualUser);
+    }
+
+    @Test
+    public void testUpdate() throws Exception {
+        expectedUser.setId((Long) userId);
+        expectedUser.setFirstName("UPDATED");
+        userService.update(expectedUser);
+        actualUser = userService.getById((Long) userId);
+        delete();
+        Assert.assertEquals("update() method failed: ", expectedUser, actualUser);
+    }
+
+    @Test
+    public void testDelete() throws Exception {
+        delete();
+        actualUser = userService.getById((Long) userId);
+        Assert.assertNull("delete() method failed: ", actualUser);
+    }
+
+    @Test
+    public void testCheckUserAuthorization() throws Exception {
+        Boolean expected = true;
+        Boolean actual = userService.checkUserAuthorization(expectedUser.getLogin(), expectedUser.getPassword());
+        delete();
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testGetUserByLogin() throws Exception {
+        actualUser = userService.getUserByLogin(expectedUser.getLogin());
+        delete();
+        Assert.assertEquals(expectedUser, actualUser);
+    }
+
+    @Test
+    public void testCheckAccessLevel() throws Exception {
+        AccessLevelType actual = userService.checkAccessLevel(expectedUser);
+        delete();
+        Assert.assertEquals(accessLevel.getAccessLevelType(), (actual));
+    }
+
+    @Test
+    public void testCheckIsNewUser() throws Exception {
+        boolean expected = false;
+        boolean actual = userService.checkIsNewUser(expectedUser);
+        delete();
+        Assert.assertEquals(new Boolean(expected), new Boolean(actual));
+    }
+
+    @Test
+    public void testBookUser() throws Exception {
+        userService.bookUser(expectedUser, account);
+        expectedUser.setId((Long) userId);
+        actualUser = userService.getUserByLogin(expectedUser.getLogin());
+        delete();
+        Assert.assertEquals(expectedUser, actualUser);
+    }
+
+    @After
+    public void tearDown() throws Exception{
+        expectedUser = null;
+        actualUser = null;
+        account = null;
+        operation = null;
+        accessLevel = null;
+        userDetail = null;
+        currency = null;
+        operationId = null;
+        userId = null;
+        currencyId = null;
+    }
+
+    @AfterClass
+    public static void closeTest() throws Exception{
+        operationService = null;
+        accountService = null;
+        currencyService = null;
+        userService = null;
+        userDetailService = null;
+        accessLevelService = null;
+    }
+
+    private void persistEntities() throws Exception {
+        userDetailService.save(userDetail);
+        accessLevelService.save(accessLevel);
+        currencyId = currencyService.save(currency);
+        userId = userService.save(expectedUser);
+        accountService.save(account);
+        operationId = operationService.save(operation);
+    }
+
+    private void delete() throws Exception {
+        operationService.delete((Long) operationId);
+        userService.delete((Long) userId);
+        currencyService.delete((Long) currencyId);
     }
 }
