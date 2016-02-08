@@ -3,6 +3,7 @@ package by.pvt.khudnitsky.payments.entities;
 import by.pvt.khudnitsky.payments.enums.AccessLevelType;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -32,7 +33,7 @@ public class AccessLevel extends AbstractEntity {
     public void setUsers(Set<User> users) {
         this.users = users;
     }
-    private Set<User> users;
+    private Set<User> users = new HashSet<>();
 
     public AccessLevel() {
         super();
@@ -62,5 +63,9 @@ public class AccessLevel extends AbstractEntity {
         return "AccessLevel{" +
                 "accessLevel=" + accessLevelType +
                 '}';
+    }
+
+    public void addUser(User user){
+        users.add(user);
     }
 }
