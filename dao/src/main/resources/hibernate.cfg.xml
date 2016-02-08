@@ -9,6 +9,7 @@
         <property name="hibernate.connection.password">1208</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.connection.pool_size">10</property>
+        <property name="hibernate.connection.isolation">2</property>
         <property name="show_sql">true</property>
         <property name="hibernate.hbm2ddl.auto">validate</property>
         <mapping class="by.pvt.khudnitsky.payments.entities.User"/>
