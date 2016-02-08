@@ -52,7 +52,7 @@ public class UserServiceImplTest {
 
         Address address = EntityBuilder.buildAddress("TEST", "TEST", "TEST");
         userDetail = EntityBuilder.buildUserDetail(address);
-        expectedUser = EntityBuilder.buildUser("TEST", "TEST", "TEST", "TEST", userDetail);
+        expectedUser = EntityBuilder.buildUser("TEST", "TEST", "TEST", "TEST", userDetail, null, null);
         Set<User> users = new HashSet<>();
         users.add(expectedUser);
 
