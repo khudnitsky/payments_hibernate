@@ -39,6 +39,8 @@ public class Parameters {
     public static final String OPERATION_ID = "operationId";
     public static final String OPERATION_DESCRIPTION = "operationDescrption";
     public static final String OPERATION_DATE = "operationDate";
+    public static final String NUMBER_OF_PAGES = "numberOfPages";
+    public static final String CURRENT_PAGE = "currentPage";
 
     private Parameters(){}
 }
