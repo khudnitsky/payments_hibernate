@@ -4,6 +4,8 @@
 package by.pvt.khudnitsky.payments.commands.impl.client;
 
 import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -36,10 +38,17 @@ public class PaymentCommand extends AbstractCommand {
         if(accessLevelType == AccessLevelType.CLIENT){
             user = RequestParameterParser.getRecordUser(request);
             try {
-                if(!AccountServiceImpl.getInstance().checkAccountStatus(user.getAccountId())){
+                // TODO DTO
+                Set<Account> accounts = user.getAccounts();
+                Iterator<Account> iterator = accounts.iterator();
+                Long accountId = -1L;
+                while (iterator.hasNext()){
+                    accountId = iterator.next().getId();
+                }
+                if(!AccountServiceImpl.getInstance().checkAccountStatus(accountId)){
                     payment = RequestParameterParser.getAmountFromPayment(request);
                     if(payment > 0){
-                        Account account = AccountServiceImpl.getInstance().getById(user.getAccountId());
+                        Account account = AccountServiceImpl.getInstance().getById(accountId);
                         if(account.getDeposit() >= payment){
                             CommandType type = RequestParameterParser.getCommandType(request);
                             String description = type.getValue();
@@ -61,7 +70,7 @@ public class PaymentCommand extends AbstractCommand {
                     page = ConfigurationManager.getInstance().getProperty(PagePath.CLIENT_BLOCK_PAGE_PATH);
                 }
             }
-            catch (ServiceException | SQLException e) {
+            catch (ServiceException e) {
                 page = ConfigurationManager.getInstance().getProperty(PagePath.ERROR_PAGE_PATH);
                 request.setAttribute(Parameters.ERROR_DATABASE, MessageManager.getInstance().getProperty(MessageConstants.ERROR_DATABASE));
             }

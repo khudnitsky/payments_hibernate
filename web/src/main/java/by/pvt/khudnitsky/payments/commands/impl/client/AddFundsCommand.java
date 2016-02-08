@@ -4,12 +4,15 @@
 package by.pvt.khudnitsky.payments.commands.impl.client;
 
 import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import by.pvt.khudnitsky.payments.commands.AbstractCommand;
 import by.pvt.khudnitsky.payments.commands.factory.CommandType;
+import by.pvt.khudnitsky.payments.entities.Account;
 import by.pvt.khudnitsky.payments.enums.*;
 import by.pvt.khudnitsky.payments.entities.User;
 import by.pvt.khudnitsky.payments.exceptions.ServiceException;
@@ -33,7 +36,14 @@ public class AddFundsCommand extends AbstractCommand {
         if(accessLevelType == AccessLevelType.CLIENT) {
             User user = RequestParameterParser.getRecordUser(request);
             try {
-                if (!AccountServiceImpl.getInstance().checkAccountStatus(user.getAccountId())) {
+                // TODO DTO
+                Set<Account> accounts = user.getAccounts();
+                Iterator<Account> iterator = accounts.iterator();
+                Long accountId = -1L;
+                while (iterator.hasNext()){
+                    accountId = iterator.next().getId();
+                }
+                if (!AccountServiceImpl.getInstance().checkAccountStatus(accountId)) {
                     double amount = RequestParameterParser.getAmountFromFunds(request);
                     if (amount > 0) {
                         CommandType type = RequestParameterParser.getCommandType(request);
@@ -49,7 +59,7 @@ public class AddFundsCommand extends AbstractCommand {
                     page = ConfigurationManager.getInstance().getProperty(PagePath.CLIENT_BLOCK_PAGE_PATH);
                 }
             }
-            catch (ServiceException | SQLException e) {
+            catch (ServiceException e) {
                 page = ConfigurationManager.getInstance().getProperty(PagePath.ERROR_PAGE_PATH);
                 request.setAttribute(Parameters.ERROR_DATABASE, MessageManager.getInstance().getProperty(MessageConstants.ERROR_DATABASE));
             } catch (NumberFormatException e) {

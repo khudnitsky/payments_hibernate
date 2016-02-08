@@ -36,7 +36,7 @@ public class GoToUnblockCommand extends AbstractCommand {
                 session.setAttribute(Parameters.ACCOUNTS_LIST, list);
                 page = ConfigurationManager.getInstance().getProperty(PagePath.ADMIN_UNBLOCK_PAGE);
             }
-            catch (ServiceException | SQLException e) {
+            catch (ServiceException e) {
                 page = ConfigurationManager.getInstance().getProperty(PagePath.ERROR_PAGE_PATH);
                 request.setAttribute(Parameters.ERROR_DATABASE, MessageManager.getInstance().getProperty(MessageConstants.ERROR_DATABASE));
             }

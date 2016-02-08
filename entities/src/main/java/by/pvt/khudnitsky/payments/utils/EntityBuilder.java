@@ -9,6 +9,7 @@ import by.pvt.khudnitsky.payments.enums.AccountStatusType;
 import by.pvt.khudnitsky.payments.enums.CurrencyType;
 
 import java.util.Calendar;
+import java.util.Set;
 
 /**
  * Utility class for entities buildings
@@ -19,8 +20,9 @@ import java.util.Calendar;
 public class EntityBuilder {
     private EntityBuilder(){}
 
-    public static Account buildAccount(Double deposit, AccountStatusType accountStatus, Currency currency, User user){
+    public static Account buildAccount(Long accountNumber, Double deposit, AccountStatusType accountStatus, Currency currency, User user){
         Account account = new Account();
+        account.setAccountNumber(accountNumber);
         account.setDeposit(deposit);
         account.setAccountStatus(accountStatus);
         account.setCurrency(currency);
@@ -38,13 +40,15 @@ public class EntityBuilder {
         return operation;
     }
 
-    public static User buildUser(String firstName, String lastName, String login, String password, UserDetail userDetail){
+    public static User buildUser(String firstName, String lastName, String login, String password, UserDetail userDetail, Set<Account> accounts, Set<AccessLevel> accessLevels){
         User user = new User();
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setLogin(login);
         user.setPassword(password);
         user.setUserDetail(userDetail);
+        user.setAccounts(accounts);
+        user.setAccessLevels(accessLevels);
         return user;
     }
 

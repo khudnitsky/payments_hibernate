@@ -48,7 +48,7 @@ public class LoginUserCommand extends AbstractCommand {
                 request.setAttribute(Parameters.ERROR_LOGIN_OR_PASSWORD, MessageManager.getInstance().getProperty(MessageConstants.WRONG_LOGIN_OR_PASSWORD));
             }
         }
-        catch (ServiceException | SQLException e) {
+        catch (ServiceException e) {
             page = ConfigurationManager.getInstance().getProperty(PagePath.ERROR_PAGE_PATH);
             request.setAttribute(Parameters.ERROR_DATABASE, MessageManager.getInstance().getProperty(MessageConstants.ERROR_DATABASE));
         }

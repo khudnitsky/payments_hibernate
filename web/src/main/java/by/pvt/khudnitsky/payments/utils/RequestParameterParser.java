@@ -1,13 +1,19 @@
 package by.pvt.khudnitsky.payments.utils;
 
 import by.pvt.khudnitsky.payments.commands.factory.CommandType;
+import by.pvt.khudnitsky.payments.entities.AccessLevel;
+import by.pvt.khudnitsky.payments.entities.Currency;
+import by.pvt.khudnitsky.payments.enums.AccountStatusType;
+import by.pvt.khudnitsky.payments.enums.CurrencyType;
 import by.pvt.khudnitsky.payments.enums.Parameters;
 import by.pvt.khudnitsky.payments.enums.AccessLevelType;
 import by.pvt.khudnitsky.payments.entities.Account;
 import by.pvt.khudnitsky.payments.entities.User;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Copyright (c) 2016, Khudnitsky. All rights reserved.
@@ -16,42 +22,48 @@ public class RequestParameterParser {
     private RequestParameterParser() {}
 
     public static User getUser(HttpServletRequest request){
-        Long id = 0L;
-        if (request.getParameter(Parameters.USER_ID) != null){
-            id = Long.valueOf(request.getParameter(Parameters.USER_ID));
-        }
-        Long accountId = 0L;
-        if (request.getParameter(Parameters.ACCOUNT_ID) != null){
-            accountId = Long.valueOf(request.getParameter(Parameters.ACCOUNT_ID));
-        }
-        Integer accessLevel = 0;
+        AccessLevelType accessLevel;
+        Set<AccessLevel> accessLevels = new HashSet<>();
         if (request.getParameter(Parameters.USER_ACCESS_LEVEL) != null){
-            accessLevel = Integer.valueOf(request.getParameter(Parameters.USER_ACCESS_LEVEL));
+            accessLevel = AccessLevelType.valueOf(request.getParameter(Parameters.USER_ACCESS_LEVEL).toUpperCase());
+            AccessLevel access = new AccessLevel();
+            access.setAccessLevelType(accessLevel);
+            accessLevels.add(access);
         }
         String firstName = request.getParameter(Parameters.USER_FIRST_NAME);
         String lastName = request.getParameter(Parameters.USER_LAST_NAME);
         String login = request.getParameter(Parameters.USER_LOGIN);
         String password = request.getParameter(Parameters.USER_PASSWORD);
-        User user = EntityBuilder.buildUser(id, firstName, lastName, accountId, login, password, accessLevel);
+
+        Account account = getAccount(request);
+        Set<Account> accounts = new HashSet<>();
+        accounts.add(account);
+        User user = EntityBuilder.buildUser(firstName, lastName, login, password, null, accounts, accessLevels);
         return user;
     }
 
     public static Account getAccount(HttpServletRequest request) throws NumberFormatException {
-        Long id = Long.valueOf(request.getParameter(Parameters.ACCOUNT_ID));
+        Long accountNumber = 0L;
+        if (request.getParameter(Parameters.ACCOUNT_NUMBER) != null){
+            accountNumber = Long.valueOf(request.getParameter(Parameters.ACCOUNT_NUMBER));
+        }
 
-        String currency = request.getParameter(Parameters.ACCOUNT_CURRENCY);
+        Currency currency = new Currency();
+        if(request.getParameter(Parameters.ACCOUNT_CURRENCY) != null){
+            currency.setCurrencyType(CurrencyType.valueOf(request.getParameter(Parameters.ACCOUNT_CURRENCY)));
+        }
 
-        double amount = 0;
+        Double deposit = 0D;
         if(request.getParameter(Parameters.AMOUNT) != null){
-            amount = Double.valueOf(request.getParameter(Parameters.AMOUNT));
+            deposit = Double.valueOf(request.getParameter(Parameters.AMOUNT));
         }
 
-        int status = 0;
+        AccountStatusType accountStatus = AccountStatusType.UNBLOCKED;
         if (request.getParameter(Parameters.ACCOUNT_STATUS) != null){
-            status = Integer.valueOf(request.getParameter(Parameters.ACCOUNT_STATUS));
+            accountStatus = AccountStatusType.valueOf(request.getParameter(Parameters.ACCOUNT_STATUS).toUpperCase());
         }
 
-        Account account = EntityBuilder.buildAccount(id, currency, amount, status);
+        Account account = EntityBuilder.buildAccount(accountNumber, deposit, accountStatus, currency, null);
         return account;
     }
 

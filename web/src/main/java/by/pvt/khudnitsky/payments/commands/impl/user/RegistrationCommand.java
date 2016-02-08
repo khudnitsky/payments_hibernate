@@ -3,8 +3,6 @@
  */
 package by.pvt.khudnitsky.payments.commands.impl.user;
 
-import java.sql.SQLException;
-
 import javax.servlet.http.HttpServletRequest;
 
 import by.pvt.khudnitsky.payments.enums.PagePath;
@@ -34,7 +32,7 @@ public class RegistrationCommand extends AbstractCommand {
         String page;
         try{
             user = RequestParameterParser.getUser(request);
-            accountIdString = request.getParameter(Parameters.ACCOUNT_ID);
+            accountIdString = request.getParameter(Parameters.ACCOUNT_NUMBER);
             if(areFieldsFullStocked()){
                 account = RequestParameterParser.getAccount(request);
                 if(UserServiceImpl.getInstance().checkIsNewUser(user)){
@@ -52,7 +50,7 @@ public class RegistrationCommand extends AbstractCommand {
                 page = ConfigurationManager.getInstance().getProperty(PagePath.REGISTRATION_PAGE_PATH);
             }
         }
-        catch (ServiceException | SQLException e) {
+        catch (ServiceException e) {
             page = ConfigurationManager.getInstance().getProperty(PagePath.ERROR_PAGE_PATH);
             request.setAttribute(Parameters.ERROR_DATABASE, MessageManager.getInstance().getProperty(MessageConstants.ERROR_DATABASE));
         }

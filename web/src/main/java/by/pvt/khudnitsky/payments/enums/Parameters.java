@@ -13,7 +13,7 @@ public class Parameters {
     public static final String USER_LAST_NAME = "lastname";
     public static final String USER_LOGIN = "login";
     public static final String USER_PASSWORD = "password";
-    public static final String ACCOUNT_ID = "accountid";
+    public static final String ACCOUNT_NUMBER = "accountid";
     public static final String ACCOUNT_CURRENCY = "currency";
     public static final String OPERATION_PAYMENT = "payment";
     public static final String OPERATION_BALANCE = "balance";
