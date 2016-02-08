@@ -69,7 +69,7 @@ public class UserDaoImplTest {
         accessLevel.setUsers(users);
 
         currency = EntityBuilder.buildCurrency(CurrencyType.BYR);
-        account = EntityBuilder.buildAccount(200D, AccountStatusType.UNBLOCKED, currency, expectedUser);
+        account = EntityBuilder.buildAccount(1000L, 200D, AccountStatusType.UNBLOCKED, currency, expectedUser);
         Set<Account> accounts = new HashSet<>();
         accounts.add(account);
         expectedUser.setAccounts(accounts);

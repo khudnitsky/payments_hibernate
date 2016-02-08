@@ -43,7 +43,7 @@ public class AccountServiceImplTest {
     public void setUp() throws Exception {
         user = EntityBuilder.buildUser("TEST", "TEST", "TEST", "TEST", null, null, null);
         currency = EntityBuilder.buildCurrency(CurrencyType.BYR);
-        expectedAccount = EntityBuilder.buildAccount(200D, AccountStatusType.UNBLOCKED, currency, user);
+        expectedAccount = EntityBuilder.buildAccount(1000L, 200D, AccountStatusType.UNBLOCKED, currency, user);
         Set<Account> accounts = new HashSet<>();
         accounts.add(expectedAccount);
         user.setAccounts(accounts);

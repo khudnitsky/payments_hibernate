@@ -40,7 +40,7 @@ public class OperationServiceImplTest {
     @Before
     public void setUp() throws Exception {
         user = EntityBuilder.buildUser("TEST", "TEST", "TEST", "TEST", null, null, null);
-        account = EntityBuilder.buildAccount(200D, AccountStatusType.UNBLOCKED, null, user);
+        account = EntityBuilder.buildAccount(1000L, 200D, AccountStatusType.UNBLOCKED, null, user);
         Set<Account> accounts = new HashSet<>();
         accounts.add(account);
         user.setAccounts(accounts);

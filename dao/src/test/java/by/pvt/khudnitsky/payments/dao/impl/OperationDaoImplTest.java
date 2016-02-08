@@ -53,7 +53,7 @@ public class OperationDaoImplTest {
         userDetail = EntityBuilder.buildUserDetail(address);
         user = EntityBuilder.buildUser("TEST", "TEST", "TEST", "TEST", userDetail, null, null);
         currency = EntityBuilder.buildCurrency(CurrencyType.BYR);
-        account = EntityBuilder.buildAccount(200D, AccountStatusType.UNBLOCKED, currency, user);
+        account = EntityBuilder.buildAccount(1000L, 200D, AccountStatusType.UNBLOCKED, currency, user);
         expectedOperation = EntityBuilder.buildOperation(200D, "TEST", Calendar.getInstance(), user, account);
         transaction = session.beginTransaction();
     }

@@ -47,7 +47,7 @@ public class AccountDaoImplTest {
         userDetail = EntityBuilder.buildUserDetail(address);
         user = EntityBuilder.buildUser("TEST", "TEST", "TEST", "TEST", userDetail, null, null);
         currency = EntityBuilder.buildCurrency(CurrencyType.BYR);
-        expectedAccount = EntityBuilder.buildAccount(200D, AccountStatusType.UNBLOCKED, currency, user);
+        expectedAccount = EntityBuilder.buildAccount(1000L, 200D, AccountStatusType.UNBLOCKED, currency, user);
         session = util.getSession();
         transaction = session.beginTransaction();
     }
