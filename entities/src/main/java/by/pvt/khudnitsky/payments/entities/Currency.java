@@ -3,6 +3,7 @@ package by.pvt.khudnitsky.payments.entities;
 import by.pvt.khudnitsky.payments.enums.CurrencyType;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -31,7 +32,7 @@ public class Currency extends AbstractEntity{
     public void setAccounts(Set<Account> accounts) {
         this.accounts = accounts;
     }
-    private Set<Account> accounts;
+    private Set<Account> accounts = new HashSet<>();
 
     public Currency() {
         super();
@@ -61,5 +62,9 @@ public class Currency extends AbstractEntity{
         return "Currency{" +
                 "currency=" + currencyType +
                 '}';
+    }
+
+    public void addAccount(Account account){
+        accounts.add(account);
     }
 }

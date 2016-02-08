@@ -6,6 +6,7 @@ package by.pvt.khudnitsky.payments.entities;
 import by.pvt.khudnitsky.payments.enums.AccountStatusType;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -74,7 +75,7 @@ public class Account extends AbstractEntity {
     public void setCards(Set<Card> cards) {
         this.cards = cards;
     }
-    private Set<Card> cards;
+    private Set<Card> cards = new HashSet<>();
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public Set<Operation> getOperations() {
@@ -83,7 +84,7 @@ public class Account extends AbstractEntity {
     public void setOperations(Set<Operation> operations) {
         this.operations = operations;
     }
-    private Set<Operation> operations;
+    private Set<Operation> operations = new HashSet<>();
 
     public Account() {
         super();
@@ -126,5 +127,13 @@ public class Account extends AbstractEntity {
                 ", deposit=" + deposit +
                 ", user=" + user +
                 '}';
+    }
+
+    public void addCard(Card card){
+        cards.add(card);
+    }
+
+    public void addOperation(Operation operation){
+        operations.add(operation);
     }
 }

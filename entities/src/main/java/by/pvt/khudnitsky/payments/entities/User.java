@@ -8,6 +8,8 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -74,7 +76,7 @@ public class User extends AbstractEntity {
     public void setAccounts(Set<Account> accounts) {
         this.accounts = accounts;
     }
-    private Set<Account> accounts;
+    private Set<Account> accounts = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public Set<Operation> getOperations() {
@@ -83,7 +85,7 @@ public class User extends AbstractEntity {
     public void setOperations(Set<Operation> operations) {
         this.operations = operations;
     }
-    private Set<Operation> operations;
+    private Set<Operation> operations = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -96,7 +98,7 @@ public class User extends AbstractEntity {
     public void setAccessLevels(Set<AccessLevel> accessLevels) {
         this.accessLevels = accessLevels;
     }
-    private Set<AccessLevel> accessLevels;
+    private Set<AccessLevel> accessLevels = new HashSet<>();
 
     public User() {
         super();
@@ -138,5 +140,17 @@ public class User extends AbstractEntity {
                 ", password='" + password + '\'' +
                 ", userDetail=" + userDetail +
                 '}';
+    }
+
+    public void addAccessLevel(AccessLevel accessLevel){
+        accessLevels.add(accessLevel);
+    }
+
+    public void addAccount(Account account){
+        accounts.add(account);
+    }
+
+    public void addOperation(Operation operation){
+        operations.add(operation);
     }
 }
