@@ -160,18 +160,13 @@ public class AccountServiceImpl extends AbstractService<Account> implements IAcc
     }
 
 
-    public void updateAccountStatus(Long id, Integer status) throws ServiceException {
+    public void updateAccountStatus(Long id, AccountStatusType status) throws ServiceException {
         Session session = util.getSession();
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
             Account account = accountDao.getById(id);
-            if(status == 0){
-                account.setAccountStatus(AccountStatusType.UNBLOCKED);
-            }
-            else{
-                account.setAccountStatus(AccountStatusType.BLOCKED);
-            }
+            account.setAccountStatus(status);
             accountDao.update(account);
             transaction.commit();
             logger.info(TRANSACTION_SUCCEEDED);

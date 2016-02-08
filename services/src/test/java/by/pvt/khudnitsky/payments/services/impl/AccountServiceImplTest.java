@@ -105,6 +105,16 @@ public class AccountServiceImplTest {
     }
 
     @Test
+    public void testUpdateAccountStatus() throws Exception {
+        user.setId((Long) userId);
+        accountService.updateAccountStatus((Long) accountId, AccountStatusType.BLOCKED);
+        AccountStatusType expected = AccountStatusType.BLOCKED;
+        AccountStatusType actual = accountService.getById((Long) accountId).getAccountStatus();
+        delete();
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
     public void testCheckAccountStatus() throws Exception {
         user.setId((Long) userId);
         Boolean expected = false; // UNBLOCKED
