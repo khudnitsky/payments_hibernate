@@ -32,7 +32,7 @@ public class Currency extends AbstractEntity{
     public void setAccounts(Set<Account> accounts) {
         this.accounts = accounts;
     }
-    private Set<Account> accounts = new HashSet<>();
+    private Set<Account> accounts;
 
     public Currency() {
         super();
@@ -65,6 +65,9 @@ public class Currency extends AbstractEntity{
     }
 
     public void addAccount(Account account){
+        if(accounts == null){
+            accounts = new HashSet<>();
+        }
         accounts.add(account);
     }
 }

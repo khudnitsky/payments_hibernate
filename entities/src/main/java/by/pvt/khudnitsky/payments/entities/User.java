@@ -76,7 +76,7 @@ public class User extends AbstractEntity {
     public void setAccounts(Set<Account> accounts) {
         this.accounts = accounts;
     }
-    private Set<Account> accounts = new HashSet<>();
+    private Set<Account> accounts;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public Set<Operation> getOperations() {
@@ -85,7 +85,7 @@ public class User extends AbstractEntity {
     public void setOperations(Set<Operation> operations) {
         this.operations = operations;
     }
-    private Set<Operation> operations = new HashSet<>();
+    private Set<Operation> operations;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -98,7 +98,7 @@ public class User extends AbstractEntity {
     public void setAccessLevels(Set<AccessLevel> accessLevels) {
         this.accessLevels = accessLevels;
     }
-    private Set<AccessLevel> accessLevels = new HashSet<>();
+    private Set<AccessLevel> accessLevels;
 
     public User() {
         super();
@@ -143,14 +143,23 @@ public class User extends AbstractEntity {
     }
 
     public void addAccessLevel(AccessLevel accessLevel){
+        if(accessLevels == null){
+            accessLevels = new HashSet<>();
+        }
         accessLevels.add(accessLevel);
     }
 
     public void addAccount(Account account){
+        if(accounts == null){
+            accounts = new HashSet<>();
+        }
         accounts.add(account);
     }
 
     public void addOperation(Operation operation){
+        if(operations == null){
+            operations = new HashSet<>();
+        }
         operations.add(operation);
     }
 }

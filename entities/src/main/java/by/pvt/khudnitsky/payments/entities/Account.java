@@ -75,7 +75,7 @@ public class Account extends AbstractEntity {
     public void setCards(Set<Card> cards) {
         this.cards = cards;
     }
-    private Set<Card> cards = new HashSet<>();
+    private Set<Card> cards;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public Set<Operation> getOperations() {
@@ -84,7 +84,7 @@ public class Account extends AbstractEntity {
     public void setOperations(Set<Operation> operations) {
         this.operations = operations;
     }
-    private Set<Operation> operations = new HashSet<>();
+    private Set<Operation> operations;
 
     public Account() {
         super();
@@ -130,10 +130,16 @@ public class Account extends AbstractEntity {
     }
 
     public void addCard(Card card){
+        if(cards == null){
+            cards = new HashSet<>();
+        }
         cards.add(card);
     }
 
     public void addOperation(Operation operation){
+        if(operations == null){
+            operations = new HashSet<>();
+        }
         operations.add(operation);
     }
 }

@@ -33,7 +33,7 @@ public class AccessLevel extends AbstractEntity {
     public void setUsers(Set<User> users) {
         this.users = users;
     }
-    private Set<User> users = new HashSet<>();
+    private Set<User> users;
 
     public AccessLevel() {
         super();
@@ -66,6 +66,9 @@ public class AccessLevel extends AbstractEntity {
     }
 
     public void addUser(User user){
+        if(users == null){
+            users = new HashSet<>();
+        }
         users.add(user);
     }
 }
