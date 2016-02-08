@@ -45,7 +45,7 @@ public class BalanceCommand extends AbstractCommand {
                 }
                 Account account = AccountServiceImpl.getInstance().getById(accountId);
                 request.setAttribute(Parameters.OPERATION_BALANCE, account.getDeposit());
-                request.setAttribute(Parameters.ACCOUNT_CURRENCY, account.getCurrency());
+                request.setAttribute(Parameters.ACCOUNT_CURRENCY, account.getCurrency().getCurrencyType());
                 page = ConfigurationManager.getInstance().getProperty(PagePath.CLIENT_BALANCE_PAGE_PATH);
             }
             catch (ServiceException e) {

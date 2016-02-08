@@ -13,6 +13,7 @@ import org.junit.*;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -92,9 +93,9 @@ public class UserDaoImplTest {
     @Ignore
     @Test
     public void testGetAll() throws Exception {
-        Long expectedSize = (long) userDao.getAll().size();
-        Long actualSize = userDao.getAmount(); // todo не будет работать, будет находить всех, переделать
-        Assert.assertEquals("getAll() method failed: ", expectedSize, actualSize);
+//        Long expectedSize = (long) userDao.getAll().size();
+//        Long actualSize = userDao.getAmount(); // todo не будет работать, будет находить всех, переделать
+//        Assert.assertEquals("getAll() method failed: ", expectedSize, actualSize);
     }
 
     @Test

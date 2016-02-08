@@ -23,15 +23,9 @@ import org.hibernate.Session;
 public class UserDaoImpl extends AbstractDao<User> implements IUserDao{
     private static Logger logger = Logger.getLogger(UserDaoImpl.class);
     private static UserDaoImpl instance;
-    private final String GET_ALL_CLIENTS = "from User user join user.accessLevels level where level.accessLevelType = :accessLevelType";
+    private final String GET_ALL_CLIENTS = " from User" /* user  join user.accessLevels level where level.accessLevelType = :accessLevelType"*/;
     private final String GET_BY_LOGIN = "from User where login = :login"; // TODO вынести в отдельный класс
     private final String CHECK_AUTHORIZATION = "from User where login = :login and password = :password";
-
-    /*select * from t_employee
-    inner join t_employee_meeting
-    on t_employee_meeting.F_EMPLOYEE_ID=t_employee.F_EMPLOYEEID
-    where t_employee_meeting.F_MEETING_ID = 2
-    */
 
     static String message;
 
@@ -54,7 +48,7 @@ public class UserDaoImpl extends AbstractDao<User> implements IUserDao{
         try {
             Session session = util.getSession();
             Query query = session.createQuery(GET_ALL_CLIENTS);
-            query.setParameter("accessLevelType", AccessLevelType.CLIENT);
+            //query.setParameter("accessLevelType", AccessLevelType.CLIENT);
             results = query.list();
         }
         catch(HibernateException e){

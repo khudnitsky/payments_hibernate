@@ -35,10 +35,7 @@ public class RequestParameterParser {
         String login = request.getParameter(Parameters.USER_LOGIN);
         String password = request.getParameter(Parameters.USER_PASSWORD);
 
-        Account account = getAccount(request);
-        Set<Account> accounts = new HashSet<>();
-        accounts.add(account);
-        User user = EntityBuilder.buildUser(firstName, lastName, login, password, null, accounts, accessLevels);
+        User user = EntityBuilder.buildUser(firstName, lastName, login, password, null, null, accessLevels);
         return user;
     }
 
