@@ -19,8 +19,8 @@
 				<c:forEach var="account" items="${accountsList}">
 					<tr>
 						<td><c:out value="${ account.id }" /></td>
-						<td><c:out value="${ account.amount }" /></td>
-						<td><c:out value="${ account.currency }" /></td>
+						<td><c:out value="${ account.deposit }" /></td>
+						<td><c:out value="${ account.currency.currencyType }" /></td>
 						<td><input type="radio" name="toUnblock" value="${ account.id }"/></td>
 					</tr>
 				</c:forEach>

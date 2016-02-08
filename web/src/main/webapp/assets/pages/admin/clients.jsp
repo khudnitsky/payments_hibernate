@@ -14,8 +14,8 @@
 			</tr>
 			<c:forEach var="client" items="${userList}">
 				<tr>
-					<td><c:out value="${ client.lastName }" /></td>
-					<td><c:out value="${ client.firstName }" /></td>
+					<td><c:out value="${client.lastName}" /></td>
+					<td><c:out value="${client.firstName}" /></td>
 				</tr>
 			</c:forEach>
 		</table>
