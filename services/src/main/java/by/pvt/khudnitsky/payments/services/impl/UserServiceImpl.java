@@ -1,5 +1,7 @@
 package by.pvt.khudnitsky.payments.services.impl;
 
+import by.pvt.khudnitsky.payments.dao.impl.AccessLevelDaoImpl;
+import by.pvt.khudnitsky.payments.dao.impl.CurrencyDaoImpl;
 import by.pvt.khudnitsky.payments.entities.AccessLevel;
 import by.pvt.khudnitsky.payments.enums.AccessLevelType;
 import by.pvt.khudnitsky.payments.dao.impl.AccountDaoImpl;
@@ -20,6 +22,7 @@ import org.hibernate.Transaction;
 
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -227,7 +230,7 @@ public class UserServiceImpl extends AbstractService<User> implements IUserServi
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
-            if((userDao.getByLogin(user.getLogin()) == null) & (user.getAccounts() == null)){
+            if((userDao.getByLogin(user.getLogin()) == null) /*& (user.getAccounts() == null)*/){
                 isNew = true;
             }
             transaction.commit();
@@ -247,8 +250,18 @@ public class UserServiceImpl extends AbstractService<User> implements IUserServi
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
-            accountDao.save(account);
+
+            AccessLevel accessLevel = new AccessLevel();
+            user.addAccount(account);
+            account.setUser(user);
+            accessLevel.setAccessLevelType(AccessLevelType.CLIENT);
+            user.addAccessLevel(accessLevel);
+            accessLevel.addUser(user);
+
+            AccessLevelDaoImpl.getInstance().save(accessLevel);        // TODO
+            CurrencyDaoImpl.getInstance().save(account.getCurrency()); // TODO
             userDao.save(user);
+            accountDao.save(account);
             transaction.commit();
             logger.info(TRANSACTION_SUCCEEDED);
             logger.info(user);
