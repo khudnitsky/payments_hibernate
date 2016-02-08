@@ -1,6 +1,7 @@
 package by.pvt.khudnitsky.payments.utils;
 
 import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -46,4 +47,17 @@ public class HibernateUtil {
         }
         return session;
     }
+
+    public void releaseSession(Session session){
+        if(session != null){
+            try{
+                //session.close();
+                sessions.remove();
+            }
+            catch(HibernateException e){
+                logger.error(e);
+            }
+        }
+    }
+
 }
