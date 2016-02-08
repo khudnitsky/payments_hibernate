@@ -7,6 +7,7 @@ import by.pvt.khudnitsky.payments.utils.EntityBuilder;
 import by.pvt.khudnitsky.payments.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.junit.*;
 
 import java.io.Serializable;
@@ -100,6 +101,16 @@ public class OperationDaoImplTest {
         delete();
         actualOperation = operationDao.getById((Long) operationId);
         Assert.assertNull("delete() method failed: ", actualOperation);
+    }
+
+    @Ignore
+    @Test
+    public void testDeleteByAccountId() throws Exception{
+        persistEntities();
+        operationDao.deleteByAccountId((Long) accountId);
+        actualOperation = operationDao.getById((Long) operationId);
+        Assert.assertNull("delete() method failed: ", actualOperation);
+
     }
 
     @After
