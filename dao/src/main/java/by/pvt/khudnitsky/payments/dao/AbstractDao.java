@@ -123,4 +123,20 @@ public abstract class AbstractDao<T extends AbstractEntity> implements IDao<T> {
         }
         return amount;
     }
+
+    public List<T> getAllToPage(int recordsPerPage, int pageNumber) throws DaoException {
+        List<T> results;
+        try {
+            Session session = util.getSession();
+            Criteria criteria = session.createCriteria(persistentClass);
+            criteria.setFirstResult((pageNumber-1) * recordsPerPage);
+            criteria.setMaxResults(recordsPerPage);
+            results = criteria.list();
+        }
+        catch(HibernateException e){
+            logger.error("Error was thrown in DAO: " + e);
+            throw new DaoException();
+        }
+        return results;
+    }
 }

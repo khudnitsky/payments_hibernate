@@ -5,12 +5,9 @@ import by.pvt.khudnitsky.payments.entities.Operation;
 import by.pvt.khudnitsky.payments.exceptions.DaoException;
 import by.pvt.khudnitsky.payments.exceptions.ServiceException;
 import by.pvt.khudnitsky.payments.services.AbstractService;
-import by.pvt.khudnitsky.payments.managers.PoolManager;
 import by.pvt.khudnitsky.payments.services.IOperationService;
-import by.pvt.khudnitsky.payments.utils.PaymentSystemLogger;
 import by.pvt.khudnitsky.payments.utils.TransactionUtil;
 import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -164,5 +161,42 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
             logger.error(TRANSACTION_FAILED, e);
             throw new ServiceException(TRANSACTION_FAILED + e);
         }
+    }
+
+    public int getNumberOfPages(int recordsPerPage) throws ServiceException{
+        int numberOfPages;
+        Session session = util.getSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            Long numberOfRecords = operationDao.getAmount();
+            numberOfPages = (int) Math.ceil(numberOfRecords * 1.0 / recordsPerPage);
+            transaction.commit();
+            logger.info(TRANSACTION_SUCCEEDED);
+        }
+        catch (DaoException e) {
+            TransactionUtil.rollback(transaction, e);
+            logger.error(TRANSACTION_FAILED, e);
+            throw new ServiceException(TRANSACTION_FAILED + e);
+        }
+        return numberOfPages;
+    }
+
+    public List<Operation> getAllToPage(int recordsPerPage, int pageNumber) throws ServiceException {
+        List<Operation> results;
+        Session session = util.getSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            results = operationDao.getAllToPage(recordsPerPage, pageNumber);
+            transaction.commit();
+            logger.info(TRANSACTION_SUCCEEDED);
+        }
+        catch (DaoException e) {
+            TransactionUtil.rollback(transaction, e);
+            logger.error(TRANSACTION_FAILED, e);
+            throw new ServiceException(TRANSACTION_FAILED + e);
+        }
+        return results;
     }
 }
