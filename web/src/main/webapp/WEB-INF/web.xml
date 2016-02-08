@@ -16,7 +16,7 @@
   </servlet-mapping>
 
   <session-config>
-    <session-timeout>1</session-timeout>
+    <session-timeout>10</session-timeout>
   </session-config>
 
     <filter>
@@ -27,6 +27,15 @@
         <filter-name>SecurityFilter</filter-name>
         <servlet-name>Controller</servlet-name>
     </filter-mapping>
+
+  <filter>
+    <filter-name>SessionClosing</filter-name>
+    <filter-class>by.pvt.khudnitsky.payments.filters.SessionClosingFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>SessionClosing</filter-name>
+    <servlet-name>Controller</servlet-name>
+  </filter-mapping>
 
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>

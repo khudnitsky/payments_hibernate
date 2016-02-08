@@ -5,6 +5,9 @@ package by.pvt.khudnitsky.payments.filters;
 
 import by.pvt.khudnitsky.payments.enums.PagePath;
 import by.pvt.khudnitsky.payments.managers.ConfigurationManager;
+import by.pvt.khudnitsky.payments.utils.HibernateUtil;
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
 
 import java.io.IOException;
 
@@ -24,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 
 
-public class PageRedirectFilter implements Filter {
+public class SessionClosingFilter implements Filter {
 
     public void init(FilterConfig fConfig) throws ServletException {}
 
@@ -32,9 +35,9 @@ public class PageRedirectFilter implements Filter {
                          FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        // переход на стартовую страницу
-        httpResponse.sendRedirect(httpRequest.getContextPath() + ConfigurationManager.getInstance().getProperty(PagePath.INDEX_PAGE_PATH));
+        Session session = HibernateUtil.getInstance().getSession();
         chain.doFilter(request, response);
+        HibernateUtil.getInstance().releaseSession(session);
     }
 
     public void destroy() {}
