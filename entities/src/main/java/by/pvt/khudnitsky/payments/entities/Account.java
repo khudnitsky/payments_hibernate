@@ -19,6 +19,15 @@ import java.util.Set;
 public class Account extends AbstractEntity {
     private static final long serialVersionUID = 3L;
 
+    @Column(nullable = false, updatable = false)
+    public Long getAccountNumber() {
+        return accountNumber;
+    }
+    public void setAccountNumber(Long accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+    private Long accountNumber;
+
     @Column(nullable = false, precision = 2)
     public Double getDeposit() {
         return deposit;
@@ -88,30 +97,34 @@ public class Account extends AbstractEntity {
 
         Account account = (Account) o;
 
-        if (user != null ? !user.equals(account.user) : account.user != null) return false;
-        if (currency != null ? !currency.equals(account.currency) : account.currency != null) return false;
+        if (accountNumber != null ? !accountNumber.equals(account.accountNumber) : account.accountNumber != null)
+            return false;
         if (deposit != null ? !deposit.equals(account.deposit) : account.deposit != null) return false;
-        return accountStatus == account.accountStatus;
+        if (accountStatus != account.accountStatus) return false;
+        if (currency != null ? !currency.equals(account.currency) : account.currency != null) return false;
+        return user != null ? user.equals(account.user) : account.user == null;
 
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (user != null ? user.hashCode() : 0);
-        result = 31 * result + (currency != null ? currency.hashCode() : 0);
+        result = 31 * result + (accountNumber != null ? accountNumber.hashCode() : 0);
         result = 31 * result + (deposit != null ? deposit.hashCode() : 0);
         result = 31 * result + (accountStatus != null ? accountStatus.hashCode() : 0);
+        result = 31 * result + (currency != null ? currency.hashCode() : 0);
+        result = 31 * result + (user != null ? user.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "Account{" +
-                "accountStatusEnum=" + accountStatus +
-                ", user=" + user +
-                ", currency='" + currency + '\'' +
+                "accountNumber=" + accountNumber +
+                ", accountStatus=" + accountStatus +
+                ", currency=" + currency +
                 ", deposit=" + deposit +
+                ", user=" + user +
                 '}';
     }
 }
