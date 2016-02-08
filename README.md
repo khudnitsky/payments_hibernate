@@ -5,7 +5,7 @@ Payments system (2'nd module project)
     + 2. Dao methods to BaseDao
 3. Pagination
 4. CardDao
-5. Tests
+    + 5. Tests
 6. JavaDoc
     + 7. Mapping entities
     + 8. Configuration hibernate
@@ -15,6 +15,6 @@ Payments system (2'nd module project)
     + 12. HQL and Criteria
 13. Second layer cache
 14. Injection singletons
-15. Common interfaces for DAO and Services
-16. Secure adding to collections
+    + 15. Common interfaces for DAO and Services
+    + 16. Secure adding to collections
 17. DTO
