@@ -3,7 +3,7 @@ Payments system (2'nd module project)
 
     + 1. Id type migration from int to Long
     + 2. Dao methods to BaseDao
-3. Pagination
+    + 3. Pagination
 4. CardDao
     + 5. Tests
 6. JavaDoc
@@ -17,4 +17,4 @@ Payments system (2'nd module project)
 14. Injection singletons
     + 15. Common interfaces for DAO and Services
     + 16. Secure adding to collections
-17. DTO
+    + 17. DTO
