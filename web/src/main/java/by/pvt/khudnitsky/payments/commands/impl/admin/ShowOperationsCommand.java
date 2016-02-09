@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import by.pvt.khudnitsky.payments.commands.AbstractCommand;
+import by.pvt.khudnitsky.payments.entities.OperationDTO;
 import by.pvt.khudnitsky.payments.entities.User;
 import by.pvt.khudnitsky.payments.enums.*;
 import by.pvt.khudnitsky.payments.entities.Operation;
@@ -30,22 +31,34 @@ public class ShowOperationsCommand extends AbstractCommand {
     @Override
     public String execute(HttpServletRequest request) {
         String page;
-
-        int currentPage = 1;
-        int recordsPerPage = 3; //TODO сделать ввод на JSP
-
         HttpSession session = request.getSession();
+
+        int currentPage;
+        int recordsPerPage;
+        if(request.getParameter(Parameters.RECORDS_PER_PAGE) != null){
+            recordsPerPage = Integer.valueOf(request.getParameter(Parameters.RECORDS_PER_PAGE));
+        }
+        else {
+            recordsPerPage = 3;
+            //session.setAttribute(Parameters.RECORDS_PER_PAGE, recordsPerPage);
+        }
+        if(request.getParameter(Parameters.CURRENT_PAGE) != null) {
+            currentPage = Integer.parseInt(request.getParameter(Parameters.CURRENT_PAGE));
+            recordsPerPage = (Integer) session.getAttribute(Parameters.RECORDS_PER_PAGE);
+        }
+        else{
+            currentPage = 1;
+        }
+
         AccessLevelType accessLevelType = RequestParameterParser.getUserType(request);
         if(accessLevelType == AccessLevelType.ADMINISTRATOR){
             try{
-                if(request.getParameter("page") != null) {
-                    currentPage = Integer.parseInt(request.getParameter("page"));
-                }
                 int numberOfPages = OperationServiceImpl.getInstance().getNumberOfPages(recordsPerPage);
-                List<Operation> list = OperationServiceImpl.getInstance().getAllToPage(recordsPerPage, currentPage);
+                List<OperationDTO> list = OperationServiceImpl.getInstance().getAllToPage(recordsPerPage, currentPage);
                 session.setAttribute(Parameters.OPERATIONS_LIST, list);
                 session.setAttribute(Parameters.NUMBER_OF_PAGES, numberOfPages);
                 session.setAttribute(Parameters.CURRENT_PAGE, currentPage);
+                session.setAttribute(Parameters.RECORDS_PER_PAGE, recordsPerPage);
                 page = ConfigurationManager.getInstance().getProperty(PagePath.ADMIN_SHOW_OPERATIONS_PAGE);
             }
             catch (ServiceException e) {

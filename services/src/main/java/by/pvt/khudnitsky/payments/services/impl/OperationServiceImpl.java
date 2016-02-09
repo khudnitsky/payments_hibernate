@@ -2,6 +2,7 @@ package by.pvt.khudnitsky.payments.services.impl;
 
 import by.pvt.khudnitsky.payments.dao.impl.OperationDaoImpl;
 import by.pvt.khudnitsky.payments.entities.Operation;
+import by.pvt.khudnitsky.payments.entities.OperationDTO;
 import by.pvt.khudnitsky.payments.exceptions.DaoException;
 import by.pvt.khudnitsky.payments.exceptions.ServiceException;
 import by.pvt.khudnitsky.payments.services.AbstractService;
@@ -182,13 +183,13 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
         return numberOfPages;
     }
 
-    public List<Operation> getAllToPage(int recordsPerPage, int pageNumber) throws ServiceException {
-        List<Operation> results;
+    public List<OperationDTO> getAllToPage(int recordsPerPage, int pageNumber) throws ServiceException {
+        List<OperationDTO> results;
         Session session = util.getSession();
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
-            results = operationDao.getAllToPage(recordsPerPage, pageNumber);
+            results = operationDao.getOperations(recordsPerPage, pageNumber);
             transaction.commit();
             logger.info(TRANSACTION_SUCCEEDED);
         }

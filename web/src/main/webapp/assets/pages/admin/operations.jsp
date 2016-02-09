@@ -13,36 +13,33 @@
 				<td align="center"><strong>Дата</strong></td>
 				<td align="center"><strong>Описание</strong></td>
 				<td align="center"><strong>Сумма</strong></td>
-				<td align="center"><strong>№ Клиента</strong></td>
-				<td align="center"><strong>№ Счета</strong></td>
+				<td align="center"><strong>Клиент</strong></td>
+				<td align="center"><strong>Счет</strong></td>
 			</tr>
-			<%--<jsp:useBean id="operation" scope="request" type="by.pvt.khudnitsky.payments.entities.Operation"/>--%>
-			<%--${operation.date.toString()}--%>
-			<c:forEach var="opeartion" items="${operationsList}">
+
+			<c:forEach var="operation" items="${operationsList}">
 				<tr>
-					<td><c:out value="${ operation.date }" /></td>
-					<td><c:out value="${ opeartion.description }" /></td>
+					<td><c:out value="${ operation.operationDate }"/></td>
+					<td><c:out value="${ operation.description }" /></td>
 					<td align="right">
-						<fmt:formatNumber value="${ opeartion.amount }" type="currency" minFractionDigits="2"  currencySymbol=""/>
+						<fmt:formatNumber value="${ operation.amount }" type="currency" minFractionDigits="2"  currencySymbol=""/>
 					</td>
-					<td align="center"><c:out value="${ opeartion.user.lastName }" /></td>
-					<td align="center"><c:out value="${ opeartion.account.accountNumber }" /></td>
+					<td align="center"><c:out value="${ operation.userLastName }" /></td>
+					<td align="center"><c:out value="${ operation.accountNumber }" /></td>
 				</tr>
 			</c:forEach>
 		</table>
 		<br>
+
 		<c:choose>
 			<c:when test="${currentPage != 1}">
-				<td><a href="controller?command=operations&page=${currentPage - 1}">На предыдущую</a></td>
+				<td><a href="controller?command=operations&currentPage=${currentPage - 1}">На предыдущую</a></td>
 			</c:when>
 			<c:otherwise>
 				<td></td>
 			</c:otherwise>
 		</c:choose>
 
-		<%--<c:if test="${currentPage != 1}">--%>
-			<%--<td><a href="controller?command=operations&page=${currentPage - 1}">На предыдущую</a></td>--%>
-		<%--</c:if>--%>
 
 		<table border="1" cellpadding="5" cellspacing="5">
 			<tr>
@@ -52,7 +49,7 @@
 							<td>${i}</td>
 						</c:when>
 						<c:otherwise>
-							<td><a href="controller?command=operations&page=${i}">${i}</a></td>
+							<td><a href="controller?command=operations&currentPage=${i}">${i}</a></td>
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
@@ -61,24 +58,29 @@
 
 		<c:choose>
 			<c:when test="${currentPage lt numberOfPages}">
-				<td><a href="controller?command=operations&page=${currentPage + 1}">На следующую</a></td>
+				<td><a href="controller?command=operations&currentPage=${currentPage + 1}">На следующую</a></td>
 			</c:when>
 			<c:otherwise>
 				<td></td>
 			</c:otherwise>
 		</c:choose>
 
-		<%--<c:if test="${currentPage lt numberOfPages}">--%>
-			<%--<td><a href="controller?command=operations&page=${currentPage + 1}">На следующую</a></td>--%>
-		<%--</c:if>--%>
-
-		<br>
 		<form name="operationsForm" method="POST" action="controller">
 			<input type="hidden" name="command" value="operations" />
-			<input type="text" name="page" value="" size="3"/>
+			<input type="text" name="currentPage" value="" size="3"/>
 			<input type="submit" value="Перейти" />
 		</form>
-		<br>
+
+		<form name="recordsPerPageForm" method="POST" action="controller">
+			<input type="hidden" name="command" value="operations"/>
+			<select name="recordsPerPage">
+				<option value="3">3</option>
+				<option value="5">5</option>
+				<option value="10">10</option>
+			</select>
+			<input type="submit" value="Обновить" />
+		</form>
+
 		<br>
 		<a href="controller?command=backadmin">Вернуться обратно</a>
 		<a href="controller?command=logout">Выйти из системы</a>
