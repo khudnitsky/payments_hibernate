@@ -81,6 +81,18 @@
 			<input type="submit" value="Обновить" />
 		</form>
 
+		<form name="orderingForm" method="POST" action="controller">
+			<input type="hidden" name="command" value="operations"/>
+			<select name="ordering">
+				<option value="date">по дате</option>
+				<option value="description">по описанию</option>
+				<option value="amount">по сумме</option>
+				<option value="client">по клиенту</option>
+				<option value="account">по счету</option>
+			</select>
+			<input type="submit" value="Обновить" />
+		</form>
+
 		<br>
 		<a href="controller?command=backadmin">Вернуться обратно</a>
 		<a href="controller?command=logout">Выйти из системы</a>

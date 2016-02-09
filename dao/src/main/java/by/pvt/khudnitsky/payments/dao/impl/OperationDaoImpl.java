@@ -43,7 +43,8 @@ public class OperationDaoImpl extends AbstractDao<Operation> implements IOperati
                                         "inner join t_user as u " +
                                         "on o.F_USER_ID=u.F_ID " +
                                         "inner join t_account as a " +
-                                        "on o.F_ACCOUNT_ID=a.F_ID";
+                                        "on o.F_ACCOUNT_ID=a.F_ID ";
+
     static String message;
 
     private OperationDaoImpl(){
@@ -72,11 +73,11 @@ public class OperationDaoImpl extends AbstractDao<Operation> implements IOperati
         }
     }
 
-    public List<OperationDTO> getOperations(int recordsPerPage, int pageNumber) throws DaoException {
+    public List<OperationDTO> getOperations(int recordsPerPage, int pageNumber, String sorting) throws DaoException {
         List<OperationDTO> list;
         try {
             Session session = util.getSession();
-            SQLQuery query = session.createSQLQuery(GET_OPERATIONS);
+            SQLQuery query = session.createSQLQuery(GET_OPERATIONS + sorting);
             query.addScalar("operationDate", StandardBasicTypes.STRING);
             query.addScalar("description", StandardBasicTypes.STRING);
             query.addScalar("amount", StandardBasicTypes.DOUBLE);

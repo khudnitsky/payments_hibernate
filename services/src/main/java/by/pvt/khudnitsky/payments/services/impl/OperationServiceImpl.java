@@ -183,13 +183,13 @@ public class OperationServiceImpl extends AbstractService<Operation> implements 
         return numberOfPages;
     }
 
-    public List<OperationDTO> getAllToPage(int recordsPerPage, int pageNumber) throws ServiceException {
+    public List<OperationDTO> getAllToPage(int recordsPerPage, int pageNumber, String sorting) throws ServiceException {
         List<OperationDTO> results;
         Session session = util.getSession();
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
-            results = operationDao.getOperations(recordsPerPage, pageNumber);
+            results = operationDao.getOperations(recordsPerPage, pageNumber, sorting);
             transaction.commit();
             logger.info(TRANSACTION_SUCCEEDED);
         }
