@@ -12,6 +12,14 @@
         <property name="hibernate.connection.isolation">2</property>
         <property name="show_sql">true</property>
         <property name="hibernate.hbm2ddl.auto">validate</property>
+
+
+        <property name="hibernate.cache.region.factory_class">
+            org.hibernate.cache.ehcache.EhCacheRegionFactory
+        </property>
+        <property name="cache.use_query_cache">true</property>
+        <property name="cache.use_second_level_cache">true</property>
+
         <mapping class="by.pvt.khudnitsky.payments.entities.User"/>
         <mapping class="by.pvt.khudnitsky.payments.entities.Card"/>
         <mapping class="by.pvt.khudnitsky.payments.entities.Account"/>

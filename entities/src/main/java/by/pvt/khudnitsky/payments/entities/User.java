@@ -3,11 +3,12 @@
  */
 package by.pvt.khudnitsky.payments.entities;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -20,6 +21,7 @@ import java.util.Set;
 
 @Entity
 //@SQLDelete(sql = "UPDATE T_USER F_STATUS SET F_STATUS = 'deleted' WHERE F_ID = ?" )  // TODO to do deleting
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @OnDelete(action = OnDeleteAction.CASCADE)
 public class User extends AbstractEntity {
     private static final long serialVersionUID = 2L;
